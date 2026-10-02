@@ -105,11 +105,19 @@
             <option value="UG">Uganda</option></select
           ><br /><br />
           <p>Delivery type:</p>
-          <input type="radio" id="standard" name="delivery" value="standard" checked />
+          <input
+            type="radio"
+            id="standard"
+            name="delivery"
+            value="standard"
+            checked
+          />
           <label for="standard">Standard</label>
           <input type="radio" id="express" name="delivery" value="express" />
           <label for="express">Express</label><br /><br />
-          <textarea id="notes-details" name="notes" rows="4"></textarea><br /><br />
+          <label for="notes">Additional notes:</label>
+          <textarea id="notes-details" name="notes" rows="4"></textarea
+          ><br /><br />
           <button type="submit">Place Order</button>
         </fieldset>
       </form>
