@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Master User Profile</title>
+  </head>
+  <body>
+    <h1>Account @ Profile Registration</h1>
+    <p>Please fill out this form to complete your personal profile setup.</p>
+
+    <form method="post" enctype="multipart/form-data">
+      <fieldset>
+        <legend><b>Account Security (Login Details)</b></legend>
+        <p>
+          <label for="email">Email Address:</label><br />
+          <input
+            type="email"
+            id="email"
+            name="user_email"
+            placeholder="example@gmail.com"
+            required
+          />
+        </p>
+        <p>
+          <label for="password">Password:</label><br />
+          <input
+            type="password"
+            id="password"
+            name="user_password"
+            placeholder="Enter your password"
+            required
+          />
+        </p>
+      </fieldset>
+
+      <br />
+
+      <fieldset>
+        <legend><b>Personal Information (Date Selection)</b></legend>
+        <p>
+          <label for="birthdate">Date of Birth:</label><br />
+          <input type="date" id="birthdate" name="user_birthdate" required />
+        </p>
+      </fieldset>
+      <br />
+      <fieldset>
+        <legend><b>Document & Media upload</b></legend>
+        <p>
+          <label for="profile_pic">Upload Profile Picture (image only):</label
+          ><br />
+          <input
+            type="file"
+            id="profile_pic"
+            name="profile_image"
+            accept="image/*"
+          />
+        </p>
+        <p>
+          <label for="document">upload ID Documment (PDF or Word only):</label
+          ><br />
+          <input
+            type="file"
+            id="document"
+            name="user_document"
+            accept=".pdf, .doc, .docx"
+            required
+          />
+        </p>
+      </fieldset>
+      <br />
+      <p>
+        <button type="submit">Save Master Profile</button>
+      </p>
+    </form>
+  </body>
+</html>
