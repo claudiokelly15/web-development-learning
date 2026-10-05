@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="csrf-token"
+      content="0ca7141d7e418b762099a2ac2d6b7b45785d85f84a430021615f854dee28aa1e"
+    />
+    <title>Accept mobile money payments in Tanzania - BongoPay</title>
+    <link
+      rel="icon"
+      href="https://bongopay.net/favicon.svg"
+      type="image/svg+xml"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="theme-color" content="#3B3FC4" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Schibsted+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://bongopay.net/assets/css/app.css?v=1.2.83"
+    />
+  </head>
+  <body>
+    <link
+      rel="stylesheet"
+      href="https://bongopay.net/assets/css/bongopay-site.css?v=1.2.87"
+    />
+    <div class="bpx">
+      <nav class="nav">
+        <div class="wrap nav-in">
+          <a class="logo" href="https://bongopay.net/"
+            ><span class="logo-mark"></span
+            ><span class="logo-word">Bongo<b>Pay</b></span></a
+          >
+          <div class="nav-links">
+            <a href="https://bongopay.net/pricing">Pricing</a
+            ><a href="https://bongopay.net/developers/docs">Developers</a
+            ><a href="https://bongopay.net/about">About</a
+            ><a href="https://bongopay.net/contact">Contact</a>
+          </div>
+          <div class="nav-right">
+            <a class="btn btn-text" href="https://bongopay.net/login"
+              >Sign in</a
+            >
+            <a class="btn btn-primary" href="https://bongopay.net/register"
+              >Create account</a
+            >
+            <button
+              class="nav-toggle"
+              type="button"
+              aria-label="Open menu"
+              onclick="
+                document.getElementById('bpxDrawer').classList.add('open')
+              "
+            >
+              <i class="bi bi-list"></i>
+            </button>
+          </div>
+        </div>
+      </nav>
+      <div
+        class="drawer"
+        id="bpxDrawer"
+        onclick="if (event.target === this) this.classList.remove('open');"
+      >
+        <div class="drawer-panel">
+          <div class="drawer-head">
+            <a class="logo" href="https://bongopay.net/"
+              ><span class="logo-mark"></span
+              ><span class="logo-word">Bongo<b>Pay</b></span></a
+            >
+            <button
+              class="drawer-close"
+              type="button"
+              aria-label="Close menu"
+              onclick="
+                document.getElementById('bpxDrawer').classList.remove('open')
+              "
+            >
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+          <a class="dl" href="https://bongopay.net/pricing"
+            ><i class="bi bi-tag"></i> Pricing</a
+          >
+          <a class="dl" href="https://bongopay.net/developers/docs"
+            ><i class="bi bi-code-slash"></i> Developers</a
+          >
+          <a class="dl" href="https://bongopay.net/about"
+            ><i class="bi bi-info-circle"></i> About</a
+          >
+          <a class="dl" href="https://bongopay.net/contact"
+            ><i class="bi bi-envelope"></i> Contact</a
+          >
+          <div class="dactions">
+            <a class="btn btn-ghost" href="https://bongopay.net/login"
+              >Sign in</a
+            >
+            <a class="btn btn-primary" href="https://bongopay.net/register"
+              >Create account</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <section class="home-hero wrap">
+        <div class="h4-copy">
+          <p class="h4-eyebrow">For businesses in Tanzania</p>
+          <h1>Get paid from any phone in Tanzania.</h1>
+          <p class="lede">
+            Share a payment link on WhatsApp, or connect your own system. Your
+            customer approves with their mobile money PIN, and the money lands
+            in your BongoPay balance, ready to withdraw.
+          </p>
+          <div class="hh-cta">
+            <a class="btn btn-primary" href="https://bongopay.net/register"
+              >Create a free account</a
+            >
+            <a class="btn btn-ghost" href="#how"
+              ><i class="bi bi-arrow-down-circle"></i> See how it works</a
+            >
+          </div>
+          <ul class="hh-facts">
+            <li><i class="bi bi-receipt"></i> No setup or monthly fee</li>
+            <li><i class="bi bi-percent"></i> 6% per successful payment</li>
+            <li><i class="bi bi-bank"></i> Free withdrawals</li>
+          </ul>
+        </div>
+
+        <div class="h4-media">
+          <div class="h4-photo">
+            <img
+              src="https://bongopay.net/assets/img/site/hero-woman.jpg"
+              width="900"
+              height="1349"
+              alt="A woman smiling as she checks a payment on her phone"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+          <div class="h4-card" aria-hidden="true">
+            <div class="h4-card-top">
+              <i class="bi bi-check-circle-fill"></i>
+              <div><b>Payment received</b><span>M-Pesa, just now</span></div>
+            </div>
+            <div class="h4-card-amt">TZS 50,000</div>
+            <div class="h4-card-row">
+              <span>You receive</span><span class="hl">TZS 47,000</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="partners"
+        aria-label="Supported networks and payment processor"
+      >
+        <div class="wrap partners-in">
+          <div class="partners-group">
+            <p class="partners-lbl">Your customers pay with</p>
+            <div class="partner-grid">
+              <div class="pchip">
+                <img
+                  src="https://bongopay.net/assets/img/networks/mpesa.svg"
+                  width="512"
+                  height="273"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                /><span>M-Pesa</span>
+              </div>
+              <div class="pchip">
+                <img
+                  src="https://bongopay.net/assets/img/networks/airtel.svg"
+                  width="764"
+                  height="768"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                /><span>Airtel Money</span>
+              </div>
+              <div class="pchip">
+                <img
+                  src="https://bongopay.net/assets/img/networks/yas.svg"
+                  width="187"
+                  height="169"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                /><span>Mix by Yas</span>
+              </div>
+              <div class="pchip">
+                <img
+                  src="https://bongopay.net/assets/img/networks/halotel.png"
+                  width="330"
+                  height="146"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                /><span>HaloPesa</span>
+              </div>
+            </div>
+          </div>
+          <div class="partners-group">
+            <p class="partners-lbl">Payments processed by</p>
+            <div class="pchip selcom">
+              <img
+                src="https://bongopay.net/assets/img/networks/selcom.webp"
+                width="500"
+                height="246"
+                alt="Selcom"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec wrap" id="how">
+        <h2>What happens when someone pays you</h2>
+        <p class="sec-intro">
+          Four steps, from sharing a link to having the money in your account.
+          Most payments are done in under a minute, depending on how fast your
+          customer enters their PIN.
+        </p>
+        <ol class="steps">
+          <li>
+            <div class="step-top">
+              <span class="step-ic"><i class="bi bi-link-45deg"></i></span
+              ><span class="step-n">1</span>
+            </div>
+            <h3>You share a link</h3>
+            <p>
+              Create it once in your dashboard, then send it on WhatsApp,
+              Instagram or by SMS.
+            </p>
+            <code>bongopay.net/link/neema-kitenge</code>
+          </li>
+          <li>
+            <div class="step-top">
+              <span class="step-ic"><i class="bi bi-phone-vibrate"></i></span
+              ><span class="step-n">2</span>
+            </div>
+            <h3>They get a PIN prompt</h3>
+            <p>
+              Your customer types their mobile money number and their network
+              sends a prompt to their phone.
+            </p>
+            <code>Prompt sent to 0754 *** 412</code>
+          </li>
+          <li>
+            <div class="step-top">
+              <span class="step-ic"><i class="bi bi-shield-check"></i></span
+              ><span class="step-n">3</span>
+            </div>
+            <h3>They approve it</h3>
+            <p>
+              When they enter their PIN, we confirm the payment with Selcom and
+              add it to your balance.
+            </p>
+            <code>BPY-20261001-7F3C21A9 · paid</code>
+          </li>
+          <li>
+            <div class="step-top">
+              <span class="step-ic"><i class="bi bi-bank"></i></span
+              ><span class="step-n">4</span>
+            </div>
+            <h3>You withdraw</h3>
+            <p>
+              Send your balance to mobile money or your bank. We check each
+              withdrawal before it goes out.
+            </p>
+            <code>Withdrawal to CRDB · TZS 470,000</code>
+          </li>
+        </ol>
+      </section>
+
+      <section class="sec wrap" id="api">
+        <h2>Use it from your phone, or from your own system</h2>
+        <div class="two">
+          <div class="use">
+            <h3><i class="bi bi-link-45deg"></i> Payment links</h3>
+            <p>
+              For people who sell on WhatsApp, Instagram or in person. You don't
+              need a website. Make a link for a product or a fixed amount and
+              share it wherever you talk to customers.
+            </p>
+            <div class="wa" aria-label="Example WhatsApp conversation">
+              <div class="msg in">
+                Habari, nataka ile gauni ya TZS 50,000.<small>10:38</small>
+              </div>
+              <div class="msg out">
+                Karibu! Lipia hapa:
+                <span class="lnk">bongopay.net/link/neema-kitenge</span
+                ><small>10:39</small>
+              </div>
+              <div class="msg in">Nimelipa, asante.<small>10:42</small></div>
+              <div class="msg out">
+                Nimeipata. Tutakuletea kesho asubuhi.<small>10:43</small>
+              </div>
+            </div>
+            <a class="more" href="https://bongopay.net/register"
+              >Make your first link <i class="bi bi-arrow-right"></i
+            ></a>
+          </div>
+          <div class="use">
+            <h3><i class="bi bi-code-slash"></i> The API</h3>
+            <p>
+              For shops, apps and systems that need payments built in. One
+              request sends the PIN prompt. We call your webhook when the
+              payment is paid or fails, signed so you can check it came from us.
+            </p>
+            <pre
+              class="curl"
+            ><span class="c"># Ask the customer to pay TZS 50,000</span>
+curl -X POST https://bongopay.net/api/v1/pay-via-mobile \
+  -H "Authorization: Bearer sk_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Asha Mwakyusa",
+    "phone": "255754312412",
+    "amount": 50000,
+    "transaction_id": "ORDER-1042"
+  }'
+
+<span class="c"># Response</span>
+{ "payment_reference": "BPY-20261001-7F3C21A9",
+  "status": "pending" }</pre>
+            <a class="more" href="https://bongopay.net/developers/docs"
+              >Read the API docs <i class="bi bi-arrow-right"></i
+            ></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec wrap" id="pricing">
+        <h2>
+          You pay 6% when a payment goes through, and nothing when it doesn't.
+        </h2>
+        <p class="sec-intro">
+          There's no monthly fee and no setup fee. If a customer cancels or
+          their payment fails, it costs you nothing. Withdrawals are free.
+        </p>
+        <div class="price">
+          <div>
+            <div class="tbl-card">
+              <table class="fee">
+                <thead>
+                  <tr>
+                    <th>Customer pays</th>
+                    <th>Fee (6%)</th>
+                    <th>You receive</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>TZS 5,000</td>
+                    <td>300</td>
+                    <td class="recv">4,700</td>
+                  </tr>
+                  <tr>
+                    <td>TZS 20,000</td>
+                    <td>1,200</td>
+                    <td class="recv">18,800</td>
+                  </tr>
+                  <tr>
+                    <td>TZS 50,000</td>
+                    <td>3,000</td>
+                    <td class="recv">47,000</td>
+                  </tr>
+                  <tr>
+                    <td>TZS 250,000</td>
+                    <td>15,000</td>
+                    <td class="recv">235,000</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="tbl-note">
+              The fee is taken automatically, so the balance you see is what you
+              can withdraw.
+            </p>
+          </div>
+          <div class="need">
+            <h3>What you need to open an account</h3>
+            <ul class="ilist">
+              <li><i class="bi bi-person-vcard"></i> Your NIDA number</li>
+              <li>
+                <i class="bi bi-file-earmark-text"></i> Your TIN or business
+                licence
+              </li>
+              <li>
+                <i class="bi bi-envelope"></i> A phone number and an email
+                address
+              </li>
+              <li>
+                <i class="bi bi-bank"></i> Where withdrawals should go: mobile
+                money, or CRDB, NMB, NBC, Equity Bank and Selcom Bank
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec wrap" id="who">
+        <h2>Who handles your money</h2>
+        <div class="who">
+          <div>
+            <p>
+              BongoPay is software made by Bongofey. The payments themselves are
+              processed and settled by Selcom, a licensed payment service
+              provider in Tanzania. We never ask for your Selcom details, and
+              you never need to deal with them.
+            </p>
+            <p>
+              Every shilling that comes in or goes out is recorded against your
+              account, and every payment has a reference number like
+              <span class="mono">BPY-20261001-7F3C21A9</span>. If something
+              looks wrong, send us that number and we can trace it.
+            </p>
+          </div>
+          <div class="cbox">
+            <div>
+              <i class="bi bi-envelope"></i>
+              <p><span>Email</span><strong></strong></p>
+            </div>
+            <div>
+              <i class="bi bi-clock"></i>
+              <p>
+                <span>Hours</span
+                ><strong>Monday to Friday, 8:00 to 18:00 EAT</strong>
+              </p>
+            </div>
+            <div>
+              <i class="bi bi-shield-check"></i>
+              <p><span>Payments settled by</span><strong>Selcom</strong></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec wrap" id="faq">
+        <h2>Common questions</h2>
+        <div class="qa-grid">
+          <div>
+            <h3>How long does it take to get approved?</h3>
+            <p>
+              We review new accounts before they can take live payments. It
+              depends on how complete your documents are, so upload your NIDA
+              and TIN when you sign up.
+            </p>
+          </div>
+          <div>
+            <h3>What if my customer doesn't get the PIN prompt?</h3>
+            <p>
+              Ask them to check the number and that their phone has signal, then
+              try again from the same link. You only pay the fee on payments
+              that go through.
+            </p>
+          </div>
+          <div>
+            <h3>How do I get my money out?</h3>
+            <p>
+              Request a withdrawal from your dashboard to mobile money or your
+              bank. We check each one before sending it, and there's no
+              withdrawal fee.
+            </p>
+          </div>
+          <div>
+            <h3>Can I connect my own website or app?</h3>
+            <p>
+              Yes. Create an API key in your dashboard and follow the developer
+              docs. Payments and webhooks work the same way as payment links.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <div class="wrap">
+          <div class="foot-top">
+            <a class="logo" href="https://bongopay.net/"
+              ><span class="logo-mark"></span
+              ><span class="logo-word">Bongo<b>Pay</b></span></a
+            >
+            <div class="foot-links">
+              <a href="https://bongopay.net/pricing">Pricing</a
+              ><a href="https://bongopay.net/developers/docs">API docs</a
+              ><a href="https://bongopay.net/about">About</a
+              ><a href="https://bongopay.net/contact">Contact</a
+              ><a href="https://bongopay.net/terms">Terms</a
+              ><a href="https://bongopay.net/privacy">Privacy</a
+              ><a href="https://bongopay.net/disclaimer">Disclaimer</a
+              ><a href="https://bongopay.net/prohibited-businesses"
+                >Prohibited businesses</a
+              >
+            </div>
+          </div>
+          <div class="foot-bottom">
+            <span
+              >© 2026 Bongofey. BongoPay is a technology service, not a bank.
+              Payments are processed and settled by Selcom.</span
+            ><span></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://bongopay.net/assets/js/app.js?v=1.2.84"></script>
+  </body>
+</html>
