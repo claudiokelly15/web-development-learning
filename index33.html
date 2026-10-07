@@ -549,57 +549,64 @@
           transition: none !important;
         }
       }
+      /* XLipa brand refresh */
+      :root { --navy: #06142f; --teal: #08c9d8; }
+      header { background: var(--navy); box-shadow: 0 8px 28px rgba(5,18,43,.18); }
+      .nav { min-height: 88px; }
+      .logo { flex: none; }
+      .logo svg { width: 258px; height: 72px; display: block; }
+      nav { margin-left: auto; gap: clamp(24px,4vw,58px); }
+      nav a { color: #e8f3ff; font-weight: 550; }
+      .nav-actions { margin-left: clamp(20px,4vw,60px); gap: 12px; }
+      .nav-actions .signin { color: #e8f3ff; border-color: rgba(226,241,255,.34); }
+      .nav-actions .create { color: var(--navy); background: linear-gradient(135deg,#2de3df,#0e91f2); }
+      .burger i { background: #eff8ff; }
+      .hero { padding: clamp(40px,7vh,76px) clamp(28px,5vw,64px); margin-top: 24px; border-radius: 28px; color: #fff; background: radial-gradient(ellipse at 12% 2%,rgba(9,84,210,.42),transparent 42%),radial-gradient(ellipse at 85% 95%,rgba(0,200,226,.18),transparent 36%),linear-gradient(125deg,#06142f,#071b3d 58%,#06142f); box-shadow: 0 22px 55px rgba(7,27,62,.16); }
+      .eyebrow { color: #b7c8e1; }
+      .eyebrow:before { background: var(--teal); }
+      h1 { color: #fff; }
+      .hero .sub { color: #c4d3e8; }
+      .btn.primary { background: linear-gradient(135deg,#20d8d1,#078cf1); box-shadow: 0 8px 20px rgba(0,170,220,.26); }
+      .btn.primary:hover { filter: brightness(1.08); }
+      .btn.ghost { color: #fff; background: rgba(255,255,255,.06); border-color: rgba(226,241,255,.4); }
+      .btn.ghost:hover { color: #7de9f0; }
+      .screen { background: radial-gradient(120% 55% at 30% 18%,rgba(0,190,230,.55),transparent 70%),linear-gradient(165deg,#06356a 0%,#0878bd 22%,#0753a1 46%,#082b63 72%,#061638 100%); }
+      .panel { margin-top: 28px; margin-bottom: 42px; background: #fff; border: 1px solid #e4ebf4; border-radius: 20px; box-shadow: 0 12px 36px rgba(9,31,67,.07); }
+      .panel h4 { color: #53647d; font-weight: 650; }
+      .card { gap: 10px; font-size: 14px; font-weight: 650; color: #132746; }
+      .selbox { background: #fff; border: 1px solid #e4ebf4; border-radius: 14px; }
+      .selbox svg { display: none; }
+      .selbox::after { content: "selcom"; color: #10294c; font-size: 24px; font-weight: 800; letter-spacing: -1px; }
+      .card .lg { display: none; }
+      .card { justify-content: center; }
+      .card:nth-child(1) span:last-child { color: #399447; font-weight: 800; }
+      .card:nth-child(2) span:last-child { color: #e32636; font-weight: 800; }
+      .card:nth-child(3) span:last-child { color: #10264c; font-weight: 800; }
+      .card:nth-child(4) span:last-child { color: #75358d; font-weight: 800; }
+      footer { background: var(--navy); color: #b9c9df; }
+      .footer-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; font-size: 13px; }
+      .footer-links { display: flex; gap: 24px; }
+      .footer-links a:hover { color: #fff; }
+      @media (max-width: 960px) { .nav { min-height: 78px; } .logo svg { width: 210px; height: 62px; } nav { gap: 22px; } nav ul { gap: 18px; } .nav-actions { margin-left: 22px; } }
+      @media (max-width: 720px) {
+        .logo svg { width: 205px; height: 60px; }
+        nav { top: 78px; margin-left: 0; background: #081a38; }
+        .hero { padding: 34px 26px; margin-top: 16px; }
+        .footer-inner { flex-direction: column; justify-content: center; padding: 22px 0; text-align: center; }
+        .footer-links { flex-wrap: wrap; justify-content: center; gap: 14px 20px; }
+      }
     </style>
   </head>
   <body>
     <header>
       <div class="wrap nav">
         <a href="#" class="logo" aria-label="XLipa">
-          <svg
-            class="logo-mark"
-            viewBox="0 0 64 64"
-            role="img"
-            aria-label="XLipa logo"
-          >
-            <defs>
-              <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
-                <stop stop-color="#16d1c5" />
-                <stop offset=".55" stop-color="#087fc9" />
-                <stop offset="1" stop-color="#133d9c" />
-              </linearGradient>
-              <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-                <stop stop-color="#fff0b6" />
-                <stop offset="1" stop-color="#b88837" />
-              </linearGradient>
-            </defs>
-            <rect
-              x="2.5"
-              y="2.5"
-              width="59"
-              height="59"
-              rx="17"
-              fill="#071a35"
-              stroke="url(#edge)"
-              stroke-width="3"
-            />
-            <rect
-              x="7"
-              y="7"
-              width="50"
-              height="50"
-              rx="13"
-              fill="url(#tile)"
-            />
-            <path
-              d="M17 17h9l21 30h-9L17 17Zm30 0h-9L17 47h9l21-30Z"
-              fill="none"
-              stroke="url(#edge)"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="4"
-            />
+          <svg viewBox="0 0 420 100" role="img" aria-label="XLipa">
+            <defs><linearGradient id="xlipa-x" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#0875ff"/><stop offset=".52" stop-color="#08d7e8"/><stop offset="1" stop-color="#00bce9"/></linearGradient></defs>
+            <path d="m13 18 17-8 34 32 29-31 17 8-36 39 35 32-18 7-35-32-29 32-18-8 37-39z" fill="url(#xlipa-x)"/>
+            <path d="M14 77C2 66 22 41 58 24c28-13 57-17 69-9 13 9-9 31-33 47" fill="none" stroke="url(#xlipa-x)" stroke-width="6" stroke-linecap="round"/>
+            <text x="145" y="74" fill="#f4f8ff" font-family="Inter,Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="-5">XLipa</text>
           </svg>
-          <span class="l">X<span>Lipa</span></span>
         </a>
         <button
           class="burger"
@@ -808,7 +815,7 @@
                     yas
                   </text>
                 </svg></span
-              ><span>Mix by Yas</span>
+              ><span>Mixx by Yas</span>
             </div>
             <div class="card">
               <span class="lg">
@@ -869,5 +876,11 @@
         </div>
       </section>
     </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <p>© 2026 XLipa. Secure payments, made simple.</p>
+        <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div>
+      </div>
+    </footer>
   </body>
 </html>
