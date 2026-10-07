@@ -1,640 +1,362 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sw">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>XLipa | Get Paid Anywhere, Anytime</title>
-https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XLipa | Get Paid Anywhere, Anytime</title>
+    <!-- Kuunganisha Fonti ya Inter kutoka Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-
-/* ==================================================
-   RESET
-================================================== */
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:'Inter',sans-serif;
-    background:
-    linear-gradient(
-        90deg,
-        #eef2f7 0%,
-        #f8fafc 50%,
-        #eef2f7 100%
-    );
-
-    color:#0f172a;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-}
-
-.container{
-    max-width:1400px;
-    margin:auto;
-    padding:0 50px;
-}
-
-/* ==================================================
-   NAVBAR
-================================================== */
-
-header{
-    padding:28px 0;
-}
-
-.navbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.logo{
-    font-size:58px;
-    font-weight:800;
-    text-decoration:none;
-    color:#041b47;
-    display:flex;
-    align-items:center;
-    line-height:1;
-    letter-spacing:-2px;
-}
-
-.logo .gold{
-    background:linear-gradient(
-        135deg,
-        #f9e08e,
-        #d4af37,
-        #b8860b,
-        #f5d76b
-    );
-
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
-}
-
-.nav-links{
-    display:flex;
-    list-style:none;
-    gap:55px;
-}
-
-.nav-links a{
-    text-decoration:none;
-    color:#0f1f4a;
-    font-size:16px;
-    font-weight:500;
-    transition:.25s;
-}
-
-.nav-links a:hover{
-    color:#06b6d4;
-}
-
-/* ==================================================
-   HERO SECTION
-================================================== */
-
-.hero{
-    min-height:700px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:60px;
-    padding:20px 0 90px;
-}
-
-/* LEFT */
-
-.hero-left{
-    max-width:700px;
-}
-
-.tagline{
-    display:flex;
-    align-items:center;
-    gap:14px;
-
-    margin-bottom:25px;
-}
-
-.tagline-line{
-    width:42px;
-    height:3px;
-    border-radius:3px;
-    background:#d4af37;
-}
-
-.tagline span{
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:3px;
-    color:#64748b;
-    font-weight:600;
-}
-
-.hero-left h1{
-    font-size:82px;
-    line-height:.96;
-    color:#041b47;
-    font-weight:800;
-    letter-spacing:-4px;
-    margin-bottom:26px;
-}
-
-.hero-left p{
-    font-size:20px;
-    line-height:1.65;
-    color:#5b6780;
-    max-width:650px;
-    margin-bottom:40px;
-}
-
-/* BUTTONS */
-
-.cta-buttons{
-    display:flex;
-    gap:18px;
-}
-
-.btn{
-    min-width:260px;
-    height:66px;
-
-    border-radius:12px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    text-decoration:none;
-    font-size:17px;
-    font-weight:600;
-
-    transition:.3s ease;
-}
-
-.btn-primary{
-    background:#06b6d4;
-    color:white;
-
-    box-shadow:
-    0 12px 25px rgba(6,182,212,.22);
-}
-
-.btn-primary:hover{
-    transform:translateY(-2px);
-}
-
-.btn-secondary{
-    background:#fff;
-    color:#041b47;
-    border:1px solid #cfd8e3;
-}
-
-.btn-secondary:hover{
-    border-color:#94a3b8;
-}
-
-/* ==================================================
-   PHONE
-================================================== */
-
-.hero-right{
-    flex-shrink:0;
-}
-
-.iphone{
-    width:370px;
-    height:720px;
-
-    border-radius:52px;
-    background:#0f1115;
-
-    padding:10px;
-
-    position:relative;
-
-    border:2px solid #444;
-
-    box-shadow:
-        0 45px 90px rgba(15,23,42,.22),
-        0 15px 35px rgba(15,23,42,.15);
-}
-
-.dynamic-island{
-    position:absolute;
-    top:16px;
-    left:50%;
-    transform:translateX(-50%);
-
-    width:110px;
-    height:30px;
-
-    border-radius:20px;
-    background:black;
-
-    z-index:5;
-}
-
-.screen{
-    width:100%;
-    height:100%;
-
-    border-radius:42px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    background:
-    radial-gradient(
-        circle at top right,
-        #ff2238 0%,
-        #d41227 30%,
-        #930010 70%,
-        #69000b 100%
-    );
-}
-
-.mpesa-modal{
-    width:82%;
-    background:white;
-
-    border-radius:18px;
-
-    overflow:hidden;
-
-    box-shadow:
-    0 25px 45px rgba(0,0,0,.25);
-}
-
-.modal-header{
-    padding:26px 20px 12px;
-    text-align:center;
-}
-
-.modal-header h3{
-    font-size:23px;
-    color:#111827;
-}
-
-.modal-body{
-    padding:0 22px 25px;
-    text-align:center;
-}
-
-.modal-body p{
-    font-size:15px;
-    color:#334155;
-    line-height:1.5;
-}
-
-.pin-box{
-    margin-top:16px;
-    border:1px solid #e2e8f0;
-
-    border-radius:10px;
-
-    padding:14px;
-
-    font-size:30px;
-    letter-spacing:8px;
-}
-
-.modal-footer{
-    display:flex;
-    border-top:1px solid #e5e7eb;
-}
-
-.modal-footer button{
-    flex:1;
-    height:58px;
-
-    border:none;
-    background:white;
-
-    font-size:16px;
-    font-weight:600;
-
-    color:#007aff;
-}
-
-.modal-footer button:first-child{
-    border-right:1px solid #e5e7eb;
-}
-
-/* ==================================================
-   TRUST SECTION
-================================================== */
-
-.trust-section{
-    padding-bottom:80px;
-}
-
-.trust-wrapper{
-
-    background:white;
-
-    border-radius:22px;
-
-    padding:38px 52px;
-
-    border:1px solid #eef2f7;
-
-    box-shadow:
-    0 5px 35px rgba(15,23,42,.04);
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.label{
-    font-size:16px;
-    font-weight:700;
-    color:#0f1f4a;
-    margin-bottom:22px;
-}
-
-.brand-row{
-    display:flex;
-    gap:18px;
-}
-
-.brand-card{
-    height:54px;
-    padding:12px 18px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:12px;
-
-    border:1px solid #e5eaf2;
-
-    background:white;
-}
-
-.brand-card img{
-    height:24px;
-    object-fit:contain;
-}
-
-.divider{
-    width:1px;
-    height:120px;
-    background:#dbe3ee;
-}
-
-.selcom{
-    min-width:280px;
-    text-align:center;
-}
-
-.selcom .label{
-    margin-bottom:18px;
-}
-
-.selcom-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-
-    height:44px;
-    padding:0 28px;
-
-    background:#ea3333;
-
-    color:white;
-
-    font-size:18px;
-    font-weight:800;
-
-    border-radius:8px;
-
-    text-transform:lowercase;
-}
-
-/* ==================================================
-   RESPONSIVE
-================================================== */
-
-@media(max-width:1100px){
-
-.hero{
-    flex-direction:column;
-    text-align:center;
-}
-
-.tagline{
-    justify-content:center;
-}
-
-.cta-buttons{
-    justify-content:center;
-}
-
-.hero-left h1{
-    font-size:60px;
-}
-
-.trust-wrapper{
-    flex-direction:column;
-    gap:30px;
-}
-
-.divider{
-    display:none;
-}
-
-.brand-row{
-    flex-wrap:wrap;
-    justify-content:center;
-}
-
-}
-
-@media(max-width:768px){
-
-.container{
-    padding:0 20px;
-}
-
-.logo{
-    font-size:44px;
-}
-
-.nav-links{
-    display:none;
-}
-
-.hero-left h1{
-    font-size:48px;
-}
-
-.hero-left p{
-    font-size:17px;
-}
-
-.cta-buttons{
-    flex-direction:column;
-}
-
-.btn{
-    width:100%;
-    min-width:unset;
-}
-
-.iphone{
-    transform:scale(.85);
-}
-
-}
-
-</style>
-</head>
-
-<body>
-
-<header>
-    <div class="container">
-        <div class="navbar">
-        #
-        <span class="gold">X</span>Lipa
-            </a>
-            <ul class="nav-links">
-                <li>#Pricing</a></li>
-                <li>#Developers</a></li>
-                <li>#Contacts</a></li>
-                <li>#About</a></li>
-            </ul>
-
-        </div>
-    </div>
-</header>
-
-<section class="hero container">
-<div class="hero-left">
-
-<div class="tagline">
-            <div class="tagline-line"></div>
-            <span>SIMPLE PAYMENTS. BRIGHTER OPPORTUNITIES.</span>
-        </div>
-        <h1>
-        Get Paid Anywhere,
-            Anytime. Easy and
-            Instant.
-        </h1>
-        <p>
-            Collect payments with a single link shared on any social
-            network, or integrate XLipa directly into your website
-            and apps. Customers confirm with their secure mobile
-            money PIN, and funds appear instantly in your XLipa
-            Balance, ready for withdrawal.
-        </p>
-        <div class="cta-buttons">
-        #Create a free account
-                </a>
-                #See how it works
-            </a>
-            </div>
-            </div>
-            <div class="hero-right">
-            <div class="iphone">
-            <div class="dynamic-island"></div>
-
-<div class="screen">
-
-  <div class="mpesa-modal">
-
-  <div class="modal-header">
-                        <h3>M-Pesa</h3>
-                    </div>
-
-<div class="modal-body">
-<p>
-                            Lipa TSh 10,000 kwa MANKA SHOP.<br>
-                            Weka PIN kuthibitisha:
-                        </p>
-                        <div class="pin-box">
-                            ••••
-                        </div>
-                        </div>
-
-<div class="modal-footer">
-                        <button>Ghairi</button>
-                        <button>Tuma</button>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<section class="trust-section">
-    <div class="container">
-
-<div class="trust-wrapper">
-
-  <div class="partners">
-
-  <div class="label">
-                    Your customers pay with
-                </div>
-
-<div class="brand-row">
-
-<div class="brand-card">
-                        mpesa-logo.png
-                    </div>
-
-  <div class="brand-card">
-                        airtel-money.png
-                    </div>
-
-<div class="brand-card">
-                        mix-yas.png
-                    </div>
-
-  <div class="brand-card">
-                        halopesa.png
-                    </div>
-
-</div>
-
-  </div>
-
-  <div class="divider"></div>
-
-<div class="selcom">
-
-  <div class="label">
-                    Payment processed by Selcom
-                </div>
-
-  <div class="selcom-badge">
-                    selcom
-                </div>
-
-</div>
-
-  </div>
-
-  </div>
-</section>
-
-</body>
-</html>
+        /* ==========================================================================
+           1. RESET & BASE STYLES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+body {
+            background-color: #f8fafc;
+            color: #0f172a;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+.container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 40px;
+            }
+            /* ==========================================================================
+           2. NAVIGATION BAR (Menu ya Juu)
+           ========================================================================== */
+           header {
+            background-color: transparent;
+            padding: 30px 0;
+        }
+.nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+.logo {
+            font-size: 32px;
+            font-weight: 800;
+            color: #061e43;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span.gold-x {
+            color: #d4af37; /* Rangi ya Gold */
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #334155;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #061e43;
+        }
+
+        /* ==========================================================================
+           3. HERO SECTION (Mpangilio wa Katikati)
+           ========================================================================== */
+        .hero {
+            padding: 40px 0 80px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+            flex: 1;
+        }
+
+        .hero-left {
+            flex: 1.2;
+            max-width: 620px;
+        }
+
+        .tagline-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .tagline-line {
+            width: 24px;
+            height: 3px;
+            background-color: #d4af37;
+            border-radius: 2px;
+        }
+
+        .tagline-text {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .hero-left h1 {
+            font-size: 54px;
+            line-height: 1.1;
+            color: #061e43;
+            margin-bottom: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .hero-left p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #475569;
+            margin-bottom: 40px;
+        }
+
+        /* Vitufe vya Picha */
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-primary {
+            background-color: #00a8cc;
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 168, 204, 0.15);
+        }
+
+        .btn-primary:hover {
+            background-color: #0093b3;
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: #061e43;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-secondary:hover {
+            background-color: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        /* Hero Right Side: Simu Moja */
+        .hero-right {
+            flex: 0.8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .iphone-wrapper {
+            width: 310px;
+            height: 620px;
+            background-color: #1e1e1e;
+            border-radius: 44px;
+            padding: 12px;
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.15);
+            border: 4px solid #475569;
+            position: relative;
+        }
+
+        .dynamic-island {
+            width: 90px;
+            height: 25px;
+            background-color: #000000;
+            border-radius: 15px;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .iphone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #b91c1c 0%, #450a0a 100%);
+            border-radius: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .ussd-modal {
+            background-color: #ffffff;
+            color: #000000;
+            width: 100%;
+            padding: 24px 16px;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .ussd-header {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .ussd-message {
+            font-size: 13px;
+            color: #334155;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .ussd-dots {
+            font-size: 24px;
+            letter-spacing: 8px;
+            margin-bottom: 24px;
+            color: #0f172a;
+        }
+
+        .ussd-buttons {
+            display: flex;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 14px;
+        }
+
+        .ussd-btn {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 600;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .ussd-cancel { color: #007aff; border-right: 1px solid #e2e8f0; }
+        .ussd-send { color: #007aff; font-weight: 700; }
+
+        /* ==========================================================================
+           4. TRUST FOOTER SECTION
+           ========================================================================== */
+        .trust-section {
+            background-color: #ffffff;
+            padding: 30px 0;
+            border-top: 1px solid #f1f5f9;
+            width: 100%;
+        }
+
+        .trust-layout {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .text-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+
+        .partners-side {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brands-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .brand-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 6px 16px;
+            height: 40px;
+            min-width: 110px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        /* Muundo wa Nembo Halisi za Kimaandishi */
+        .mpesa-text-logo { color: #22c55e; }
+        .mpesa-text-logo span { color: #ef4444; }
+        .airtel-text-logo { color: #e11d48; }
+        .yas-text-logo { color: #1e3a8a; }
+        .yas-text-logo span { color: #eab308; }
+        
+        /* HaloPesa */
+        .halopesa-badge {
+            background-color: #ff6b00;
+            border: none;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: -0.3px;
+        }
+
+        .divider-line {
+            width: 1px;
+            height: 50px;
+            background-color: #e2e8f0;
+            margin: 0 40px;
+        }
+
+        .selcom-side {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex-grow: 1;
+        }
+
+        .selcom-badge-red {
+            background-color: #d92d20;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            padding: 6px 20px;
+            border-radius: 4px;
+            text-transform: lowercase;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 32px;
+            box-shadow: 0 2px 4px rgba(217, 45, 32, 0.15);
+        }
+
+        /* Responsive Layout ya Simu */
+        @media (max-width: 968px) {
