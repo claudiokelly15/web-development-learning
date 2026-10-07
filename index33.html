@@ -12,11 +12,13 @@
     />
     <style>
       :root {
-        --bg: #f6f8fb;
-        --ink: #0b1220;
-        --muted: #5b6478;
-        --teal: #06b0cc;
-        --gold: #e0a21b;
+        --bg: #f5f8fc;
+        --ink: #0a1d39;
+        --muted: #596981;
+        --teal: #08b8c5;
+        --navy: #071a35;
+        --gold: #c99d4b;
+        --red: #d9343c;
         --pad: clamp(20px, 4vw, 56px);
       }
       * {
@@ -52,13 +54,13 @@
 
       /* Header */
       header {
-        background: #fbfcfe;
+        background: rgba(255, 255, 255, 0.96);
         box-shadow: 0 2px 14px rgba(20, 30, 60, 0.05);
         position: relative;
         z-index: 5;
       }
       .nav {
-        height: 72px;
+        min-height: 76px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -67,32 +69,23 @@
         display: flex;
         align-items: center;
         font-weight: 800;
-        font-size: 40px;
-        letter-spacing: -2.2px;
+        gap: 10px;
+        font-size: 30px;
+        letter-spacing: -1.5px;
         line-height: 1;
       }
-      .logo .x {
-        font-size: 42px;
-        background: linear-gradient(
-          135deg,
-          #f3d27a 0%,
-          #d19a1e 45%,
-          #8a5a0a 100%
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        margin-right: -1px;
-        transform: skewX(-6deg);
-      }
+      .logo-mark { width: 42px; height: 42px; flex: none; filter: drop-shadow(0 3px 5px rgba(7,26,53,.18)); }
       .logo .l {
-        color: #0d1424;
+        color: var(--navy);
       }
+      .logo .l span { color: var(--gold); }
       nav ul {
         display: flex;
-        gap: 36px;
+        align-items: center;
+        gap: 28px;
         list-style: none;
       }
+      nav { display: flex; align-items: center; gap: 28px; }
       nav a {
         font-size: 16px;
         color: #111827;
@@ -101,6 +94,12 @@
       nav a:hover {
         color: var(--teal);
       }
+      .nav-actions { display: flex; align-items: center; gap: 10px; }
+      .nav-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 0 17px; border-radius: 9px; font-size: 14px; font-weight: 700; transition: .2s; }
+      .nav-actions .signin { color: var(--navy); border: 1px solid #d9e1ec; }
+      .nav-actions .signin:hover { border-color: var(--teal); color: #078e9b; }
+      .nav-actions .create { color: #fff; background: var(--navy); box-shadow: 0 5px 14px rgba(7,26,53,.16); }
+      .nav-actions .create:hover { background: #123563; }
       .burger {
         display: none;
         background: none;
@@ -179,16 +178,16 @@
         transition: 0.2s;
       }
       .btn.primary {
-        background: var(--teal);
+        background: var(--navy);
         color: #fff;
-        box-shadow: 0 6px 16px rgba(6, 176, 204, 0.25);
+        box-shadow: 0 6px 16px rgba(7, 26, 53, 0.2);
       }
       .btn.primary:hover {
-        background: #0597b0;
+        background: #123563;
       }
       .btn.ghost {
         background: #fff;
-        border: 1.5px solid #b8c4de;
+        border: 1.5px solid #cbd6e4;
       }
       .btn.ghost:hover {
         border-color: var(--teal);
@@ -203,7 +202,7 @@
       .phone {
         position: relative;
         width: 280px;
-        height: 520px;
+        height: 470px;
         border-radius: 50px;
         background: #1a1b22;
         padding: 10px;
@@ -454,7 +453,7 @@
         }
         nav {
           position: absolute;
-          top: 72px;
+          top: 76px;
           left: 0;
           right: 0;
           background: #fbfcfe;
@@ -464,22 +463,18 @@
         nav.open {
           display: block;
         }
-        nav ul {
-          flex-direction: column;
-          gap: 0;
-          padding: 8px var(--pad) 14px;
-        }
+        nav ul { padding: 8px var(--pad) 4px; }
+        nav ul { flex-direction: column; align-items: stretch; gap: 0; }
         nav a {
           display: block;
           padding: 12px 0;
           font-size: 17px;
         }
-        .logo {
-          font-size: 34px;
-        }
-        .logo .x {
-          font-size: 36px;
-        }
+        nav { gap: 0; }
+        .nav-actions { display: grid; grid-template-columns: 1fr 1fr; padding: 8px var(--pad) 18px; }
+        .nav-actions a { width: 100%; }
+        .logo { font-size: 28px; }
+        .logo-mark { width: 38px; height: 38px; }
       }
       @media (max-width: 560px) {
         .btn {
@@ -503,9 +498,18 @@
   <body>
     <header>
       <div class="wrap nav">
-        <a href="#" class="logo" aria-label="XLipa"
-          ><span class="x">X</span><span class="l">Lipa</span></a
-        >
+        <a href="#" class="logo" aria-label="XLipa">
+          <svg class="logo-mark" viewBox="0 0 64 64" role="img" aria-label="XLipa logo">
+            <defs>
+              <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#16d1c5"/><stop offset=".55" stop-color="#087fc9"/><stop offset="1" stop-color="#133d9c"/></linearGradient>
+              <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0b6"/><stop offset="1" stop-color="#b88837"/></linearGradient>
+            </defs>
+            <rect x="2.5" y="2.5" width="59" height="59" rx="17" fill="#071a35" stroke="url(#edge)" stroke-width="3"/>
+            <rect x="7" y="7" width="50" height="50" rx="13" fill="url(#tile)"/>
+            <path d="M17 17h9l21 30h-9L17 17Zm30 0h-9L17 47h9l21-30Z" fill="none" stroke="url(#edge)" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+          </svg>
+          <span class="l">X<span>Lipa</span></span>
+        </a>
         <button
           class="burger"
           aria-label="Menu"
@@ -525,6 +529,10 @@
             <li><a href="#">Contacts</a></li>
             <li><a href="#">About</a></li>
           </ul>
+          <div class="nav-actions">
+            <a class="signin" href="#signin">Sign in</a>
+            <a class="create" href="#create-account">Create account</a>
+          </div>
         </nav>
       </div>
     </header>
