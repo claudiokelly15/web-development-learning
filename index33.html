@@ -621,11 +621,12 @@
       .panel h4 { font-size: 17px; font-weight: 500; color: #74768d; margin-bottom: 14px; }
       .cards { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
       .card { min-width: 0; height: 82px; gap: 12px; padding: 10px 14px; border: 1.5px solid #e1e3eb; border-radius: 17px; font-size: clamp(14px,1.1vw,17px); font-weight: 600; white-space: normal; color: #15182b; box-shadow: 0 3px 10px rgba(11,28,58,.035); }
-      .card .lg { display: flex; flex: none; width: 54px; align-items: center; }
-      .card .lg svg { width: 54px; height: 52px; max-height: 52px; object-fit: contain; }
+      .card .lg { display: flex; flex: none; width: 50px; align-items: center; }
+      .provider-logo { display: block; width: 50px; max-width: 100%; max-height: 48px; height: auto; object-fit: contain; }
       .card:nth-child(n) span:last-child { color: #15182b; font-weight: 600; }
-      .selbox { width: 218px; height: 82px; background: #ed0033; border: 0; border-radius: 18px; }
-      .selbox svg { display: block; width: 120px; }
+      .selbox { width: 168px; height: 86px; background: transparent; border: 0; border-radius: 15px; }
+      .selbox svg { display: none; }
+      .selcom-logo { display: block; width: 168px; max-width: 100%; height: auto; border-radius: 15px; }
       .selbox::after { content: none; }
       @media (max-width: 1180px) {
         .panel { grid-template-columns: 1fr; gap: 20px; }
@@ -636,8 +637,8 @@
         .panel { padding: 20px 16px; }
         .cards { grid-template-columns: 1fr; gap: 12px; }
         .card { height: 76px; font-size: 17px; }
-        .selbox { width: 190px; height: 76px; }
-        .selbox svg { width: 112px; }
+        .selbox { width: 150px; height: 76px; }
+        .selcom-logo { width: 150px; }
       }
     </style>
   </head>
@@ -771,152 +772,23 @@
           <h4>Your customers pay with</h4>
           <div class="cards">
             <div class="card">
-              <span class="lg">
-                <svg width="58" viewBox="0 0 140 42" aria-label="M-PESA">
-                  <rect
-                    x="46"
-                    y="0"
-                    width="14"
-                    height="42"
-                    rx="5"
-                    fill="#d5e3d2"
-                  />
-                  <text
-                    x="0"
-                    y="32"
-                    font-family="Arial Black,Arial,sans-serif"
-                    font-weight="900"
-                    font-size="36"
-                    fill="#4cae4f"
-                    textLength="34"
-                    lengthAdjust="spacingAndGlyphs"
-                  >
-                    M
-                  </text>
-                  <text
-                    x="64"
-                    y="32"
-                    font-family="Arial Black,Arial,sans-serif"
-                    font-weight="900"
-                    font-size="36"
-                    fill="#4cae4f"
-                    textLength="76"
-                    lengthAdjust="spacingAndGlyphs"
-                  >
-                    PESA
-                  </text>
-                  <path
-                    d="M38 14 C46 6 58 6 66 11 C58 20 46 20 38 14 Z"
-                    fill="#e52b2b"
-                    transform="rotate(-10 52 14)"
-                  /></svg></span
-              ><span>M-Pesa</span>
+              <span class="lg"><img class="provider-logo" src="assets/payment-logos/mpesa.png" alt="M-Pesa logo"></span><span>M-Pesa</span>
             </div>
             <div class="card">
-              <span class="lg">
-                <svg width="34" viewBox="0 0 76 78" aria-label="airtel">
-                  <path
-                    d="M44 6 C30 0 20 12 28 22 C34 29 46 27 48 18 C49 12 42 10 38 14 C35 17 38 21 42 20"
-                    fill="none"
-                    stroke="#e0261f"
-                    stroke-width="7"
-                    stroke-linecap="round"
-                  />
-                  <text
-                    x="38"
-                    y="73"
-                    text-anchor="middle"
-                    font-family="Inter,Arial,sans-serif"
-                    font-weight="600"
-                    font-size="27"
-                    fill="#e0261f"
-                    textLength="76"
-                    lengthAdjust="spacingAndGlyphs"
-                  >
-                    airtel
-                  </text>
-                </svg></span
-              ><span>Airtel Money</span>
+              <span class="lg"><img class="provider-logo" src="assets/payment-logos/airtel.png" alt="Airtel logo"></span><span>Airtel Money</span>
             </div>
             <div class="card">
-              <span class="lg">
-                <svg width="40" viewBox="0 0 90 80" aria-label="Yas">
-                  <path
-                    d="M6 20 C6 8 20 4 38 6 C62 9 84 18 86 32 C88 50 66 72 42 76 C20 80 5 70 5 52 Z"
-                    fill="#1c2c72"
-                  />
-                  <text
-                    x="46"
-                    y="50"
-                    text-anchor="middle"
-                    transform="rotate(-6 46 46)"
-                    font-family="Inter,Arial,sans-serif"
-                    font-weight="900"
-                    font-style="italic"
-                    font-size="34"
-                    fill="#f6d33b"
-                  >
-                    yas
-                  </text>
-                </svg></span
-              ><span>Mixx by Yas</span>
+              <span class="lg"><img class="provider-logo" src="assets/payment-logos/mixx-by-yas.png" alt="Yas logo"></span><span>Mixx by Yas</span>
             </div>
             <div class="card">
-              <span class="lg">
-                <svg width="58" viewBox="0 0 140 34" aria-label="halotel">
-                  <circle cx="8" cy="20" r="6" fill="#e0562a" />
-                  <path
-                    d="M12 8 C22 10 22 26 10 30"
-                    fill="none"
-                    stroke="#e0562a"
-                    stroke-width="4"
-                    stroke-linecap="round"
-                  />
-                  <text
-                    x="28"
-                    y="27"
-                    font-family="Inter,Arial,sans-serif"
-                    font-weight="500"
-                    font-size="29"
-                    fill="#e0562a"
-                    textLength="112"
-                    lengthAdjust="spacingAndGlyphs"
-                  >
-                    halotel
-                  </text>
-                </svg></span
-              ><span>HaloPesa</span>
+              <span class="lg"><img class="provider-logo" src="assets/payment-logos/halopesa.png" alt="HaloPesa logo"></span><span>HaloPesa</span>
             </div>
           </div>
         </div>
         <div class="divider"></div>
         <div class="right">
           <h4>Payments processed by</h4>
-          <div class="selbox">
-            <svg viewBox="0 0 140 68" aria-label="selcom">
-              <path
-                d="M12 4 H128 a10 10 0 0 1 10 10 V38 a10 10 0 0 1 -10 10 H70 L52 62 V48 H12 a10 10 0 0 1 -10 -10 V14 a10 10 0 0 1 10 -10 Z"
-                fill="none"
-                stroke="#fff"
-                stroke-width="2.4"
-                stroke-linejoin="round"
-              />
-              <text
-                x="70"
-                y="38"
-                text-anchor="middle"
-                font-family="Inter,Arial,sans-serif"
-                font-size="34"
-                fill="none"
-                stroke="#fff"
-                stroke-width="1.3"
-                textLength="108"
-                lengthAdjust="spacingAndGlyphs"
-              >
-                selcom
-              </text>
-            </svg>
-          </div>
+          <div class="selbox"><img class="selcom-logo" src="assets/payment-logos/selcom.png" alt="Selcom"></div>
         </div>
       </section>
     </main>
