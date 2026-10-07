@@ -1,113 +1,641 @@
-<!doctype html>
-<html lang="sw">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>XLipa - Get Paid Anywhere, Anytime</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f8f9fa;
-        color: #333;
-      }
-      header {
-        background-color: #0d1b2a;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 50px;
-      }
-      .logo {
-        font-size: 28px;
-        font-weight: bold;
-        color: white;
-        display: flex;
-        align-items: center;
-      }
-      .logo span {
-        color: #00b4d8;
-      }
-      nav a {
-        color: white;
-        text-decoration: none;
-        margin-left: 30px;
-        font-size: 16px;
-      }
-      nav a:hover {
-        color: #00b4d8;
-      }
-      .hero {
-        max-width: 800px;
-        margin: 60px auto;
-        text-align: center;
-        padding: 0 20px;
-      }
-      .hero h1 {
-        font-size: 42px;
-        color: #0d1b2a;
-        margin-bottom: 10px;
-      }
-      .hero h2 {
-        font-size: 24px;
-        color: #00b4d8;
-        margin-bottom: 25px;
-      }
-      .hero p {
-        font-size: 18px;
-        line-height: 1.6;
-        color: #555;
-        margin-bottom: 35px;
-      }
-      .cta-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-      }
-      .btn-primary {
-        background-color: #0077b6;
-        color: white;
-        padding: 12px 25px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: bold;
-      }
-      .btn-secondary {
-        background-color: white;
-        color: #0077b6;
-        border: 2px solid #0077b6;
-        padding: 12px 25px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: bold;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="logo"><span>X</span>Lipa</div>
-      <nav>
-        <a href="#pricing">Pricing</a>
-        <a href="#developers">Developers</a>
-        <a href="#contacts">Contacts</a>
-        <a href="#about">About</a>
-      </nav>
-    </header>
-    <div class="hero">
-      <h1>Get Paid Anywhere, Anytime.</h1>
-      <h2>Easy and Instant.</h2>
-      <p>
-        Collect payments with a single link shared on any social network, or
-        integrate XLipa directly into your website and apps. Customers confirm
-        with their secure mobile money PIN, and funds appear instantly in your
-        XLipa Balance, ready for withdrawal.
-      </p>
-      <div class="cta-buttons">
-        <a href="#" class="btn-primary">Create a free account</a>
-        <a href="#" class="btn-secondary">See how it works</a>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>XLipa | Get Paid Anywhere, Anytime</title>
+
+https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap
+
+<style>
+
+/* ==================================================
+   RESET
+================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:
+    linear-gradient(
+        90deg,
+        #eef2f7 0%,
+        #f8fafc 50%,
+        #eef2f7 100%
+    );
+
+    color:#0f172a;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+    padding:0 50px;
+}
+
+/* ==================================================
+   NAVBAR
+================================================== */
+
+header{
+    padding:28px 0;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:58px;
+    font-weight:800;
+    text-decoration:none;
+    color:#041b47;
+    display:flex;
+    align-items:center;
+    line-height:1;
+    letter-spacing:-2px;
+}
+
+.logo .gold{
+    background:linear-gradient(
+        135deg,
+        #f9e08e,
+        #d4af37,
+        #b8860b,
+        #f5d76b
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+
+.nav-links{
+    display:flex;
+    list-style:none;
+    gap:55px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#0f1f4a;
+    font-size:16px;
+    font-weight:500;
+    transition:.25s;
+}
+
+.nav-links a:hover{
+    color:#06b6d4;
+}
+
+/* ==================================================
+   HERO SECTION
+================================================== */
+
+.hero{
+    min-height:700px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:60px;
+    padding:20px 0 90px;
+}
+
+/* LEFT */
+
+.hero-left{
+    max-width:700px;
+}
+
+.tagline{
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    margin-bottom:25px;
+}
+
+.tagline-line{
+    width:42px;
+    height:3px;
+    border-radius:3px;
+    background:#d4af37;
+}
+
+.tagline span{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:3px;
+    color:#64748b;
+    font-weight:600;
+}
+
+.hero-left h1{
+    font-size:82px;
+    line-height:.96;
+    color:#041b47;
+    font-weight:800;
+    letter-spacing:-4px;
+    margin-bottom:26px;
+}
+
+.hero-left p{
+    font-size:20px;
+    line-height:1.65;
+    color:#5b6780;
+    max-width:650px;
+    margin-bottom:40px;
+}
+
+/* BUTTONS */
+
+.cta-buttons{
+    display:flex;
+    gap:18px;
+}
+
+.btn{
+    min-width:260px;
+    height:66px;
+
+    border-radius:12px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    text-decoration:none;
+    font-size:17px;
+    font-weight:600;
+
+    transition:.3s ease;
+}
+
+.btn-primary{
+    background:#06b6d4;
+    color:white;
+
+    box-shadow:
+    0 12px 25px rgba(6,182,212,.22);
+}
+
+.btn-primary:hover{
+    transform:translateY(-2px);
+}
+
+.btn-secondary{
+    background:#fff;
+    color:#041b47;
+    border:1px solid #cfd8e3;
+}
+
+.btn-secondary:hover{
+    border-color:#94a3b8;
+}
+
+/* ==================================================
+   PHONE
+================================================== */
+
+.hero-right{
+    flex-shrink:0;
+}
+
+.iphone{
+    width:370px;
+    height:720px;
+
+    border-radius:52px;
+    background:#0f1115;
+
+    padding:10px;
+
+    position:relative;
+
+    border:2px solid #444;
+
+    box-shadow:
+        0 45px 90px rgba(15,23,42,.22),
+        0 15px 35px rgba(15,23,42,.15);
+}
+
+.dynamic-island{
+    position:absolute;
+    top:16px;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:110px;
+    height:30px;
+
+    border-radius:20px;
+    background:black;
+
+    z-index:5;
+}
+
+.screen{
+    width:100%;
+    height:100%;
+
+    border-radius:42px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    radial-gradient(
+        circle at top right,
+        #ff2238 0%,
+        #d41227 30%,
+        #930010 70%,
+        #69000b 100%
+    );
+}
+
+.mpesa-modal{
+    width:82%;
+    background:white;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 25px 45px rgba(0,0,0,.25);
+}
+
+.modal-header{
+    padding:26px 20px 12px;
+    text-align:center;
+}
+
+.modal-header h3{
+    font-size:23px;
+    color:#111827;
+}
+
+.modal-body{
+    padding:0 22px 25px;
+    text-align:center;
+}
+
+.modal-body p{
+    font-size:15px;
+    color:#334155;
+    line-height:1.5;
+}
+
+.pin-box{
+    margin-top:16px;
+    border:1px solid #e2e8f0;
+
+    border-radius:10px;
+
+    padding:14px;
+
+    font-size:30px;
+    letter-spacing:8px;
+}
+
+.modal-footer{
+    display:flex;
+    border-top:1px solid #e5e7eb;
+}
+
+.modal-footer button{
+    flex:1;
+    height:58px;
+
+    border:none;
+    background:white;
+
+    font-size:16px;
+    font-weight:600;
+
+    color:#007aff;
+}
+
+.modal-footer button:first-child{
+    border-right:1px solid #e5e7eb;
+}
+
+/* ==================================================
+   TRUST SECTION
+================================================== */
+
+.trust-section{
+    padding-bottom:80px;
+}
+
+.trust-wrapper{
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:38px 52px;
+
+    border:1px solid #eef2f7;
+
+    box-shadow:
+    0 5px 35px rgba(15,23,42,.04);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.label{
+    font-size:16px;
+    font-weight:700;
+    color:#0f1f4a;
+    margin-bottom:22px;
+}
+
+.brand-row{
+    display:flex;
+    gap:18px;
+}
+
+.brand-card{
+    height:54px;
+    padding:12px 18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    border:1px solid #e5eaf2;
+
+    background:white;
+}
+
+.brand-card img{
+    height:24px;
+    object-fit:contain;
+}
+
+.divider{
+    width:1px;
+    height:120px;
+    background:#dbe3ee;
+}
+
+.selcom{
+    min-width:280px;
+    text-align:center;
+}
+
+.selcom .label{
+    margin-bottom:18px;
+}
+
+.selcom-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    height:44px;
+    padding:0 28px;
+
+    background:#ea3333;
+
+    color:white;
+
+    font-size:18px;
+    font-weight:800;
+
+    border-radius:8px;
+
+    text-transform:lowercase;
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media(max-width:1100px){
+
+.hero{
+    flex-direction:column;
+    text-align:center;
+}
+
+.tagline{
+    justify-content:center;
+}
+
+.cta-buttons{
+    justify-content:center;
+}
+
+.hero-left h1{
+    font-size:60px;
+}
+
+.trust-wrapper{
+    flex-direction:column;
+    gap:30px;
+}
+
+.divider{
+    display:none;
+}
+
+.brand-row{
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+}
+
+@media(max-width:768px){
+
+.container{
+    padding:0 20px;
+}
+
+.logo{
+    font-size:44px;
+}
+
+.nav-links{
+    display:none;
+}
+
+.hero-left h1{
+    font-size:48px;
+}
+
+.hero-left p{
+    font-size:17px;
+}
+
+.cta-buttons{
+    flex-direction:column;
+}
+
+.btn{
+    width:100%;
+    min-width:unset;
+}
+
+.iphone{
+    transform:scale(.85);
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="container">
+        <div class="navbar">
+        #
+        <span class="gold">X</span>Lipa
+            </a>
+            <ul class="nav-links">
+                <li>#Pricing</a></li>
+                <li>#Developers</a></li>
+                <li>#Contacts</a></li>
+                <li>#About</a></li>
+            </ul>
+
+        </div>
     </div>
-  </body>
+</header>
+
+<section class="hero container">
+<div class="hero-left">
+
+<div class="tagline">
+            <div class="tagline-line"></div>
+            <span>SIMPLE PAYMENTS. BRIGHTER OPPORTUNITIES.</span>
+        </div>
+        <h1>
+        Get Paid Anywhere,
+            Anytime. Easy and
+            Instant.
+        </h1>
+        <p>
+            Collect payments with a single link shared on any social
+            network, or integrate XLipa directly into your website
+            and apps. Customers confirm with their secure mobile
+            money PIN, and funds appear instantly in your XLipa
+            Balance, ready for withdrawal.
+        </p>
+        <div class="cta-buttons">
+        #Create a free account
+                </a>
+                #See how it works
+            </a>
+            </div>
+            </div>
+            <div class="hero-right">
+            <div class="iphone">
+            <div class="dynamic-island"></div>
+
+<div class="screen">
+
+  <div class="mpesa-modal">
+
+  <div class="modal-header">
+                        <h3>M-Pesa</h3>
+                    </div>
+
+<div class="modal-body">
+<p>
+                            Lipa TSh 10,000 kwa MANKA SHOP.<br>
+                            Weka PIN kuthibitisha:
+                        </p>
+                        <div class="pin-box">
+                            ••••
+                        </div>
+                        </div>
+
+<div class="modal-footer">
+                        <button>Ghairi</button>
+                        <button>Tuma</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="trust-section">
+    <div class="container">
+
+<div class="trust-wrapper">
+
+  <div class="partners">
+
+  <div class="label">
+                    Your customers pay with
+                </div>
+
+<div class="brand-row">
+
+<div class="brand-card">
+                        mpesa-logo.png
+                    </div>
+
+  <div class="brand-card">
+                        airtel-money.png
+                    </div>
+
+<div class="brand-card">
+                        mix-yas.png
+                    </div>
+
+  <div class="brand-card">
+                        halopesa.png
+                    </div>
+
+</div>
+
+  </div>
+
+  <div class="divider"></div>
+
+<div class="selcom">
+
+  <div class="label">
+                    Payment processed by Selcom
+                </div>
+
+  <div class="selcom-badge">
+                    selcom
+                </div>
+
+</div>
+
+  </div>
+
+  </div>
+</section>
+
+</body>
 </html>
