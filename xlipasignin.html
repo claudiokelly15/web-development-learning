@@ -1,0 +1,52 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#06142f">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Sign in | XLipa</title>
+  <link rel="icon" type="image/svg+xml" href="assets/xlipa-favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#06142f;--teal:#08c9d8;--blue:#078cf1;--ink:#10213d;--muted:#718099;--line:#e3eaf2;--bg:#f4f7fb}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}button,input{font:inherit}.shell{min-height:100vh;display:grid;grid-template-columns:minmax(390px,.92fr) 1.08fr;padding:14px;gap:14px}
+    .brand-panel{position:relative;overflow:hidden;min-height:calc(100vh - 28px);border-radius:22px;padding:clamp(30px,5vw,68px);display:flex;flex-direction:column;color:#fff;background:radial-gradient(ellipse at 7% 0%,rgba(0,157,255,.3),transparent 38%),radial-gradient(ellipse at 100% 90%,rgba(8,201,216,.17),transparent 36%),linear-gradient(145deg,#06142f,#092349 60%,#06142f)}.brand-panel:after{content:"";position:absolute;width:440px;height:440px;border:1px solid rgba(137,225,255,.1);border-radius:50%;right:-220px;top:28%;box-shadow:0 0 0 48px rgba(137,225,255,.025),0 0 0 96px rgba(137,225,255,.02);pointer-events:none}
+    .logo{display:inline-flex;align-items:center;width:max-content}.logo svg{display:block;width:168px;height:40px;overflow:visible}.intro{position:relative;z-index:1;margin:auto 0;padding:72px 0 54px;max-width:540px}.eyebrow{display:inline-flex;align-items:center;gap:9px;color:#9bdde9;font-size:12px;font-weight:700;letter-spacing:1.7px;text-transform:uppercase}.eyebrow:before{content:"";height:1px;width:24px;background:var(--teal)}h1{font-size:clamp(36px,4vw,58px);line-height:1.08;letter-spacing:-2.7px;margin:21px 0 19px}.intro>p{color:#bfcee1;line-height:1.8;font-size:15px;max-width:435px}.trust-card{position:relative;z-index:1;margin-top:35px;padding:18px 20px;border:1px solid #b9dff027;border-radius:15px;background:#ffffff08;max-width:390px}.trust-card strong{display:block;font-size:13px;margin-bottom:6px}.trust-card span{color:#afc2da;font-size:12px;line-height:1.6}.brand-foot{position:relative;z-index:1;color:#92a8c4;font-size:12px;line-height:1.7}.brand-foot b{color:#dceafa;font-weight:600}
+    .form-side{display:grid;place-items:center;padding:clamp(24px,5vw,72px)}.form-wrap{width:min(100%,460px)}.mobile-logo{display:none}.form-head{margin-bottom:32px}.form-head .kicker{color:#087f9c;font-size:11px;font-weight:750;letter-spacing:1.5px;text-transform:uppercase}.form-head h2{font-size:clamp(30px,3vw,40px);letter-spacing:-1.7px;margin:10px 0 9px;color:var(--navy)}.form-head p{color:var(--muted);font-size:14px;line-height:1.7;margin:0}.field{display:grid;gap:8px;margin-bottom:19px}.field label{font-size:12px;font-weight:650;color:#34445d}.field input{width:100%;height:51px;padding:0 14px;border:1px solid #dce4ee;border-radius:10px;background:#fff;color:var(--ink);outline:none;transition:border .2s,box-shadow .2s}.field input::placeholder{color:#a3afbf}.field input:focus{border-color:#08a9cb;box-shadow:0 0 0 3px #08c9d81c}.password-wrap{position:relative}.password-wrap input{padding-right:48px}.reveal{position:absolute;right:9px;top:8px;height:35px;width:35px;border:0;background:transparent;color:#8391a4;cursor:pointer;border-radius:8px}.reveal:hover{background:#f1f6fa;color:#087f9c}.options{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:2px 0 23px;font-size:12px;color:#65748a}.remember{display:flex;align-items:center;gap:8px}.remember input{accent-color:#078cf1;width:15px;height:15px;margin:0}.text-button{border:0;padding:0;background:none;color:#087f9c;font-size:12px;font-weight:650;cursor:pointer}.submit{width:100%;height:52px;border:0;border-radius:11px;color:#06142f;font-size:14px;font-weight:750;background:linear-gradient(105deg,#29e0d5,#08b9de 48%,#078cf1);box-shadow:0 10px 22px #078cf126;cursor:pointer;transition:transform .18s,box-shadow .18s}.submit:hover{transform:translateY(-1px);box-shadow:0 13px 28px #078cf13c}.notice{display:none;margin:14px 0 0;padding:12px 14px;border-radius:9px;color:#176d50;background:#e9f7f1;font-size:13px;line-height:1.5}.notice.show{display:block}.signup{text-align:center;margin:22px 0 0;color:#7b8798;font-size:13px}.signup a{color:#087f9c;font-weight:700}.secure{text-align:center;margin-top:31px;color:#9aa6b5;font-size:11px}.secure span{color:#15878b;margin-right:5px}
+    @media(max-width:900px){.shell{grid-template-columns:.8fr 1.2fr}.brand-panel{padding:34px}.form-side{padding:30px}.intro{padding:54px 0}}
+    @media(max-width:680px){.shell{display:block;padding:0}.brand-panel{display:none}.form-side{min-height:100vh;display:block;padding:26px 21px 36px}.mobile-logo{display:flex;margin:2px 0 48px;padding:8px 12px;border-radius:13px;background:var(--navy)}.form-head{margin-bottom:28px}.secure{margin-top:25px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <aside class="brand-panel" aria-label="XLipa account access">
+      <a class="logo" href="index33.html" aria-label="XLipa home"><svg viewBox="0 0 420 100" role="img" aria-label="XLipa"><defs><linearGradient id="xlipa-x-brand" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#0875ff"/><stop offset=".52" stop-color="#08d7e8"/><stop offset="1" stop-color="#00bce9"/></linearGradient></defs><path d="m13 18 17-8 34 32 29-31 17 8-36 39 35 32-18 7-35-32-29 32-18-8 37-39z" fill="url(#xlipa-x-brand)"/><path d="M14 77C2 66 22 41 58 24c28-13 57-17 69-9 13 9-9 31-33 47" fill="none" stroke="url(#xlipa-x-brand)" stroke-width="6" stroke-linecap="round"/><text x="145" y="74" fill="#f4f8ff" font-family="Inter,Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="-5">XLipa</text></svg></a>
+      <div class="intro"><span class="eyebrow">Your business, in good hands</span><h1>Welcome back<br>to <span style="color:#42dbe0">XLipa.</span></h1><p>Sign in to manage your payments, keep track of your business, and pick up right where you left off.</p><div class="trust-card"><strong>One secure place for your business</strong><span>Access your XLipa account with the same email and password you used when you signed up.</span></div></div>
+      <div class="brand-foot"><b>XLipa</b> · Simple payments for growing businesses.<br>© 2026 XLipa. All rights reserved.</div>
+    </aside>
+    <section class="form-side"><div class="form-wrap">
+      <a class="logo mobile-logo" href="index33.html" aria-label="XLipa home"><svg viewBox="0 0 420 100" role="img" aria-label="XLipa"><defs><linearGradient id="xlipa-x-mobile" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#0875ff"/><stop offset=".52" stop-color="#08d7e8"/><stop offset="1" stop-color="#00bce9"/></linearGradient></defs><path d="m13 18 17-8 34 32 29-31 17 8-36 39 35 32-18 7-35-32-29 32-18-8 37-39z" fill="url(#xlipa-x-mobile)"/><path d="M14 77C2 66 22 41 58 24c28-13 57-17 69-9 13 9-9 31-33 47" fill="none" stroke="url(#xlipa-x-mobile)" stroke-width="6" stroke-linecap="round"/><text x="145" y="74" fill="#f4f8ff" font-family="Inter,Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="-5">XLipa</text></svg></a>
+      <header class="form-head"><div class="kicker">Account access</div><h2>Sign in to XLipa</h2><p>Enter your account details to continue to your dashboard.</p></header>
+      <form id="signInForm" autocomplete="on"><input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="username" placeholder="you@example.com" required></div>
+        <div class="field"><label for="password">Password</label><div class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required><button class="reveal" type="button" aria-label="Show password" aria-pressed="false">◉</button></div></div>
+        <div class="options"><label class="remember"><input type="checkbox" name="remember"> <span>Remember me</span></label><button class="text-button" type="button" id="forgotPassword">Forgot password?</button></div>
+        <button class="submit" type="submit">Sign in <span aria-hidden="true">→</span></button><div id="notice" class="notice" role="status" aria-live="polite"></div>
+      </form>
+      <p class="signup">New to XLipa? <a href="xlipacreateaccount.html">Create an account</a></p>
+      <div class="secure"><span>●</span> Your information is protected with XLipa security</div>
+    </div></section>
+  </main>
+  <script>
+    const passwordField=document.getElementById('password');
+    const revealButton=document.querySelector('.reveal');
+    revealButton.addEventListener('click',()=>{const show=passwordField.type==='password';passwordField.type=show?'text':'password';revealButton.setAttribute('aria-label',show?'Hide password':'Show password');revealButton.setAttribute('aria-pressed',String(show))});
+    const notice=document.getElementById('notice');
+    document.getElementById('forgotPassword').addEventListener('click',()=>{notice.textContent='Password recovery is not connected yet. Please contact XLipa support for help.';notice.classList.add('show')});
+    document.getElementById('signInForm').addEventListener('submit',event=>{event.preventDefault();notice.textContent='Sign-in is not connected to an account service yet. Your details have not been sent.';notice.classList.add('show')});
+  </script>
+</body>
+</html>
