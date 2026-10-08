@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#06142f">
+  <meta name="theme-color" content="#f5f9ff">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Create your account | XLipa</title>
   <link rel="icon" type="image/svg+xml" href="assets/xlipa-favicon.svg">
@@ -24,6 +24,21 @@
     @media(max-width:900px){.brand-panel{padding:28px}.intro{padding:28px 0 22px}.form-side{padding:22px}.features{gap:10px;margin-top:18px}}
     @media(max-width:680px){.form-side{padding:22px 20px 28px}.mobile-logo{margin:0 0 28px}.form-head{margin-bottom:20px}.form-grid{grid-template-columns:1fr;gap:12px}.field input{height:48px}.check-row{margin:14px 0}.secure{margin-top:18px}}
     @media(max-height:760px) and (min-width:681px){.brand-panel{padding-top:24px;padding-bottom:24px}.intro{padding:18px 0}.features{gap:8px;margin-top:14px}.feature-icon{width:27px;height:27px}.form-side{padding-top:16px;padding-bottom:16px}.form-head{margin-bottom:16px}.form-grid{gap:9px 12px}.field input{height:42px}.check-row{margin:10px 0}.submit{height:44px}.secure{margin-top:12px}}
+    :root{--navy:#071a35;--teal:#08c9d8;--blue:#0875ff;--ink:#0b1b3a;--muted:#607797;--bg:#f5f9ff}
+    body{background:#f5f9ff;color:#0b1b3a}
+    .brand-panel{color:#10294c;background:radial-gradient(ellipse at 82% 18%,rgba(8,117,255,.12),transparent 40%),linear-gradient(145deg,#fff,#eef5ff 88%)}
+    .brand-panel:after{border-color:rgba(8,117,255,.09);box-shadow:0 0 0 48px rgba(8,117,255,.035),0 0 0 96px rgba(8,117,255,.025)}
+    .brand-panel>.logo{padding:7px 10px;border-radius:12px;background:#06142f}
+    .eyebrow{color:#1269d6}.eyebrow:before{background:#0875ff}
+    .brand-panel h1{color:#0b1b3a}.brand-panel h1 span{color:#0875ff!important}
+    .intro>p{color:#607797}.feature{color:#19365f}.feature-icon{color:#0875ff;border-color:#cfe0f7;background:#fff}
+    .brand-foot{color:#6d83a1}.brand-foot b{color:#10294c}
+    .form-side{background:#fff}.form-head h2{color:#0b1b3a}.form-head p{color:#607797}
+    .field label{color:#243f65}.field input{border-color:#d8e4f3;background:#fff}.field input:focus{border-color:#0875ff;box-shadow:0 0 0 3px rgba(8,117,255,.12)}
+    .reveal{color:#52719b}.reveal:hover{color:#075be8;background:#eef5ff}
+    .check-row{color:#5d7393}.check-row a,.signin a{color:#075be8}
+    .submit{color:#fff;background:linear-gradient(110deg,#0875ff,#075be8);box-shadow:0 9px 22px rgba(8,117,255,.2)}.submit:hover{box-shadow:0 12px 27px rgba(8,117,255,.28)}
+    .secure{color:#8495ad}.secure span{color:#0875ff}
   </style>
 </head>
 <body>
