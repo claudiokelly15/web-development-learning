@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#06142f">
+  <meta name="theme-color" content="#101052">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Create your account | XLipa</title>
   <link rel="icon" type="image/svg+xml" href="assets/xlipa-favicon.svg">
@@ -41,6 +41,15 @@
     .field label{color:#637a9a}
     .check-row{color:#7b8ca7}
     .signin{color:#8290a9}
+    body{background:radial-gradient(ellipse at 88% 90%,rgba(39,68,255,.48),transparent 42%),radial-gradient(ellipse at 18% 9%,rgba(66,42,190,.4),transparent 42%),linear-gradient(145deg,#070621,#111052 58%,#101b69)}
+    .shell{position:relative}
+    .brand-panel{background:radial-gradient(circle at 9% 18%,rgba(180,138,255,.42) 1px,transparent 2px),radial-gradient(circle at 67% 80%,rgba(180,138,255,.35) 1.5px,transparent 2.5px),radial-gradient(ellipse at 88% 90%,rgba(40,66,255,.6),transparent 43%),linear-gradient(145deg,#090627,#111052 58%,#14218b);border:1px solid rgba(142,122,255,.22);box-shadow:0 22px 60px rgba(1,2,24,.3)}
+    .brand-panel:after{border-color:rgba(178,150,255,.18);box-shadow:0 0 0 48px rgba(112,93,255,.07),0 0 0 96px rgba(55,77,255,.06)}
+    .form-side{background:transparent}
+    .form-wrap{padding:clamp(25px,3vw,42px);border:1px solid rgba(164,177,255,.35);border-radius:22px;background:rgba(250,251,255,.97);box-shadow:0 24px 60px rgba(2,4,35,.32)}
+    .submit{background:linear-gradient(110deg,#246dff,#3d39ed);box-shadow:0 9px 24px rgba(43,77,255,.28)}
+    .submit:hover{box-shadow:0 12px 29px rgba(43,77,255,.4)}
+    @media(max-width:680px){.form-side{padding:20px 16px 26px}.form-wrap{padding:23px 20px;border-radius:18px}}
   </style>
 </head>
 <body>
