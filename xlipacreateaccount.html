@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#06142f">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Create your account | XLipa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,6 +42,7 @@
         <a class="logo mobile-logo" href="index33.html" aria-label="XLipa home"><span class="logo-mark"></span><span>XLipa<em>.</em></span></a>
         <header class="form-head"><div class="kicker">Get started</div><h2>Create your account</h2><p>Enter your account details to get started with XLipa. Your information is protected.</p></header>
         <form id="createForm">
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <div class="form-grid">
             <div class="field"><label for="fullName">Full name</label><input id="fullName" name="fullName" autocomplete="name" value="Lizybet Daniel" required></div>
             <div class="field"><label for="businessName">Business name</label><input id="businessName" name="businessName" autocomplete="organization" value="Kenny Store" required></div>
