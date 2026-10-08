@@ -18,25 +18,55 @@
     .form-side{display:grid;place-items:center;padding:clamp(24px,5vw,72px)}.form-wrap{width:min(100%,460px)}.mobile-logo{display:none}.form-head{margin-bottom:32px}.form-head .kicker{color:#087f9c;font-size:11px;font-weight:750;letter-spacing:1.5px;text-transform:uppercase}.form-head h2{font-size:clamp(30px,3vw,40px);letter-spacing:-1.7px;margin:10px 0 9px;color:var(--navy)}.form-head p{color:var(--muted);font-size:14px;line-height:1.7;margin:0}.field{display:grid;gap:8px;margin-bottom:19px}.field label{font-size:12px;font-weight:650;color:#34445d}.field input{width:100%;height:51px;padding:0 14px;border:1px solid #dce4ee;border-radius:10px;background:#fff;color:var(--ink);outline:none;transition:border .2s,box-shadow .2s}.field input::placeholder{color:#a3afbf}.field input:focus{border-color:#08a9cb;box-shadow:0 0 0 3px #08c9d81c}.password-wrap{position:relative}.password-wrap input{padding-right:48px}.reveal{position:absolute;right:9px;top:8px;height:35px;width:35px;border:0;background:transparent;color:#8391a4;cursor:pointer;border-radius:8px;display:grid;place-items:center}.reveal svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.reveal .slash{opacity:1}.reveal[aria-pressed="true"] .slash{opacity:0}.reveal:hover{background:#f1f6fa;color:#087f9c}.options{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:2px 0 23px;font-size:12px;color:#65748a}.remember{display:flex;align-items:center;gap:8px}.remember input{accent-color:#078cf1;width:15px;height:15px;margin:0}.text-button{border:0;padding:0;background:none;color:#087f9c;font-size:12px;font-weight:650;cursor:pointer}.submit{width:100%;height:52px;border:0;border-radius:11px;color:#06142f;font-size:14px;font-weight:750;background:linear-gradient(105deg,#29e0d5,#08b9de 48%,#078cf1);box-shadow:0 10px 22px #078cf126;cursor:pointer;transition:transform .18s,box-shadow .18s}.submit:hover{transform:translateY(-1px);box-shadow:0 13px 28px #078cf13c}.notice{display:none;margin:14px 0 0;padding:12px 14px;border-radius:9px;color:#176d50;background:#e9f7f1;font-size:13px;line-height:1.5}.notice.show{display:block}.signup{text-align:center;margin:22px 0 0;color:#7b8798;font-size:13px}.signup a{color:#087f9c;font-weight:700}.secure{text-align:center;margin-top:31px;color:#9aa6b5;font-size:11px}.secure span{color:#15878b;margin-right:5px}
     @media(max-width:900px){.shell{grid-template-columns:.8fr 1.2fr}.brand-panel{padding:34px}.form-side{padding:30px}.intro{padding:54px 0}}
     @media(max-width:680px){.shell{display:block;padding:0}.brand-panel{display:none}.form-side{min-height:100vh;display:block;padding:26px 21px 36px}.mobile-logo{display:flex;margin:2px 0 48px;padding:8px 12px;border-radius:13px;background:var(--navy)}.form-head{margin-bottom:28px}.secure{margin-top:25px}}
+    /* Match the supplied split-screen sign-in reference while retaining XLipa branding. */
+    .shell{grid-template-columns:1fr 1fr;padding:0;gap:0}
+    .brand-panel{min-height:100vh;border-radius:0;padding:clamp(34px,3.3vw,64px)}
+    .brand-panel:after{width:520px;height:520px;right:-260px;top:25%;border-color:#8cecff12;box-shadow:0 0 0 60px #8cecff08,0 0 0 120px #8cecff05}
+    .intro{max-width:500px;padding:0;margin:auto 0}
+    .eyebrow{display:none}
+    h1{max-width:430px;font-size:clamp(36px,3vw,48px);line-height:1.12;letter-spacing:-1.9px;margin:0 0 18px}
+    .intro>p{max-width:460px;font-size:15px;line-height:1.75}
+    .benefits{display:grid;gap:19px;margin:34px 0 0;padding:0;list-style:none}
+    .benefits li{display:flex;align-items:center;gap:14px;color:#edf5ff;font-size:14px;line-height:1.5}
+    .benefit-icon{width:19px;height:20px;flex:0 0 19px;color:#70d9f5}
+    .benefit-icon svg{display:block;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .trust-card{display:none}
+    .form-side{background:#f8f9fc;padding:clamp(32px,6.3vw,120px)}
+    .form-wrap{width:min(100%,450px)}
+    .form-head{margin-bottom:29px}
+    .form-head .kicker{display:none}
+    .form-head h2{font-size:clamp(29px,2.3vw,38px);letter-spacing:-1.25px;margin:0 0 8px}
+    .form-head p{font-size:14px}
+    .field{gap:9px;margin-bottom:19px}
+    .field label{font-size:13px}
+    .field input{height:54px;border-radius:9px}
+    .options{justify-content:flex-end;margin:0 0 24px}
+    .remember{display:none}
+    .submit{height:53px;border-radius:9px;color:#fff;background:linear-gradient(105deg,#078cf1,#0875ff);box-shadow:0 8px 20px #0875ff25}
+    .submit:hover{box-shadow:0 11px 25px #0875ff3a}
+    .signup{text-align:left;margin-top:26px;font-size:13px;color:#596981}
+    .secure{display:none}
+    @media(max-width:900px) and (min-width:681px){.form-side{padding:34px}.brand-panel{padding:34px}.benefits{gap:15px}}
+    @media(max-width:680px){.shell{display:block;padding:0}.brand-panel{display:none}.form-side{min-height:100vh;display:block;padding:26px 21px 36px}.mobile-logo{display:flex;margin:2px 0 48px;padding:8px 12px;border-radius:13px;background:var(--navy)}.form-head{margin-bottom:28px}.signup{text-align:center;margin-top:22px}}
   </style>
 </head>
 <body>
   <main class="shell">
     <aside class="brand-panel" aria-label="XLipa account access">
       <a class="logo" href="index33.html" aria-label="XLipa home"><svg viewBox="0 0 420 100" role="img" aria-label="XLipa"><defs><linearGradient id="xlipa-x-brand" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#0875ff"/><stop offset=".52" stop-color="#08d7e8"/><stop offset="1" stop-color="#00bce9"/></linearGradient></defs><path d="m13 18 17-8 34 32 29-31 17 8-36 39 35 32-18 7-35-32-29 32-18-8 37-39z" fill="url(#xlipa-x-brand)"/><path d="M14 77C2 66 22 41 58 24c28-13 57-17 69-9 13 9-9 31-33 47" fill="none" stroke="url(#xlipa-x-brand)" stroke-width="6" stroke-linecap="round"/><text x="145" y="74" fill="#f4f8ff" font-family="Inter,Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="-5">XLipa</text></svg></a>
-      <div class="intro"><span class="eyebrow">Your business, in good hands</span><h1>Welcome back<br>to <span style="color:#42dbe0">XLipa.</span></h1><p>Sign in to manage your payments, keep track of your business, and pick up right where you left off.</p><div class="trust-card"><strong>One secure place for your business</strong><span>Access your XLipa account with the same email and password you used when you signed up.</span></div></div>
-      <div class="brand-foot"><b>XLipa</b> · Simple payments for growing businesses.<br>© 2026 XLipa. All rights reserved.</div>
+      <div class="intro"><h1>Your payments,<br>in one place.</h1><p>See what came in today, what's still waiting for a PIN, and what you can withdraw.</p><ul class="benefits"><li><span class="benefit-icon"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 18h4"/></svg></span><span>M-Pesa, Airtel Money, Mixx by Yas and HaloPesa</span></li><li><span class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M3 17 9 11l4 3 8-9"/><path d="M15 5h6v6"/></svg></span><span>Today's takings next to yesterday's</span></li><li><span class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M3 9h18M5 9V5l7-3 7 3v4M5 21V9m4 12V9m6 12V9m4 12V9M3 21h18"/></svg></span><span>Withdraw to mobile money or your bank</span></li><li><span class="benefit-icon"><svg viewBox="0 0 24 24"><path d="m8 8-5 4 5 4m8-8 5 4-5 4m-3-9-2 10"/></svg></span><span>API keys and webhooks for your developers</span></li></ul></div>
+      <div class="brand-foot"><b>XLipa</b> · Payments processed by Selcom.<br>Simple payments for growing businesses.</div>
     </aside>
     <section class="form-side"><div class="form-wrap">
       <a class="logo mobile-logo" href="index33.html" aria-label="XLipa home"><svg viewBox="0 0 420 100" role="img" aria-label="XLipa"><defs><linearGradient id="xlipa-x-mobile" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#0875ff"/><stop offset=".52" stop-color="#08d7e8"/><stop offset="1" stop-color="#00bce9"/></linearGradient></defs><path d="m13 18 17-8 34 32 29-31 17 8-36 39 35 32-18 7-35-32-29 32-18-8 37-39z" fill="url(#xlipa-x-mobile)"/><path d="M14 77C2 66 22 41 58 24c28-13 57-17 69-9 13 9-9 31-33 47" fill="none" stroke="url(#xlipa-x-mobile)" stroke-width="6" stroke-linecap="round"/><text x="145" y="74" fill="#f4f8ff" font-family="Inter,Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="-5">XLipa</text></svg></a>
-      <header class="form-head"><div class="kicker">Account access</div><h2>Sign in to XLipa</h2><p>Enter your account details to continue to your dashboard.</p></header>
+      <header class="form-head"><h2>Welcome back</h2><p>Sign in to manage your payments</p></header>
       <form id="signInForm" autocomplete="on"><input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="username" placeholder="you@example.com" required></div>
-        <div class="field"><label for="password">Password</label><div class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required><button class="reveal" type="button" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="m4 4 16 16"/></svg></button></div></div>
+        <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="username" placeholder="you@business.co.tz" required></div>
+        <div class="field"><label for="password">Password</label><div class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Your password" required><button class="reveal" type="button" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="m4 4 16 16"/></svg></button></div></div>
         <div class="options"><label class="remember"><input type="checkbox" name="remember"> <span>Remember me</span></label><button class="text-button" type="button" id="forgotPassword">Forgot password?</button></div>
         <button class="submit" type="submit">Sign in <span aria-hidden="true">→</span></button><div id="notice" class="notice" role="status" aria-live="polite"></div>
       </form>
-      <p class="signup">New to XLipa? <a href="xlipacreateaccount.html">Create an account</a></p>
+      <p class="signup">Don't have an account? <a href="xlipacreateaccount.html">Create one free</a></p>
       <div class="secure"><span>●</span> Your information is protected with XLipa security</div>
     </div></section>
   </main>
