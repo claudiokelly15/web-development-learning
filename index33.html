@@ -568,6 +568,9 @@
       .eyebrow:before { background: var(--teal); }
       h1 { color: #fff; }
       .hero .sub { color: #c4d3e8; }
+      .hero-points { list-style: none; display: grid; gap: 12px; margin: 23px 0 0; padding: 0; color: #e4eef9; font-size: 14px; }
+      .hero-points li { display: flex; align-items: center; gap: 11px; }
+      .hero-points li::before { content: "✓"; display: grid; place-items: center; width: 22px; height: 22px; flex: 0 0 22px; border: 1px solid #57dbe477; border-radius: 7px; color: #56dbe4; font-size: 12px; font-weight: 800; }
       .btn.primary { background: linear-gradient(135deg,#20d8d1,#078cf1); box-shadow: 0 8px 20px rgba(0,170,220,.26); }
       .btn.primary:hover { filter: brightness(1.08); }
       .btn.ghost { color: #fff; background: rgba(255,255,255,.06); border-color: rgba(226,241,255,.4); }
@@ -647,7 +650,7 @@
   <body>
     <header>
       <div class="wrap nav">
-        <a href="#" class="logo" aria-label="XLipa">
+        <a href="index33.html" class="logo" aria-label="XLipa home">
           <svg viewBox="0 0 420 100" role="img" aria-label="XLipa">
             <defs><linearGradient id="xlipa-x" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#0875ff"/><stop offset=".52" stop-color="#08d7e8"/><stop offset="1" stop-color="#00bce9"/></linearGradient></defs>
             <path d="m13 18 17-8 34 32 29-31 17 8-36 39 35 32-18 7-35-32-29 32-18-8 37-39z" fill="url(#xlipa-x)"/>
@@ -686,16 +689,18 @@
       <section class="hero">
         <div class="copy">
           <div class="eyebrow">Simple payments. Brighter opportunities.</div>
-          <h1>Get Paid Anywhere, Anytime. Easy and Instant.</h1>
+          <h1>Start taking mobile money payments.</h1>
           <p class="sub">
-            Collect payments with a single link shared on any social network, or
-            integrate XLipa directly into your website and apps. Customers
-            confirm with their secure mobile money PIN, and funds appear
-            instantly in your XLipa Balance, ready for withdrawal.
+            Create your XLipa account and provide your NIDA and TIN details for review. Once your account is approved, create your first payment link and start collecting payments.
           </p>
+          <ul class="hero-points">
+            <li>No setup fee or monthly fee</li>
+            <li>Share payment links on WhatsApp and Instagram</li>
+            <li>Withdraw to mobile money or your bank</li>
+          </ul>
           <div class="btns">
             <a href="xlipacreateaccount.html" class="btn primary">Create a free account</a>
-            <a href="#" class="btn ghost">See how it works</a>
+            <a href="#payment-methods" class="btn ghost">See how it works</a>
           </div>
         </div>
 
@@ -769,7 +774,7 @@
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel" id="payment-methods">
         <div class="left">
           <h4>Your customers pay with</h4>
           <div class="cards">
