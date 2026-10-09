@@ -6,7 +6,8 @@
   <meta name="theme-color" content="#101b49">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Sign in | XLipa</title>
-  <link rel="icon" type="image/svg+xml" href="assets/xlipa-favicon.svg">
+  <link rel="icon" type="image/svg+xml" sizes="any" href="assets/xlipa-favicon.svg">
+  <link rel="shortcut icon" href="assets/xlipa-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -164,13 +165,19 @@
     .mobile-logo::before{content:"";display:block;width:44px;height:44px;flex:none;background:url("assets/xlipa-favicon.svg") center/contain no-repeat}
     .mobile-logo::after{content:"XLipa";color:#2b609a;font-size:28px;font-weight:700;letter-spacing:-1.1px}
     .form-head h2{color:var(--navy);font-size:clamp(28px,2.4vw,34px);font-weight:650;line-height:1.18;letter-spacing:-.9px;margin-bottom:8px}
+    .form-head .kicker{display:block;color:var(--blue);font-size:12px;font-weight:650;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:9px}
+    .form-head h2{font-size:clamp(29px,2.5vw,36px);letter-spacing:-1px}
     .form-head p{color:#65758f;font-size:14px;line-height:1.6;max-width:38ch}
     .field label{color:#344b70;font-size:13px;font-weight:600;letter-spacing:.05px}
     .field input{font-size:16px}
     .options,.text-button,.signup{font-size:13px}
+    .options{display:flex;justify-content:space-between;align-items:center;margin:4px 0 20px;color:var(--muted)}
+    .remember{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}
+    .remember input{width:15px;height:15px;margin:0;accent-color:var(--blue)}
+    .text-button{color:var(--blue)}
     .submit{font-size:15px;font-weight:600;letter-spacing:.1px}
     @media(max-width:820px){.mobile-logo{display:flex!important;margin:0 auto 30px}.form-wrap{max-width:440px}.form-side{padding-top:32px;padding-bottom:32px}}
-    @media(max-width:560px){.mobile-logo{margin-bottom:28px}.form-head h2{font-size:30px}.form-head p{font-size:14px}.field input{height:50px}.submit{height:50px}}
+    @media(max-width:560px){.mobile-logo{margin-bottom:28px}.form-head h2{font-size:30px}.form-head p{font-size:14px}.field input{height:50px}.submit{height:50px}.options{gap:10px;font-size:12px}.remember{font-size:12px}}
     @media(max-height:760px) and (min-width:821px){.shell{padding-top:28px;padding-bottom:28px}.form-side{padding-top:24px;padding-bottom:24px}.form-head{margin-bottom:18px}.field{margin-bottom:13px}.field input{height:46px}.options{margin-bottom:16px}.submit{height:48px}.signup{margin-top:17px}}
   </style>
 </head>
@@ -189,11 +196,10 @@
     <aside class="brand-panel" aria-label="XLipa account access">
       <a class="logo" href="index33.html" aria-label="XLipa home"><svg viewBox="0 0 420 100" role="img" aria-label="XLipa"><defs><linearGradient id="xlipa-x-brand" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#0875ff"/><stop offset=".52" stop-color="#08d7e8"/><stop offset="1" stop-color="#00bce9"/></linearGradient></defs><path d="m13 18 17-8 34 32 29-31 17 8-36 39 35 32-18 7-35-32-29 32-18-8 37-39z" fill="url(#xlipa-x-brand)"/><path d="M14 77C2 66 22 41 58 24c28-13 57-17 69-9 13 9-9 31-33 47" fill="none" stroke="url(#xlipa-x-brand)" stroke-width="6" stroke-linecap="round"/><text x="145" y="74" fill="#f4f8ff" font-family="Inter,Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="-5">XLipa</text></svg></a>
       <div class="intro"><h1>Your payments,<br>in one place.</h1><p>Sign in to review your payments and manage withdrawals from one place.</p><ul class="benefits"><li><span class="benefit-icon"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 18h4"/></svg></span><span>M-Pesa, Airtel Money, Mixx by Yas and HaloPesa</span></li><li><span class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M3 17 9 11l4 3 8-9"/><path d="M15 5h6v6"/></svg></span><span>Track today's takings at a glance</span></li><li><span class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M3 9h18M5 9V5l7-3 7 3v4M5 21V9m4 12V9m6 12V9m4 12V9M3 21h18"/></svg></span><span>Withdraw to mobile money or your bank</span></li></ul></div>
-      <div class="brand-foot"><b>XLipa</b> · Payments processed by Selcom.</div>
     </aside>
     <section class="form-side"><div class="form-wrap">
       <a class="logo mobile-logo" href="index33.html" aria-label="XLipa home"><svg viewBox="0 0 420 100" role="img" aria-label="XLipa"><defs><linearGradient id="xlipa-x-mobile" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#0875ff"/><stop offset=".52" stop-color="#08d7e8"/><stop offset="1" stop-color="#00bce9"/></linearGradient></defs><path d="m13 18 17-8 34 32 29-31 17 8-36 39 35 32-18 7-35-32-29 32-18-8 37-39z" fill="url(#xlipa-x-mobile)"/><path d="M14 77C2 66 22 41 58 24c28-13 57-17 69-9 13 9-9 31-33 47" fill="none" stroke="url(#xlipa-x-mobile)" stroke-width="6" stroke-linecap="round"/><text x="145" y="74" fill="#f4f8ff" font-family="Inter,Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="-5">XLipa</text></svg></a>
-      <header class="form-head"><h2>Welcome back</h2><p>Sign in to manage your payments</p></header>
+      <header class="form-head"><div class="kicker">Welcome back</div><h2>Sign in to XLipa</h2><p>Enter your account details to manage payments and withdrawals.</p></header>
       <form id="signInForm" autocomplete="on"><input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="username" placeholder="you@business.co.tz" required></div>
         <div class="field"><label for="password">Password</label><div class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Your password" required><button class="reveal" type="button" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="m4 4 16 16"/></svg></button></div></div>
