@@ -194,6 +194,10 @@ code {
 }
 
 @media (max-width: 520px) {
+  .nav-actions .signin {
+    display: inline-flex !important;
+  }
+
   .panel .cards {
     grid-template-columns: minmax(0, 1fr);
   }
