@@ -956,7 +956,6 @@
       @media (max-width: 760px) { .contact-layout { grid-template-columns: 1fr; } }
       @media (max-width: 520px) { .contact-fields { grid-template-columns: 1fr; } .contact-field.full { grid-column: auto; } .contact-form-card, .contact-side-card { padding: 20px; } }
       .faq-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
-      .faq-item:last-child:nth-child(odd) { grid-column: 1 / -1; width: min(100%,790px); justify-self: center; }
       .panel { grid-template-columns: minmax(0,1fr); }
       .faq-item { padding: 20px 22px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
       .faq-item summary { cursor: pointer; list-style: none; }
@@ -1109,51 +1108,65 @@
       </section>
       <section id="how-it-works" aria-labelledby="how-title">
         <section class="guide-section" aria-labelledby="how-title">
-        <div class="wrap">
-          <div class="guide-heading"><div class="guide-kicker">Simple from start to finish</div><h2 id="how-title">How payments work with XLipa</h2><p>Share a payment link or connect your platform. Your customer approves the payment on their mobile money service, and you can follow its status in XLipa.</p></div>
-          <div class="steps-grid">
-            <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">↗</span><span class="step-number">01</span></div><h3>Create and share</h3><p>Set up a payment link for your product or service, then share it with your customer wherever you do business.</p></article>
-            <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">⌕</span><span class="step-number">02</span></div><h3>Customer enters a number</h3><p>Your customer chooses a supported mobile money option and enters the phone number they want to pay from.</p></article>
-            <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">✓</span><span class="step-number">03</span></div><h3>They approve securely</h3><p>The customer reviews the prompt on their phone and confirms it with their mobile money PIN.</p></article>
-            <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">◎</span><span class="step-number">04</span></div><h3>Track your payment</h3><p>Check the payment status and balance in your XLipa account, then follow the available withdrawal options.</p></article>
+          <div class="wrap">
+            <div class="guide-heading">
+              <div class="guide-kicker">Simple from start to finish</div>
+              <h2 id="how-title">How payments work with XLipa</h2>
+              <p>Follow a payment from the first request through customer approval and into your XLipa account.</p>
+            </div>
+            <div class="steps-grid">
+              <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">↗</span><span class="step-number">01</span></div><h3>Create and share</h3><p>Set up a payment link for your product or service, then share it wherever you do business.</p></article>
+              <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">⌕</span><span class="step-number">02</span></div><h3>Customer enters a number</h3><p>Your customer chooses a supported mobile money option and enters the phone number they want to pay from.</p></article>
+              <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">✓</span><span class="step-number">03</span></div><h3>They approve securely</h3><p>The customer reviews the payment prompt on their phone and confirms it with their mobile money PIN.</p></article>
+              <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">◎</span><span class="step-number">04</span></div><h3>Track and withdraw</h3><p>Once confirmed, check the payment status and balance in your XLipa account, then use an available withdrawal option.</p></article>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
         <section class="guide-section soft" aria-labelledby="ways-title">
-        <div class="wrap">
-          <div class="guide-heading"><div class="guide-kicker">Choose what fits your business</div><h2 id="ways-title">A payment link or your own checkout</h2><p>XLipa works for a one-off payment request or a checkout built into your website or app.</p></div>
-          <div class="guide-grid">
-            <article class="guide-card"><span class="card-symbol" aria-hidden="true">↗</span><h3>Payment links</h3><p>Create a link for a product, service or amount, then share it with customers through WhatsApp, social media, SMS or in person.</p></article>
-            <article class="guide-card"><span class="card-symbol" aria-hidden="true">&lt;/&gt;</span><h3>Website and app checkout</h3><p>Connect a website or app to send payment requests and receive transaction status updates. See the <a href="developers.html" style="color:var(--brand-blue);text-decoration:underline">XLipa developer documentation</a> for integration details.</p></article>
+          <div class="wrap">
+            <div class="guide-heading"><div class="guide-kicker">Choose what fits your business</div><h2 id="ways-title">A simple link or a direct integration</h2><p>Start collecting with a shareable link, or connect XLipa to a website or app as your needs grow.</p></div>
+            <div class="guide-grid">
+              <article class="guide-card"><span class="card-symbol" aria-hidden="true">↗</span><h3>Payment links</h3><p>Create a link for a product or amount and share it through your usual customer channels. You can collect payments online or in person without building a checkout first.</p></article>
+              <article class="guide-card"><span class="card-symbol" aria-hidden="true">&lt;/&gt;</span><h3>Website and app integration</h3><p>For a checkout built into your own website or app, connect payment requests and receive transaction updates. <a href="developers.html" style="color:var(--brand-blue);text-decoration:underline">Read the XLipa developer documentation</a> before integrating.</p></article>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
         <section class="guide-section" id="pricing" aria-labelledby="pricing-title">
-        <div class="wrap">
-          <div class="guide-heading"><div class="guide-kicker">Clear transaction pricing</div><h2 id="pricing-title">A straightforward 5% fee</h2><p>XLipa charges 5% of the payment amount. The examples below show the estimated balance after this transaction fee.</p></div>
-          <div class="pricing-layout">
-            <div><div class="fee-box"><div class="fee-summary"><span>XLipa transaction fee</span><strong>5%</strong></div><div class="fee-table-wrap"><table class="fee-table"><thead><tr><th scope="col">Customer pays</th><th scope="col">5% fee</th><th scope="col">Balance after fee</th></tr></thead><tbody><tr><td>TZS 5,000</td><td>TZS 250</td><td>TZS 4,750</td></tr><tr><td>TZS 20,000</td><td>TZS 1,000</td><td>TZS 19,000</td></tr><tr><td>TZS 50,000</td><td>TZS 2,500</td><td>TZS 47,500</td></tr><tr><td>TZS 250,000</td><td>TZS 12,500</td><td>TZS 237,500</td></tr></tbody></table></div></div><p class="fee-note">Examples are illustrative calculations based on a 5% transaction fee.</p></div>
-            <aside class="requirements-box"><h3>Prepare to open an account</h3><ul><li><span aria-hidden="true">✓</span><span>Accurate personal or business details for your profile.</span></li><li><span aria-hidden="true">✓</span><span>A reachable phone number and email address.</span></li><li><span aria-hidden="true">✓</span><span>Identity or business documents for verification, if requested.</span></li><li><span aria-hidden="true">✓</span><span>Your preferred supported destination for withdrawals.</span></li></ul></aside>
+          <div class="wrap">
+            <div class="guide-heading"><div class="guide-kicker">Clear transaction pricing</div><h2 id="pricing-title">A straightforward 5% fee</h2><p>XLipa charges 5% of the payment amount. The examples below show the balance after this transaction fee.</p></div>
+            <div class="pricing-layout">
+              <div>
+                <div class="fee-box"><div class="fee-summary"><span>XLipa transaction fee</span><strong>5%</strong></div><div class="fee-table-wrap"><table class="fee-table"><thead><tr><th scope="col">Customer pays</th><th scope="col">5% fee</th><th scope="col">Balance after fee</th></tr></thead><tbody><tr><td>TZS 5,000</td><td>TZS 250</td><td>TZS 4,750</td></tr><tr><td>TZS 20,000</td><td>TZS 1,000</td><td>TZS 19,000</td></tr><tr><td>TZS 50,000</td><td>TZS 2,500</td><td>TZS 47,500</td></tr><tr><td>TZS 250,000</td><td>TZS 12,500</td><td>TZS 237,500</td></tr></tbody></table></div></div>
+                <p class="fee-note">These are illustrative calculations using the 5% transaction fee.</p>
+              </div>
+              <aside class="requirements-box"><h3>What to prepare for an account</h3><ul><li><span aria-hidden="true">✓</span><span>Accurate personal or business details for your profile.</span></li><li><span aria-hidden="true">✓</span><span>A reachable phone number and email address.</span></li><li><span aria-hidden="true">✓</span><span>Identity or business documents for verification, if requested.</span></li><li><span aria-hidden="true">✓</span><span>Your preferred supported destination for withdrawals.</span></li></ul></aside>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
         <section class="guide-section soft" id="payment-handling" aria-labelledby="trust-title">
-        <div class="wrap guide-grid">
-          <div class="guide-copy"><div class="guide-kicker">Payment handling</div><h2 id="trust-title">Who handles the payment</h2><p>XLipa provides the payment tools. Selcom processes and settles payments, while customers approve transactions through their chosen mobile money service.</p><p>Each payment has a reference in your XLipa account. Keep it handy if you need help reviewing a transaction.</p></div>
-          <div class="money-details" aria-label="Payment processing details">
-            <div class="money-row"><span class="money-icon" aria-hidden="true">◇</span><div><span>Payment processor</span><strong>Selcom</strong></div></div>
+          <div class="wrap guide-grid">
+            <div class="guide-copy"><div class="guide-kicker">Payment handling</div><h2 id="trust-title">Who handles your money</h2><p>XLipa provides the technology to request and track payments; it is not a bank. When a customer approves a payment, Selcom processes and settles it. The customer confirms the transaction through their own mobile money service.</p><p>Each transaction is recorded in your XLipa account with a unique reference. Keep that reference if you need help checking a payment.</p></div>
+            <div class="money-details" aria-label="Payment processing and support details">
+              <div class="money-row"><span class="money-icon" aria-hidden="true">✉</span><div><span>Email support</span><strong><a href="mailto:support@xlipa.net">support@xlipa.net</a></strong></div></div>
+              <div class="money-row"><span class="money-icon" aria-hidden="true">◷</span><div><span>Support hours</span><strong>Monday to Friday, 8:00 to 18:00 EAT</strong></div></div>
+              <div class="money-row"><span class="money-icon" aria-hidden="true">◇</span><div><span>Payments processed and settled by</span><strong>Selcom</strong></div></div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
         <section class="guide-section" aria-labelledby="faq-title">
-        <div class="wrap">
-          <div class="guide-heading"><div class="guide-kicker">Help when you need it</div><h2 id="faq-title">Common questions</h2><p>Quick guidance for common payment situations.</p></div>
-          <div class="faq-grid">
-            <details class="faq-item"><summary>What if the customer does not receive a payment prompt?</summary><p>Check that they entered the correct mobile number and have network coverage, then try the payment request again.</p></details>
-            <details class="faq-item"><summary>How do I check my account review?</summary><p>Sign in to your XLipa account to see its review status and any follow-up information requested from you.</p></details>
-            <details class="faq-item"><summary>How do I reach XLipa support?</summary><p>Use the <a href="contact.html" style="color:var(--brand-blue);text-decoration:underline">Contact page</a> to send your question to the support team.</p></details>
+          <div class="wrap">
+            <div class="guide-heading"><div class="guide-kicker">Help when you need it</div><h2 id="faq-title">Common questions</h2><p>Practical answers for setting up an account and handling a payment.</p></div>
+            <div class="faq-grid">
+              <details class="faq-item"><summary>How long does account review take?</summary><p>Review time depends on the information you provide. Submit complete, accurate details and check your XLipa account for any follow-up request.</p></details>
+              <details class="faq-item"><summary>What if the customer does not receive a payment prompt?</summary><p>Ask them to confirm the phone number and check their mobile network. Before retrying, check the payment status in your XLipa account to avoid sending a second request for a payment that has already gone through.</p></details>
+              <details class="faq-item"><summary>How do I withdraw my balance?</summary><p>Open the withdrawal options in your XLipa account, choose an available destination and review the amount and destination details before submitting your request.</p></details>
+              <details class="faq-item"><summary>What information helps support check a payment?</summary><p>Share the transaction reference, amount and approximate time of payment. Never send your mobile money PIN when asking for help.</p></details>
+            </div>
           </div>
-        </div>
         </section>
       </section>
     </main>
