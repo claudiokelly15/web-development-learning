@@ -61,7 +61,7 @@
     /* XLipa light, open page theme */
     :root{--navy:#101b49;--teal:#18c7d9;--blue:#245fc7;--ink:#101b49;--muted:#52617f;--line:#dfe6f0;--bg:#f3f7fc}
     body{background:linear-gradient(150deg,#fff 0%,#f6f9fd 100%)}
-    .shell{max-width:1920px;min-height:calc(100vh - 82px);margin:0 auto;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(32px,6vw,88px);padding:clamp(28px,4vw,58px);align-items:center;background-image:linear-gradient(100deg,rgba(36,95,199,.13) 0%,rgba(36,95,199,.08) 30%,rgba(36,95,199,.03) 58%,rgba(36,95,199,0) 82%),linear-gradient(rgba(36,95,199,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(36,95,199,.035) 1px,transparent 1px);background-size:auto,118px 118px,118px 118px;background-repeat:no-repeat,repeat,repeat}
+    .shell{max-width:1920px;min-height:calc(100vh - 158px);margin:0 auto;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(32px,6vw,88px);padding:clamp(28px,4vw,58px);align-items:center;background-image:linear-gradient(100deg,rgba(36,95,199,.13) 0%,rgba(36,95,199,.08) 30%,rgba(36,95,199,.03) 58%,rgba(36,95,199,0) 82%),linear-gradient(rgba(36,95,199,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(36,95,199,.035) 1px,transparent 1px);background-size:auto,118px 118px,118px 118px;background-repeat:no-repeat,repeat,repeat}
     .brand-panel{min-height:0;padding:0;color:var(--navy);background:transparent;border:0;border-radius:0;box-shadow:none}
     .brand-panel:after{display:none}
     .brand-panel h1{max-width:12em;margin:0 0 22px;color:var(--navy);font-size:clamp(42px,5vw,62px);font-weight:700;line-height:1.08;letter-spacing:-.045em}
@@ -99,9 +99,33 @@
     .site-nav .burger{display:none;width:40px;height:40px;border:0;background:transparent;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
     .site-nav .burger i{display:block;width:22px;height:2px;border-radius:2px;background:var(--navy)}
     .brand-panel>.logo,.mobile-logo{display:none!important}
-    @media(max-width:860px){.site-nav{min-height:76px}.site-nav .burger{display:flex;margin-left:auto}.site-nav nav{position:absolute;top:100%;left:20px;right:20px;z-index:10;display:none;margin:0;padding:10px 18px 16px;background:#fff;border:1px solid var(--line);border-radius:0 0 14px 14px;box-shadow:0 16px 28px rgba(16,27,73,.1)}.site-nav nav.open{display:block}.site-nav nav ul{display:flex;flex-direction:column;align-items:stretch;gap:0}.site-nav nav a{display:block;padding:11px 0}.site-nav .nav-actions{margin:8px 0 0}.site-nav .nav-actions a{flex:1}.shell{min-height:calc(100vh - 76px)}}
-    @media(max-width:820px){.shell{display:block;min-height:0;padding:0;background-image:linear-gradient(rgba(36,95,199,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(36,95,199,.035) 1px,transparent 1px);background-size:118px 118px}.brand-panel{display:none}.form-side{min-height:calc(100vh - 150px);display:block;padding:30px 22px;background:transparent}.form-wrap{width:min(100%,620px);margin:0 auto}.mobile-footer{display:block;padding:18px 16px 24px;color:var(--muted);font-size:12px;text-align:center}.mobile-footer .slogan{color:var(--navy);font-weight:600}}
+    @media(max-width:860px){.site-nav{min-height:76px}.site-nav .burger{display:flex;margin-left:auto}.site-nav nav{position:absolute;top:100%;left:20px;right:20px;z-index:10;display:none;margin:0;padding:10px 18px 16px;background:#fff;border:1px solid var(--line);border-radius:0 0 14px 14px;box-shadow:0 16px 28px rgba(16,27,73,.1)}.site-nav nav.open{display:block}.site-nav nav ul{display:flex;flex-direction:column;align-items:stretch;gap:0}.site-nav nav a{display:block;padding:11px 0}.site-nav .nav-actions{margin:8px 0 0}.site-nav .nav-actions a{flex:1}.shell{min-height:calc(100vh - 152px)}}
+    @media(max-width:820px){.shell{display:block;min-height:calc(100vh - 152px);padding:0;background-image:linear-gradient(rgba(36,95,199,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(36,95,199,.035) 1px,transparent 1px);background-size:118px 118px}.brand-panel{display:none}.form-side{min-height:calc(100vh - 152px);display:block;padding:30px 22px;background:transparent}.form-wrap{width:min(100%,680px);margin:0 auto}}
     @media(max-width:560px){.shell{padding:0}.form-side{padding:24px 20px 20px}.mobile-logo{margin-bottom:24px}}
+    .site-footer{background:var(--navy);color:#dce5f4}
+    .site-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:1920px;min-height:76px;margin:0 auto;padding:16px clamp(20px,3vw,58px);font-size:13px}
+    .site-footer-inner p{margin:0}
+    .site-footer-links{display:flex;gap:24px}
+    .site-footer-links a:hover{color:#fff}
+    @media(max-width:560px){.site-footer-inner{flex-direction:column;justify-content:center;text-align:center;padding:20px;font-size:12px}.site-footer-links{flex-wrap:wrap;justify-content:center;gap:12px 20px}}
+    .form-wrap{width:min(100%,680px)}
+    .form-head{margin-bottom:30px}
+    .form-head .kicker{color:var(--blue);font-size:12px;font-weight:650;letter-spacing:1.2px}
+    .form-head h2{margin:8px 0 10px;color:var(--navy);font-size:clamp(32px,3vw,40px);font-weight:700;line-height:1.12;letter-spacing:-1.3px}
+    .form-head p{max-width:540px;color:var(--muted);font-size:15px;line-height:1.65}
+    .form-grid{column-gap:22px;row-gap:20px}
+    .field{gap:8px}
+    .field label{color:#344b70;font-size:13px;font-weight:600}
+    .field input{height:52px;padding:0 15px;border-color:#dfe6f0;border-radius:10px;color:var(--navy);font-size:14px}
+    .field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(36,95,199,.12)}
+    .field input::placeholder{color:#8796ad}
+    .check-row{margin:22px 0;color:var(--muted);font-size:13px;line-height:1.6}
+    .check-row a{color:var(--blue)}
+    .submit{height:54px;border-radius:12px;font-size:15px;font-weight:600}
+    .signin{margin-top:22px;color:var(--muted);font-size:13px}
+    .signin a{color:var(--blue)}
+    .secure{margin-top:24px;color:#7f8da3;font-size:11px}
+    @media(max-width:560px){.form-head{margin-bottom:24px}.form-head h2{font-size:32px}.form-head p{font-size:14px}.form-grid{grid-template-columns:1fr;row-gap:15px}.check-row{margin:18px 0;font-size:12px}.submit{height:52px}.secure{margin-top:20px}}
   </style>
 </head>
 <body>
@@ -128,7 +152,7 @@
           <div class="feature"><span class="feature-icon">◇</span><span>Secure tools built to help you grow</span></div>
         </div>
       </div>
-      <div class="brand-foot"><b>XLipa</b> · <span class="slogan">Payments made simple.</span><br>© 2026 XLipa. All rights reserved.</div>
+
     </aside>
     <section class="form-side">
       <div class="form-wrap">
@@ -153,7 +177,7 @@
       </div>
     </section>
   </main>
-  <footer class="mobile-footer"><span class="slogan">Payments made simple.</span><br>© 2026 XLipa. All rights reserved.</footer>
+  <footer class="site-footer"><div class="site-footer-inner"><p>© 2026 XLipa. Payments made simple.</p><div class="site-footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div></div></footer>
   <script>
     document.querySelectorAll('.reveal').forEach(button=>button.addEventListener('click',()=>{const field=document.getElementById(button.dataset.target);const visible=field.type==='password';field.type=visible?'text':'password';button.setAttribute('aria-label',visible?'Hide password':'Show password');button.setAttribute('aria-pressed',String(visible))}));
     document.getElementById('createForm').addEventListener('submit',event=>{event.preventDefault();const password=document.getElementById('password').value;const confirm=document.getElementById('confirmPassword').value;const notice=document.getElementById('notice');if(password!==confirm){notice.textContent='Your passwords do not match. Please enter the same password in both fields.';notice.style.color='#a23b3b';notice.style.background='#fff0f0';notice.classList.add('show');return}notice.textContent='Your details are complete. Connect this form to XLipa registration to create your account.';notice.style.color='';notice.style.background='';notice.classList.add('show')});
