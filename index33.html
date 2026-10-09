@@ -791,8 +791,18 @@
       .selbox { width: 176px; height: 58px; overflow: hidden; border-radius: 12px; background: #ed0033; }
       .selcom-logo { width: 176px; height: 58px; object-fit: cover; object-position: center; border-radius: 12px; }
       footer { background: var(--brand-navy); color: #dce5f4; }
-      .footer-inner { min-height: 76px; font-size: 13px; }
-      .footer-links a:hover { color: #fff; }
+      .footer-inner { display: block; min-height: 0; padding-top: 28px; padding-bottom: 24px; font-size: 14px; }
+      .footer-main { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding-bottom: 22px; border-bottom: 1px solid rgba(220,229,244,.18); }
+      .footer-logo { display: inline-flex; align-items: center; gap: 10px; flex: none; color: #fff; text-decoration: none; }
+      .footer-logo .logo-mark { width: 42px; height: 42px; }
+      .footer-logo-word { color: #fff; font-size: 25px; font-weight: 700; letter-spacing: -1px; }
+      .footer-logo-word .footer-logo-x { color: #8ecbff; }
+      .footer-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px 24px; }
+      .footer-nav a { color: #dce5f4; font-size: 14px; white-space: nowrap; text-decoration: none; transition: color .2s ease; }
+      .footer-nav a:hover { color: #fff; }
+      .footer-legal { margin: 20px 0 0; color: #b9c9df; font-size: 14px; line-height: 1.65; }
+      @media (max-width: 720px) { .footer-main { align-items: flex-start; flex-direction: column; gap: 18px; } .footer-nav { justify-content: flex-start; gap: 12px 20px; } }
+      @media (max-width: 480px) { .footer-inner { padding-top: 24px; padding-bottom: 22px; } .footer-nav a { font-size: 13px; } .footer-legal { font-size: 12px; } }
       a:focus-visible, button:focus-visible { outline: 3px solid var(--brand-cyan); outline-offset: 3px; }
       @media (max-width: 1020px) {
         .nav { min-height: 76px; }
@@ -988,8 +998,20 @@
     </main>
     <footer>
       <div class="wrap footer-inner">
-        <p>© 2026 XLipa. Payments made simple.</p>
-        <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div>
+        <div class="footer-main">
+          <a class="footer-logo" href="index33.html" aria-label="XLipa home"><img class="logo-mark" src="assets/xlipa-favicon.svg" alt=""><span class="footer-logo-word"><span class="footer-logo-x">X</span>Lipa</span></a>
+          <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="#">Pricing</a>
+            <a href="#">API docs</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+            <a href="#">Disclaimer</a>
+            <a href="#">Prohibited businesses</a>
+          </nav>
+        </div>
+        <p class="footer-legal">© 2026 XLipa. XLipa is a technology service, not a bank. Payments are processed and settled by Selcom.</p>
       </div>
     </footer>
   </body>
