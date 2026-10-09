@@ -727,6 +727,116 @@
         .hero h1 { font-size:28px; }
         .phone { max-width:100%; transform:scale(.92); transform-origin:top center; }
       }
+      /* XLipa premium visual system */
+      :root {
+        --brand-navy: #101b49;
+        --brand-blue: #245fc7;
+        --brand-cyan: #18c7d9;
+        --text-main: #101b49;
+        --text-muted: #52617f;
+        --surface: #fff;
+        --surface-soft: #f3f7fc;
+        --line: #dfe6f0;
+        --pad: clamp(20px, 4vw, 56px);
+      }
+      body { background: var(--surface); color: var(--text-main); overflow-x: clip; }
+      .wrap { max-width: 1320px; }
+      header { background: rgba(255,255,255,.97); box-shadow: 0 1px 0 var(--line); }
+      .nav { min-height: 82px; }
+      .logo svg { width: 190px; height: auto; }
+      .logo svg text { fill: var(--brand-navy); }
+      nav { margin-left: auto; gap: clamp(24px,3vw,42px); }
+      nav ul { gap: clamp(18px,2.2vw,30px); }
+      nav a { color: var(--brand-navy); font-size: 15px; font-weight: 500; }
+      nav a:hover, .footer-links a:hover { color: var(--brand-blue); }
+      .nav-actions { margin-left: clamp(22px,3vw,40px); gap: 10px; }
+      .nav-actions a { border-radius: 11px; font-size: 14px; }
+      .nav-actions .signin { color: var(--brand-navy); border-color: var(--line); background: #fff; }
+      .nav-actions .create { color: #fff; background: var(--brand-blue); box-shadow: none; }
+      .nav-actions .create:hover, .btn.primary:hover { background: #1d50a9; }
+      .hero {
+        grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr);
+        gap: clamp(36px,6vw,80px);
+        min-height: 500px;
+        padding: clamp(52px,7vw,88px) clamp(8px,2vw,26px);
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        color: var(--text-main);
+        background: radial-gradient(ellipse at 88% 45%, #f1f7ff 0, #fff 52%);
+        box-shadow: none;
+      }
+      .eyebrow { color: var(--brand-blue); font-size: 12px; letter-spacing: 1.5px; font-weight: 600; }
+      .eyebrow:before { background: var(--brand-cyan); }
+      .hero h1 { max-width: 12em; color: var(--brand-navy); font-size: clamp(42px,5vw,62px); line-height: 1.08; font-weight: 700; letter-spacing: -.045em; }
+      .hero .sub { max-width: 620px; margin-top: 22px; color: var(--text-muted); font-size: clamp(16px,1.3vw,18px); line-height: 1.7; }
+      .btns { margin-top: 30px; gap: 12px; }
+      .btn { min-height: 52px; height: auto; padding: 0 24px; border-radius: 12px; font-weight: 600; }
+      .btn.primary { color: #fff; background: var(--brand-blue); box-shadow: 0 7px 18px rgba(36,95,199,.18); }
+      .btn.ghost { color: var(--brand-navy); border: 1px solid var(--line); background: #fff; }
+      .btn.ghost:hover { color: var(--brand-blue); border-color: #a8bfeb; }
+      .phone { width: min(280px,100%); box-shadow: 0 0 0 2px #3b3c47,0 0 0 4px #0d0d12,0 24px 48px rgba(16,27,73,.2); }
+      .screen { background: radial-gradient(120% 55% at 30% 18%,#c4161c 0%,rgba(196,22,28,0) 70%),linear-gradient(165deg,#a50f14 0%,#d41a1f 22%,#b8121a 42%,#9c0e14 62%,#6e0a0d 85%,#3d0507 100%); }
+      .panel { grid-template-columns: minmax(0,1fr) 1px auto; gap: 28px; margin: 0 0 52px; padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 8px 28px rgba(16,27,73,.045); }
+      .panel h4 { margin-bottom: 14px; color: var(--text-muted); font-size: 15px; font-weight: 600; }
+      .cards { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
+      .card { min-height: 68px; height: auto; padding: 10px 12px; gap: 10px; border: 1px solid var(--line); border-radius: 12px; background: #fff; box-shadow: none; color: var(--text-main); font-size: 14px; font-weight: 600; }
+      .card .lg { width: 42px; }
+      .provider-logo { width: 42px; max-height: 42px; }
+      .card:nth-child(n) span:last-child { color: var(--text-main); }
+      .divider { background: var(--line); }
+      .selbox { width: 150px; height: 68px; border-radius: 12px; }
+      .selcom-logo { width: 150px; }
+      footer { background: var(--brand-navy); color: #dce5f4; }
+      .footer-inner { min-height: 76px; font-size: 13px; }
+      .footer-links a:hover { color: #fff; }
+      a:focus-visible, button:focus-visible { outline: 3px solid var(--brand-cyan); outline-offset: 3px; }
+      @media (max-width: 1020px) {
+        .nav { min-height: 76px; }
+        .hero { grid-template-columns: minmax(0,1.15fr) minmax(230px,.85fr); gap: 28px; }
+        .hero h1 { font-size: clamp(38px,5.2vw,52px); }
+        .panel { grid-template-columns: 1fr; gap: 20px; }
+        .divider { display: none; }
+        .right { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .right h4 { margin: 0; }
+      }
+      @media (max-width: 860px) {
+        .nav { position: relative; }
+        .burger { display: flex; }
+        nav { top: 100%; left: 0; right: 0; margin: 0; padding: 10px 0 16px; background: #fff; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 14px 14px; box-shadow: 0 16px 28px rgba(16,27,73,.1); }
+        nav ul { align-items: stretch; gap: 0; padding: 0 var(--pad); }
+        nav a { display: block; padding: 11px 0; }
+        .nav-actions { margin: 8px var(--pad) 0; }
+        .nav-actions a { min-height: 42px; font-size: 13px; }
+      }
+      @media (max-width: 700px) {
+        .hero { grid-template-columns: 1fr; gap: 34px; min-height: auto; padding: 48px 0 38px; }
+        .hero h1 { max-width: 13em; font-size: clamp(36px,8vw,48px); }
+        .hero .sub { font-size: 16px; line-height: 1.65; }
+        .phone-wrap { padding: 0 0 8px; }
+        .phone { height: 440px; }
+        .panel { margin-bottom: 32px; padding: 20px; }
+        .cards { grid-template-columns: repeat(2,minmax(0,1fr)); }
+        .right { align-items: flex-start; flex-direction: column; }
+        .footer-inner { flex-direction: column; justify-content: center; padding: 22px 0; text-align: center; }
+        .footer-links { flex-wrap: wrap; justify-content: center; gap: 14px 20px; }
+      }
+      @media (max-width: 480px) {
+        .logo svg { width: 150px; }
+        .nav-actions .signin { display: none; }
+        .nav-actions .create { min-height: 38px; padding: 0 11px; font-size: 12px; }
+        .burger { width: 36px; }
+        .hero { padding-top: 38px; }
+        .hero h1 { font-size: clamp(34px,9vw,42px); }
+        .btns { display: grid; grid-template-columns: 1fr; }
+        .btn { width: 100%; }
+        .cards { grid-template-columns: 1fr 1fr; gap: 8px; }
+        .card { min-height: 70px; padding: 8px; gap: 7px; font-size: 12px; }
+        .card .lg, .provider-logo { width: 32px; }
+        .selbox, .selcom-logo { width: 140px; }
+        .phone { width: 260px; height: 430px; }
+      }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
     </style>
   </head>
   <body>
