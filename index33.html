@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#101052" />
+    <meta name="theme-color" content="#101b49" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>XLipa - Get Paid Anywhere, Anytime</title>
     <link rel="icon" type="image/svg+xml" href="assets/xlipa-favicon.svg" />
@@ -739,8 +739,8 @@
         --line: #dfe6f0;
         --pad: clamp(20px, 4vw, 56px);
       }
-      body { background: var(--surface); color: var(--text-main); overflow-x: clip; }
-      .wrap { max-width: 1320px; }
+      body { background: linear-gradient(180deg,#fff 0%,#f7faff 46%,#eaf3fb 100%); color: var(--text-main); overflow-x: clip; }
+      .wrap { width: 100%; max-width: 1920px; }
       header { background: rgba(255,255,255,.97); box-shadow: 0 1px 0 var(--line); }
       .nav { min-height: 82px; }
       .logo svg { width: 190px; height: auto; }
@@ -775,18 +775,18 @@
       .btn.primary { color: #fff; background: var(--brand-blue); box-shadow: 0 7px 18px rgba(36,95,199,.18); }
       .btn.ghost { color: var(--brand-navy); border: 1px solid var(--line); background: #fff; }
       .btn.ghost:hover { color: var(--brand-blue); border-color: #a8bfeb; }
-      .phone { width: min(280px,100%); box-shadow: 0 0 0 2px #3b3c47,0 0 0 4px #0d0d12,0 24px 48px rgba(16,27,73,.2); }
-      .screen { background: radial-gradient(120% 55% at 30% 18%,#c4161c 0%,rgba(196,22,28,0) 70%),linear-gradient(165deg,#a50f14 0%,#d41a1f 22%,#b8121a 42%,#9c0e14 62%,#6e0a0d 85%,#3d0507 100%); }
-      .panel { grid-template-columns: minmax(0,1fr) 1px auto; gap: 28px; margin: 0 0 52px; padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 8px 28px rgba(16,27,73,.045); }
+      .phone { width: min(240px,100%); height: 484px; background: #101b49; box-shadow: 0 0 0 2px #243969,0 0 0 4px #101b49,0 24px 48px rgba(16,27,73,.2); }
+      .screen { background: radial-gradient(100% 44% at 50% 10%,rgba(24,199,217,.28),transparent 72%),linear-gradient(165deg,#078fca 0%,#126ca8 38%,#143b78 68%,#101b49 100%); }
+      .panel { grid-template-columns: minmax(0,1fr) 1px auto; gap: 28px; margin: 0 0 36px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.92); box-shadow: 0 8px 28px rgba(16,27,73,.045); }
       .panel h4 { margin-bottom: 14px; color: var(--text-muted); font-size: 15px; font-weight: 600; }
-      .cards { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
-      .card { min-height: 68px; height: auto; padding: 10px 12px; gap: 10px; border: 1px solid var(--line); border-radius: 12px; background: #fff; box-shadow: none; color: var(--text-main); font-size: 14px; font-weight: 600; }
+      .cards { display: flex; flex-wrap: wrap; gap: 12px; }
+      .card { min-width: 164px; min-height: 58px; height: auto; padding: 8px 14px; gap: 10px; border: 1px solid var(--line); border-radius: 14px; background: #fff; box-shadow: none; color: var(--text-main); font-size: 15px; font-weight: 600; }
       .card .lg { width: 42px; }
       .provider-logo { width: 42px; max-height: 42px; }
       .card:nth-child(n) span:last-child { color: var(--text-main); }
       .divider { background: var(--line); }
-      .selbox { width: 150px; height: 68px; border-radius: 12px; }
-      .selcom-logo { width: 150px; }
+      .selbox { width: 176px; height: 58px; border-radius: 12px; background: #ed0033; }
+      .selcom-logo { width: 148px; }
       footer { background: var(--brand-navy); color: #dce5f4; }
       .footer-inner { min-height: 76px; font-size: 13px; }
       .footer-links a:hover { color: #fff; }
