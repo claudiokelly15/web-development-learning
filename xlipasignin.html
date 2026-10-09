@@ -213,11 +213,26 @@
   </main>
   <footer class="site-footer"><div class="site-footer-inner"><p>© 2026 XLipa. Payments made simple.</p><div class="site-footer-links"><a href="index33.html#about">About XLipa</a><a href="index33.html#pricing">Pricing</a><a href="index33.html#how-it-works">How it works</a><a href="index33.html#contact">Contact</a></div></div></footer>
   <script>
+    const accountNav = document.querySelector('.site-nav nav');
+    const accountMenuToggle = document.querySelector('.site-nav .burger');
+    accountNav.addEventListener('click', event => {
+      if (event.target.closest('a') && accountNav.classList.contains('open')) {
+        accountNav.classList.remove('open');
+        accountMenuToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && accountNav.classList.contains('open')) {
+        accountNav.classList.remove('open');
+        accountMenuToggle.setAttribute('aria-expanded', 'false');
+        accountMenuToggle.focus();
+      }
+    });
     const passwordField=document.getElementById('password');
     const revealButton=document.querySelector('.reveal');
     revealButton.addEventListener('click',()=>{const show=passwordField.type==='password';passwordField.type=show?'text':'password';revealButton.setAttribute('aria-label',show?'Hide password':'Show password');revealButton.setAttribute('aria-pressed',String(show))});
     const notice=document.getElementById('notice');
-    document.getElementById('forgotPassword').addEventListener('click',()=>{notice.textContent='Password recovery is not connected yet. Please contact XLipa support for help.';notice.classList.add('show')});
+    document.getElementById('forgotPassword').addEventListener('click',()=>{const accountEmail=document.getElementById('email').value.trim();const body=accountEmail?encodeURIComponent(`Password recovery request for: ${accountEmail}`):'';notice.textContent='Opening an email to XLipa support for password recovery.';notice.classList.add('show');window.location.href=`mailto:support@xlipa.net?subject=Password%20recovery%20request${body?`&body=${body}`:''}`});
     document.getElementById('signInForm').addEventListener('submit',event=>{event.preventDefault();notice.textContent='Sign-in is not connected to an account service yet. Your details have not been sent.';notice.classList.add('show')});
   </script>
 </body>

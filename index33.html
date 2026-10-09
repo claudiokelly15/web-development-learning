@@ -1239,6 +1239,24 @@
       </div>
     </footer>
   <script>
+    document.querySelectorAll('header .nav').forEach(function (navigation) {
+      const menu = navigation.querySelector('nav');
+      const toggle = navigation.querySelector('.burger');
+      if (!menu || !toggle) return;
+      menu.addEventListener('click', function (event) {
+        if (event.target.closest('a') && menu.classList.contains('open')) {
+          menu.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && menu.classList.contains('open')) {
+          menu.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.focus();
+        }
+      });
+    });
     document.getElementById('contactForm').addEventListener('submit', function (event) {
       event.preventDefault();
       if (!this.reportValidity()) return;
