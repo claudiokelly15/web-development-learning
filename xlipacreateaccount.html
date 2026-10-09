@@ -58,18 +58,32 @@
     .form-side{background:#fff}
     @media(max-width:820px){.shell{display:block;padding:0;gap:0}.brand-panel{display:none}.form-side{min-height:100vh;display:block;padding:30px 22px}.form-wrap{width:min(100%,620px);margin:0 auto}.mobile-logo{display:flex;margin:0 auto 26px;padding:8px 12px;border-radius:13px;background:var(--navy)}}
     @media(max-width:560px){.form-side{padding:20px 16px 28px}.form-wrap{padding:0;border:0;border-radius:0;box-shadow:none;background:transparent}.mobile-logo{margin-bottom:24px}}
-    /* XLipa shared brand palette */
+    /* XLipa light, open page theme */
     :root{--navy:#101b49;--teal:#18c7d9;--blue:#245fc7;--ink:#101b49;--muted:#52617f;--line:#dfe6f0;--bg:#f3f7fc}
-    .brand-panel{background:radial-gradient(ellipse at 100% 100%,rgba(36,95,199,.25),transparent 42%),linear-gradient(145deg,#101b49,#15295a 65%,#101b49);border-color:rgba(255,255,255,.08);box-shadow:none}
-    .brand-panel:after{border-color:rgba(24,199,217,.12);box-shadow:0 0 0 48px rgba(24,199,217,.025),0 0 0 96px rgba(24,199,217,.018)}
-    .form-wrap{border-color:var(--line);box-shadow:0 12px 36px rgba(16,27,73,.07)}
+    body{background:radial-gradient(ellipse at 84% 15%,rgba(36,95,199,.1),transparent 38%),linear-gradient(150deg,#fff 18%,#f3f7fc 100%)}
+    .shell{max-width:1440px;min-height:100vh;margin:0 auto;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(32px,6vw,88px);padding:clamp(28px,5vw,68px);align-items:center}
+    .brand-panel{min-height:0;padding:0;color:var(--navy);background:transparent;border:0;border-radius:0;box-shadow:none}
+    .brand-panel:after{display:none}
+    .brand-panel h1{color:var(--navy)}
+    .brand-panel h1 span{color:var(--blue)!important}
+    .intro>p{color:var(--muted)}
+    .feature{color:#344b70}
+    .feature-icon{color:var(--blue);border-color:var(--line);background:rgba(255,255,255,.7)}
+    .brand-foot{color:var(--muted)}
+    .brand-foot b,.brand-foot .slogan{color:var(--navy)}
+    .logo svg text{fill:var(--navy)}
+    .form-side{min-height:0;padding:0;background:transparent}
+    .form-wrap{width:min(100%,620px);padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+    .form-head h2{color:var(--navy)}
+    .form-head p,.field label,.signin{color:var(--muted)}
     .form-head .kicker,.check-row a,.signin a{color:var(--blue)}
     .field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(36,95,199,.12)}
     .submit{color:#fff;background:var(--blue);box-shadow:0 6px 16px rgba(36,95,199,.18)}
     .submit:hover{background:#1d50a9;box-shadow:0 6px 16px rgba(36,95,199,.18)}
-    .brand-foot .slogan{color:#dceafa}
+    .mobile-logo{background:transparent}
     .mobile-footer{display:none}
-    @media(max-width:820px){.mobile-footer{display:block;padding:18px 16px 24px;color:var(--muted);font-size:12px;text-align:center}.mobile-footer .slogan{color:var(--navy);font-weight:600}}
+    @media(max-width:820px){.shell{display:block;min-height:0;padding:30px 22px 12px}.brand-panel{display:none}.form-side{min-height:calc(100vh - 90px);display:block;padding:0}.form-wrap{width:min(100%,620px);margin:0 auto}.mobile-logo{display:flex;width:max-content;margin:0 auto 26px;padding:0}.mobile-footer{display:block;padding:18px 16px 24px;color:var(--muted);font-size:12px;text-align:center}.mobile-footer .slogan{color:var(--navy);font-weight:600}}
+    @media(max-width:560px){.shell{padding:24px 20px 8px}.mobile-logo{margin-bottom:24px}}
   </style>
 </head>
 <body>
