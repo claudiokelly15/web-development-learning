@@ -927,6 +927,29 @@
       .about-cta-actions { display: flex; flex: none; flex-wrap: wrap; gap: 10px; }
       @media (max-width: 760px) { .about-story { grid-template-columns: 1fr; } .about-cta { align-items: flex-start; flex-direction: column; } .about-cta-actions { width: 100%; } }
       @media (max-width: 480px) { .about-facts { padding: 6px 18px; } .about-cta-actions { display: grid; grid-template-columns: 1fr; } }
+      .contact-section { padding: clamp(56px,8vw,96px) 0; border-top: 1px solid var(--line); scroll-margin-top: 24px; background: rgba(243,247,252,.78); }
+      .contact-layout { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(270px,.9fr); gap: 20px; align-items: start; max-width: 1180px !important; }
+      .contact-form-card, .contact-side-card { min-width: 0; padding: clamp(22px,3vw,34px); border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: 0 12px 34px rgba(16,27,73,.045); }
+      .contact-form-card h3 { color: var(--brand-navy); font-size: 22px; }
+      .contact-form-card > p { margin-top: 7px; color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+      .contact-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin-top: 22px; }
+      .contact-field { display: grid; gap: 7px; min-width: 0; }
+      .contact-field.full { grid-column: 1 / -1; }
+      .contact-field label { color: var(--brand-navy); font-size: 13px; font-weight: 600; }
+      .contact-field input, .contact-field textarea { width: 100%; min-width: 0; padding: 12px 13px; border: 1px solid #d9e1ee; border-radius: 10px; background: #fff; color: var(--text-main); font: inherit; font-size: 14px; }
+      .contact-field textarea { min-height: 132px; resize: vertical; }
+      .contact-field input:focus, .contact-field textarea:focus { outline: 3px solid rgba(36,95,199,.15); border-color: var(--brand-blue); }
+      .contact-submit { width: 100%; margin-top: 16px; cursor: pointer; }
+      .contact-hint { margin-top: 10px !important; color: #71809a !important; font-size: 12px !important; }
+      .contact-side-card { padding: 8px 22px; }
+      .contact-info-row { display: grid; grid-template-columns: 38px minmax(0,1fr); gap: 12px; align-items: start; padding: 19px 0; border-bottom: 1px solid var(--line); }
+      .contact-info-row:last-child { border-bottom: 0; }
+      .contact-info-icon { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 11px; color: var(--brand-blue); background: #edf3ff; }
+      .contact-info-row strong { color: var(--brand-navy); font-size: 14px; }
+      .contact-info-row p, .contact-info-row a { display: inline-block; margin-top: 5px; color: var(--text-muted); font-size: 13px; line-height: 1.55; overflow-wrap: anywhere; }
+      .contact-info-row a { color: var(--brand-blue); text-decoration: underline; text-underline-offset: 3px; }
+      @media (max-width: 760px) { .contact-layout { grid-template-columns: 1fr; } }
+      @media (max-width: 520px) { .contact-fields { grid-template-columns: 1fr; } .contact-field.full { grid-column: auto; } .contact-form-card, .contact-side-card { padding: 20px; } }
       .faq-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
       .faq-item { padding: 20px 22px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
       .faq-item summary { cursor: pointer; list-style: none; }
@@ -1110,11 +1133,11 @@
           </div>
         </div>
       </section>
-      <section class="guide-section soft" id="contact" aria-labelledby="trust-title">
+      <section class="guide-section soft" id="payment-handling" aria-labelledby="trust-title">
         <div class="wrap guide-grid">
           <div class="guide-copy"><div class="guide-kicker">Payment handling</div><h2 id="trust-title">Who handles your money</h2><p>XLipa is a technology service, not a bank. It gives your business tools to request and track payments. Selcom processes and settles payments, while your customers approve transactions through their own mobile money service.</p><p>Each transaction is recorded with a unique reference in your XLipa account. Keep that reference handy if you need help reviewing a payment.</p></div>
           <div class="money-details" aria-label="XLipa payment and support details">
-            <div class="money-row"><span class="money-icon" aria-hidden="true">✉</span><div><span>Email support</span><strong>Use the official XLipa support contact provided for your account.</strong></div></div>
+            <div class="money-row"><span class="money-icon" aria-hidden="true">✉</span><div><span>Email support</span><strong><a href="mailto:support@xlipa.net">support@xlipa.net</a></strong></div></div>
             <div class="money-row"><span class="money-icon" aria-hidden="true">◷</span><div><span>Support hours</span><strong>Monday to Friday, 8:00 to 18:00 EAT</strong></div></div>
             <div class="money-row"><span class="money-icon" aria-hidden="true">◇</span><div><span>Payments processed and settled by</span><strong>Selcom</strong></div></div>
           </div>
@@ -1161,6 +1184,30 @@
           </div>
         </div>
       </section>
+      <section class="contact-section" id="contact" aria-labelledby="contact-title">
+        <div class="wrap contact-layout">
+          <div class="contact-form-card">
+            <div class="guide-kicker">Get in touch</div>
+            <h2 id="contact-title">Contact XLipa</h2>
+            <p>Questions about payments, account setup, or integration? Send a message to the XLipa support team.</p>
+            <form id="contactForm">
+              <div class="contact-fields">
+                <div class="contact-field"><label for="contactName">Your name</label><input id="contactName" name="name" autocomplete="name" required></div>
+                <div class="contact-field"><label for="contactEmail">Your email</label><input id="contactEmail" name="email" type="email" autocomplete="email" required></div>
+                <div class="contact-field full"><label for="contactSubject">Subject</label><input id="contactSubject" name="subject" required></div>
+                <div class="contact-field full"><label for="contactMessage">Message</label><textarea id="contactMessage" name="message" required></textarea></div>
+              </div>
+              <button class="btn primary contact-submit" type="submit">Send message</button>
+              <p class="contact-hint">Your email app will open with the message ready to send. You can also email support directly.</p>
+            </form>
+          </div>
+          <aside class="contact-side-card" aria-label="XLipa contact details">
+            <div class="contact-info-row"><span class="contact-info-icon" aria-hidden="true">✉</span><div><strong>Email support</strong><a href="mailto:support@xlipa.net">support@xlipa.net</a></div></div>
+            <div class="contact-info-row"><span class="contact-info-icon" aria-hidden="true">◷</span><div><strong>Support hours</strong><p>Monday to Friday, 8:00 to 18:00 EAT</p></div></div>
+            <div class="contact-info-row"><span class="contact-info-icon" aria-hidden="true">↗</span><div><strong>Ready to get started?</strong><p>Create an account to begin your XLipa setup.</p><a href="xlipacreateaccount.html">Create your account →</a></div></div>
+          </aside>
+        </div>
+      </section>
     </main>
     <footer>
       <div class="wrap footer-inner">
@@ -1177,5 +1224,15 @@
         <p class="footer-legal">© 2026 XLipa. XLipa is a technology service, not a bank. Payments are processed and settled by Selcom.</p>
       </div>
     </footer>
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (!this.reportValidity()) return;
+      const fields = new FormData(this);
+      const subject = encodeURIComponent(fields.get('subject'));
+      const body = encodeURIComponent(`Name: ${fields.get('name')}\nReply email: ${fields.get('email')}\n\n${fields.get('message')}`);
+      window.location.href = `mailto:support@xlipa.net?subject=${subject}&body=${body}`;
+    });
+  </script>
   </body>
 </html>
