@@ -1,8 +1,9 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Learn how to collect payments with XLipa links and website or app integrations." />
     <meta name="theme-color" content="#101b49" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>XLipa Developers</title>
@@ -864,7 +865,7 @@
       .guide-section .wrap { max-width: 1420px; }
       .guide-heading { max-width: 790px; margin: 0 auto 34px; text-align: center; }
       .guide-kicker { margin-bottom: 12px; color: var(--brand-blue); font-size: 12px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
-      .guide-heading h2, .guide-copy h2 { color: var(--brand-navy); font-size: clamp(30px,4vw,46px); line-height: 1.12; letter-spacing: -.04em; }
+      .guide-heading h1, .guide-heading h2, .guide-copy h2 { color: var(--brand-navy); font-size: clamp(30px,4vw,46px); line-height: 1.12; letter-spacing: -.04em; }
       .guide-heading p, .guide-copy > p { margin-top: 14px; color: var(--text-muted); font-size: clamp(15px,1.5vw,18px); line-height: 1.7; }
       .steps-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 12px 34px rgba(16,27,73,.05); }
       .step-card { min-width: 0; padding: clamp(20px,2.4vw,30px); border-right: 1px solid var(--line); }
@@ -1002,7 +1003,7 @@
     <main class="wrap">
       <section class="guide-section soft" id="developers" aria-labelledby="ways-title">
         <div class="wrap">
-          <div class="guide-heading"><div class="guide-kicker">Choose what fits your business</div><h2 id="ways-title">A simple link or a direct integration</h2><p>Start with a shareable link, or connect XLipa to a website or app as your payment needs grow.</p></div>
+          <div class="guide-heading"><div class="guide-kicker">Choose what fits your business</div><h1 id="ways-title">A simple link or a direct integration</h1><p>Start with a shareable link, or connect XLipa to a website or app as your payment needs grow.</p></div>
           <div class="guide-grid">
             <article class="guide-card"><span class="card-symbol" aria-hidden="true">↗</span><h3>Payment links</h3><p>Collect payments online or in person without building a checkout first. Create a link for a product or amount and share it through your usual customer channels.</p><div class="sample-link"><span>Payment request example</span><strong>Order 1048 · TZS 50,000</strong><span style="margin-top:6px">Waiting for customer confirmation</span></div></article>
             <article class="guide-card"><span class="card-symbol" aria-hidden="true">&lt;/&gt;</span><h3>Website and app integration</h3><p>For teams building their own checkout, XLipa’s developer resources explain how to connect payment requests and receive transaction updates.</p><ul class="api-points"><li>Connect payments to your existing customer journey.</li><li>Use transaction status updates to keep orders in sync.</li><li>Review the XLipa developer documentation before integrating.</li></ul></article>

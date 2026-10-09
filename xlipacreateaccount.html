@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101b49">
+    <meta name="description" content="Create an XLipa account to request mobile money payments and manage payment activity." />
+    <meta name="theme-color" content="#101b49">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Create your account | XLipa</title>
   <link rel="icon" type="image/svg+xml" sizes="any" href="assets/xlipa-favicon.svg?v=2">
@@ -156,7 +157,7 @@
       <a href="index33.html" class="logo" aria-label="XLipa home"><img class="logo-mark" src="assets/xlipa-favicon.svg" alt=""><span class="logo-word"><span class="logo-x">X</span>Lipa</span></a>
       <button class="burger" type="button" aria-label="Menu" aria-expanded="false" onclick="var n=this.parentElement.querySelector('nav');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)"><i></i><i></i><i></i></button>
       <nav>
-        <ul><li><a href="index33.html#pricing">Pricing</a></li><li><a href="index33.html#how-it-works">How it works</a></li><li><a href="index33.html#developers">Developers</a></li><li><a href="index33.html#contact">Contacts</a></li><li><a href="index33.html#about">About</a></li></ul>
+        <ul><li><a href="index33.html#pricing">Pricing</a></li><li><a href="index33.html#how-it-works">How it works</a></li><li><a href="developers.html">Developers</a></li><li><a href="contact.html">Contacts</a></li><li><a href="about.html">About</a></li></ul>
         <div class="nav-actions"><a class="signin" href="xlipasignin.html">Sign in</a><a class="create" href="xlipacreateaccount.html">Create account</a></div>
       </nav>
     </div>
@@ -190,7 +191,7 @@
             <div class="field"><label for="password">Password</label><div class="password-wrap"><input id="password" name="password" type="password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8" required><button class="reveal" type="button" aria-label="Show password" aria-pressed="false" data-target="password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="m4 4 16 16"/></svg></button></div></div>
             <div class="field"><label for="confirmPassword">Confirm password</label><div class="password-wrap"><input id="confirmPassword" name="confirmPassword" type="password" placeholder="Repeat your password" autocomplete="new-password" minlength="8" required><button class="reveal" type="button" aria-label="Show password" aria-pressed="false" data-target="confirmPassword"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="m4 4 16 16"/></svg></button></div></div>
           </div>
-          <label class="check-row"><input type="checkbox" required><span>I have reviewed the <a href="index33.html#about-boundaries-title">XLipa service terms</a>, <a href="index33.html#privacy">privacy information</a>, and <a href="index33.html#prohibited-businesses">business eligibility information</a>.</span></label>
+          <label class="check-row"><input type="checkbox" required><span>I have reviewed the <a href="about.html#about-boundaries-title">XLipa service terms</a>, <a href="about.html#privacy">privacy information</a>, and <a href="about.html#prohibited-businesses">business eligibility information</a>.</span></label>
           <button class="submit" type="submit">Create account <span aria-hidden="true">→</span></button>
           <div id="notice" class="notice" role="status"></div>
         </form>
@@ -199,7 +200,7 @@
       </div>
     </section>
   </main>
-  <footer class="site-footer"><div class="site-footer-inner"><p>© 2026 XLipa. Payments made simple.</p><div class="site-footer-links"><a href="index33.html#about">About XLipa</a><a href="index33.html#pricing">Pricing</a><a href="index33.html#how-it-works">How it works</a><a href="index33.html#contact">Contact</a></div></div></footer>
+  <footer class="site-footer"><div class="site-footer-inner"><p>© 2026 XLipa. Payments made simple.</p><div class="site-footer-links"><a href="about.html">About XLipa</a><a href="index33.html#pricing">Pricing</a><a href="index33.html#how-it-works">How it works</a><a href="contact.html">Contact</a></div></div></footer>
   <script>
     const accountNav = document.querySelector('.site-nav nav');
     const accountMenuToggle = document.querySelector('.site-nav .burger');
