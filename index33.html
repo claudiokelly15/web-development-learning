@@ -900,6 +900,12 @@
       .requirements-box ul { display: grid; gap: 16px; margin-top: 18px; padding: 0; list-style: none; }
       .requirements-box li { display: flex; gap: 11px; color: var(--text-muted); font-size: 14px; line-height: 1.55; }
       .requirements-box li span:first-child { color: var(--brand-blue); font-weight: 700; }
+      .money-details { padding: 10px 28px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 12px 34px rgba(16,27,73,.045); }
+      .money-row { display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 14px; padding: 21px 0; border-bottom: 1px solid var(--line); }
+      .money-row:last-child { border-bottom: 0; }
+      .money-icon { color: var(--brand-blue); font-size: 20px; line-height: 1.35; }
+      .money-row span { display: block; color: #71809a; font-size: 13px; }
+      .money-row strong { display: block; margin-top: 5px; color: var(--brand-navy); font-size: 15px; font-weight: 600; line-height: 1.55; }
       .faq-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
       .faq-item { padding: 20px 22px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
       .faq-item summary { cursor: pointer; list-style: none; }
@@ -907,7 +913,7 @@
       .faq-item summary::after { content: "+"; float: right; margin-left: 14px; color: var(--brand-blue); font-size: 22px; line-height: 1; }
       .faq-item[open] summary::after { content: "−"; }
       @media (max-width: 900px) { .steps-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .step-card:nth-child(2) { border-right: 0; } .step-card:nth-child(-n+2) { border-bottom: 1px solid var(--line); } .pricing-layout { grid-template-columns: 1fr; } }
-      @media (max-width: 600px) { .guide-section { padding: 54px 0; } .guide-heading { margin-bottom: 24px; text-align: left; } .steps-grid, .guide-grid, .faq-grid { grid-template-columns: 1fr; } .step-card, .step-card:nth-child(2) { border-right: 0; border-bottom: 1px solid var(--line); } .step-card:last-child { border-bottom: 0; } .fee-summary { padding: 18px; } .fee-table th, .fee-table td { padding: 13px 14px; font-size: 12px; } .requirements-box { padding: 20px; } }
+      @media (max-width: 600px) { .guide-section { padding: 54px 0; } .guide-heading { margin-bottom: 24px; text-align: left; } .steps-grid, .guide-grid, .faq-grid { grid-template-columns: 1fr; } .step-card, .step-card:nth-child(2) { border-right: 0; border-bottom: 1px solid var(--line); } .step-card:last-child { border-bottom: 0; } .fee-summary { padding: 18px; } .fee-table th, .fee-table td { padding: 13px 14px; font-size: 12px; } .requirements-box { padding: 20px; } .money-details { padding: 8px 20px; } }
       @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
     </style>
   </head>
@@ -1084,8 +1090,12 @@
       </section>
       <section class="guide-section soft" aria-labelledby="trust-title">
         <div class="wrap guide-grid">
-          <div class="guide-copy"><div class="guide-kicker">Payment handling</div><h2 id="trust-title">Know how each payment moves</h2><p>XLipa provides the tools to request and track payments. Mobile money providers present the customer’s approval prompt, and Selcom processes payments for XLipa. Your account shows transaction updates and references to help you keep records.</p></div>
-          <div class="guide-card"><h3>What you can expect</h3><ul class="api-points"><li>Your customer confirms the payment on their mobile money service.</li><li>Payment progress is reflected in your XLipa account.</li><li>Use the transaction reference when you need to review a payment.</li></ul></div>
+          <div class="guide-copy"><div class="guide-kicker">Payment handling</div><h2 id="trust-title">Who handles your money</h2><p>XLipa is a technology service, not a bank. It gives your business tools to request and track payments. Selcom processes and settles payments, while your customers approve transactions through their own mobile money service.</p><p>Each transaction is recorded with a unique reference in your XLipa account. Keep that reference handy if you need help reviewing a payment.</p></div>
+          <div class="money-details" aria-label="XLipa payment and support details">
+            <div class="money-row"><span class="money-icon" aria-hidden="true">✉</span><div><span>Email support</span><strong>Use the official XLipa support contact provided for your account.</strong></div></div>
+            <div class="money-row"><span class="money-icon" aria-hidden="true">◷</span><div><span>Support hours</span><strong>Monday to Friday, 8:00 to 18:00 EAT</strong></div></div>
+            <div class="money-row"><span class="money-icon" aria-hidden="true">◇</span><div><span>Payments processed and settled by</span><strong>Selcom</strong></div></div>
+          </div>
         </div>
       </section>
       <section class="guide-section" aria-labelledby="faq-title">
