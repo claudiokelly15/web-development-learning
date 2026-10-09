@@ -386,13 +386,14 @@
         grid-template-columns: 1fr 1fr;
         border-top: 1px solid #e3e3e8;
       }
-      .acts a {
+      .acts span {
+        display: block;
         padding: 12px 0 13px;
         font-size: 16px;
         color: #0a64e6;
         font-weight: 500;
       }
-      .acts a + a {
+      .acts span + span {
         border-left: 1px solid #e3e3e8;
       }
 
@@ -956,8 +957,9 @@
         <nav id="menu">
           <ul>
             <li><a href="#pricing">Pricing</a></li>
-            <li><a href="#">Developers</a></li>
-            <li><a href="#">Contacts</a></li>
+            <li><a href="#how-it-works">How it works</a></li>
+            <li><a href="#developers">Developers</a></li>
+            <li><a href="#contact">Contacts</a></li>
             <li><a href="#about">About</a></li>
           </ul>
           <div class="nav-actions">
@@ -1047,7 +1049,7 @@
                   <div class="pin"><b></b><b></b><b></b><b></b></div>
                 </div>
                 <div class="acts">
-                  <a href="#">Ghairi</a><a href="#">Tuma</a>
+                  <span>Ghairi</span><span>Tuma</span>
                 </div>
               </div>
             </div>
@@ -1090,7 +1092,7 @@
           </div>
         </div>
       </section>
-      <section class="guide-section soft" aria-labelledby="ways-title">
+      <section class="guide-section soft" id="developers" aria-labelledby="ways-title">
         <div class="wrap">
           <div class="guide-heading"><div class="guide-kicker">Choose what fits your business</div><h2 id="ways-title">A simple link or a direct integration</h2><p>Start with a shareable link, or connect XLipa to a website or app as your payment needs grow.</p></div>
           <div class="guide-grid">
@@ -1108,7 +1110,7 @@
           </div>
         </div>
       </section>
-      <section class="guide-section soft" aria-labelledby="trust-title">
+      <section class="guide-section soft" id="contact" aria-labelledby="trust-title">
         <div class="wrap guide-grid">
           <div class="guide-copy"><div class="guide-kicker">Payment handling</div><h2 id="trust-title">Who handles your money</h2><p>XLipa is a technology service, not a bank. It gives your business tools to request and track payments. Selcom processes and settles payments, while your customers approve transactions through their own mobile money service.</p><p>Each transaction is recorded with a unique reference in your XLipa account. Keep that reference handy if you need help reviewing a payment.</p></div>
           <div class="money-details" aria-label="XLipa payment and support details">
@@ -1166,13 +1168,10 @@
           <a class="footer-logo" href="index33.html" aria-label="XLipa home"><img class="logo-mark" src="assets/xlipa-favicon.svg" alt=""><span class="footer-logo-word"><span class="footer-logo-x">X</span>Lipa</span></a>
           <nav class="footer-nav" aria-label="Footer navigation">
             <a href="#pricing">Pricing</a>
-            <a href="#">API docs</a>
+            <a href="#how-it-works">How it works</a>
+            <a href="#developers">API docs</a>
             <a href="#about">About</a>
-            <a href="#">Contact</a>
-            <a href="#">Terms</a>
-            <a href="#">Privacy</a>
-            <a href="#">Disclaimer</a>
-            <a href="#">Prohibited businesses</a>
+            <a href="#contact">Contact</a>
           </nav>
         </div>
         <p class="footer-legal">© 2026 XLipa. XLipa is a technology service, not a bank. Payments are processed and settled by Selcom.</p>

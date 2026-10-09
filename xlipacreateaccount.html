@@ -156,7 +156,7 @@
       <a href="index33.html" class="logo" aria-label="XLipa home"><img class="logo-mark" src="assets/xlipa-favicon.svg" alt=""><span class="logo-word"><span class="logo-x">X</span>Lipa</span></a>
       <button class="burger" type="button" aria-label="Menu" aria-expanded="false" onclick="var n=this.parentElement.querySelector('nav');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)"><i></i><i></i><i></i></button>
       <nav>
-        <ul><li><a href="#">Pricing</a></li><li><a href="#">Developers</a></li><li><a href="#">Contacts</a></li><li><a href="#">About</a></li></ul>
+        <ul><li><a href="index33.html#pricing">Pricing</a></li><li><a href="index33.html#how-it-works">How it works</a></li><li><a href="index33.html#developers">Developers</a></li><li><a href="index33.html#contact">Contacts</a></li><li><a href="index33.html#about">About</a></li></ul>
         <div class="nav-actions"><a class="signin" href="xlipasignin.html">Sign in</a><a class="create" href="xlipacreateaccount.html">Create account</a></div>
       </nav>
     </div>
@@ -199,7 +199,7 @@
       </div>
     </section>
   </main>
-  <footer class="site-footer"><div class="site-footer-inner"><p>© 2026 XLipa. Payments made simple.</p><div class="site-footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div></div></footer>
+  <footer class="site-footer"><div class="site-footer-inner"><p>© 2026 XLipa. Payments made simple.</p><div class="site-footer-links"><a href="index33.html#about">About XLipa</a><a href="index33.html#pricing">Pricing</a><a href="index33.html#how-it-works">How it works</a><a href="index33.html#contact">Contact</a></div></div></footer>
   <script>
     document.querySelectorAll('.reveal').forEach(button=>button.addEventListener('click',()=>{const field=document.getElementById(button.dataset.target);const visible=field.type==='password';field.type=visible?'text':'password';button.setAttribute('aria-label',visible?'Hide password':'Show password');button.setAttribute('aria-pressed',String(visible))}));
     document.getElementById('createForm').addEventListener('submit',event=>{event.preventDefault();const password=document.getElementById('password').value;const confirm=document.getElementById('confirmPassword').value;const notice=document.getElementById('notice');if(password!==confirm){notice.textContent='Your passwords do not match. Please enter the same password in both fields.';notice.style.color='#a23b3b';notice.style.background='#fff0f0';notice.classList.add('show');return}notice.textContent='Your details are complete. Connect this form to XLipa registration to create your account.';notice.style.color='';notice.style.background='';notice.classList.add('show')});
