@@ -857,6 +857,57 @@
         .hero .sub { width: 100%; max-width: 100%; overflow-wrap: break-word; }
         .btn { min-width: 0; max-width: 100%; }
       }
+      /* XLipa guide sections */
+      .guide-section { padding: clamp(58px,8vw,104px) 0; border-top: 1px solid var(--line); scroll-margin-top: 24px; }
+      .guide-section .wrap { max-width: 1420px; }
+      .guide-heading { max-width: 790px; margin: 0 auto 34px; text-align: center; }
+      .guide-kicker { margin-bottom: 12px; color: var(--brand-blue); font-size: 12px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+      .guide-heading h2, .guide-copy h2 { color: var(--brand-navy); font-size: clamp(30px,4vw,46px); line-height: 1.12; letter-spacing: -.04em; }
+      .guide-heading p, .guide-copy > p { margin-top: 14px; color: var(--text-muted); font-size: clamp(15px,1.5vw,18px); line-height: 1.7; }
+      .steps-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 12px 34px rgba(16,27,73,.05); }
+      .step-card { min-width: 0; padding: clamp(20px,2.4vw,30px); border-right: 1px solid var(--line); }
+      .step-card:last-child { border-right: 0; }
+      .step-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+      .step-icon, .guide-card .card-symbol { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 13px; color: var(--brand-blue); background: #edf3ff; font-size: 19px; font-weight: 700; }
+      .step-number { color: #8492ad; font-size: 14px; font-weight: 700; }
+      .step-card h3, .guide-card h3, .faq-item summary { color: var(--brand-navy); font-size: 18px; line-height: 1.35; font-weight: 650; }
+      .step-card p, .guide-card p, .faq-item p { margin-top: 10px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+      .guide-section.soft { background: rgba(243,247,252,.78); }
+      .guide-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
+      .guide-card { min-width: 0; padding: clamp(22px,3vw,34px); border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 12px 34px rgba(16,27,73,.045); }
+      .guide-card .card-symbol { margin-bottom: 18px; }
+      .sample-link { margin-top: 20px; padding: 16px; border: 1px solid #e5eaf4; border-radius: 14px; background: #f6f8fc; }
+      .sample-link span { display: block; color: #7886a0; font-size: 12px; }
+      .sample-link strong { display: block; margin-top: 7px; color: var(--brand-navy); font-size: 15px; overflow-wrap: anywhere; }
+      .api-points { display: grid; gap: 10px; margin-top: 18px; padding: 0; list-style: none; }
+      .api-points li { display: flex; align-items: flex-start; gap: 10px; color: var(--text-muted); font-size: 14px; line-height: 1.55; }
+      .api-points li::before { content: "✓"; flex: none; color: var(--brand-blue); font-weight: 800; }
+      .pricing-layout { display: grid; grid-template-columns: minmax(0,1.35fr) minmax(250px,.65fr); gap: 24px; align-items: start; }
+      .fee-box, .requirements-box { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 12px 34px rgba(16,27,73,.045); }
+      .fee-summary { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 22px 24px; border-bottom: 1px solid var(--line); }
+      .fee-summary span { color: var(--text-muted); font-size: 14px; }
+      .fee-summary strong { color: var(--brand-blue); font-size: 28px; letter-spacing: -.04em; }
+      .fee-table-wrap { overflow-x: auto; }
+      .fee-table { width: 100%; border-collapse: collapse; text-align: left; }
+      .fee-table th, .fee-table td { padding: 15px 22px; border-bottom: 1px solid #edf0f6; font-size: 14px; white-space: nowrap; }
+      .fee-table th { color: #71809a; font-size: 12px; font-weight: 600; }
+      .fee-table td { color: var(--text-main); font-variant-numeric: tabular-nums; }
+      .fee-table td:last-child, .fee-table th:last-child { text-align: right; }
+      .fee-table tbody tr:last-child td { border-bottom: 0; }
+      .fee-note { margin: 12px 3px 0; color: #71809a; font-size: 12px; line-height: 1.6; }
+      .requirements-box { padding: 24px; }
+      .requirements-box h3 { color: var(--brand-navy); font-size: 18px; }
+      .requirements-box ul { display: grid; gap: 16px; margin-top: 18px; padding: 0; list-style: none; }
+      .requirements-box li { display: flex; gap: 11px; color: var(--text-muted); font-size: 14px; line-height: 1.55; }
+      .requirements-box li span:first-child { color: var(--brand-blue); font-weight: 700; }
+      .faq-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+      .faq-item { padding: 20px 22px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
+      .faq-item summary { cursor: pointer; list-style: none; }
+      .faq-item summary::-webkit-details-marker { display: none; }
+      .faq-item summary::after { content: "+"; float: right; margin-left: 14px; color: var(--brand-blue); font-size: 22px; line-height: 1; }
+      .faq-item[open] summary::after { content: "−"; }
+      @media (max-width: 900px) { .steps-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .step-card:nth-child(2) { border-right: 0; } .step-card:nth-child(-n+2) { border-bottom: 1px solid var(--line); } .pricing-layout { grid-template-columns: 1fr; } }
+      @media (max-width: 600px) { .guide-section { padding: 54px 0; } .guide-heading { margin-bottom: 24px; text-align: left; } .steps-grid, .guide-grid, .faq-grid { grid-template-columns: 1fr; } .step-card, .step-card:nth-child(2) { border-right: 0; border-bottom: 1px solid var(--line); } .step-card:last-child { border-bottom: 0; } .fee-summary { padding: 18px; } .fee-table th, .fee-table td { padding: 13px 14px; font-size: 12px; } .requirements-box { padding: 20px; } }
       @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
     </style>
   </head>
@@ -878,7 +929,7 @@
         </button>
         <nav id="menu">
           <ul>
-            <li><a href="#">Pricing</a></li>
+            <li><a href="#pricing">Pricing</a></li>
             <li><a href="#">Developers</a></li>
             <li><a href="#">Contacts</a></li>
             <li><a href="#">About</a></li>
@@ -904,7 +955,7 @@
           </p>
           <div class="btns">
             <a href="xlipacreateaccount.html" class="btn primary">Create a free account</a>
-            <a href="#payment-methods" class="btn ghost">See how it works</a>
+            <a href="#how-it-works" class="btn ghost">See how it works</a>
           </div>
         </div>
 
@@ -1002,13 +1053,59 @@
           <div class="selbox"><img class="selcom-logo" src="assets/payment-logos/selcom.png" alt="Selcom"></div>
         </div>
       </section>
+      <section class="guide-section" id="how-it-works" aria-labelledby="how-title">
+        <div class="wrap">
+          <div class="guide-heading"><div class="guide-kicker">Simple from start to finish</div><h2 id="how-title">How payments work with XLipa</h2><p>Share a payment link or connect your platform. Your customer approves the payment on their mobile money service, and you can follow its status in XLipa.</p></div>
+          <div class="steps-grid">
+            <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">↗</span><span class="step-number">01</span></div><h3>Create and share</h3><p>Set up a payment link for your product or service, then share it with your customer wherever you do business.</p></article>
+            <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">⌕</span><span class="step-number">02</span></div><h3>Customer enters a number</h3><p>Your customer chooses a supported mobile money option and enters the phone number they want to pay from.</p></article>
+            <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">✓</span><span class="step-number">03</span></div><h3>They approve securely</h3><p>The customer reviews the prompt on their phone and confirms it with their mobile money PIN.</p></article>
+            <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">◎</span><span class="step-number">04</span></div><h3>Track your payment</h3><p>Check the payment status and balance in your XLipa account, then follow the available withdrawal options.</p></article>
+          </div>
+        </div>
+      </section>
+      <section class="guide-section soft" aria-labelledby="ways-title">
+        <div class="wrap">
+          <div class="guide-heading"><div class="guide-kicker">Choose what fits your business</div><h2 id="ways-title">A simple link or a direct integration</h2><p>Start with a shareable link, or connect XLipa to a website or app as your payment needs grow.</p></div>
+          <div class="guide-grid">
+            <article class="guide-card"><span class="card-symbol" aria-hidden="true">↗</span><h3>Payment links</h3><p>Collect payments online or in person without building a checkout first. Create a link for a product or amount and share it through your usual customer channels.</p><div class="sample-link"><span>Payment request example</span><strong>Order 1048 · TZS 50,000</strong><span style="margin-top:6px">Waiting for customer confirmation</span></div></article>
+            <article class="guide-card"><span class="card-symbol" aria-hidden="true">&lt;/&gt;</span><h3>Website and app integration</h3><p>For teams building their own checkout, XLipa’s developer resources explain how to connect payment requests and receive transaction updates.</p><ul class="api-points"><li>Connect payments to your existing customer journey.</li><li>Use transaction status updates to keep orders in sync.</li><li>Review the XLipa developer documentation before integrating.</li></ul></article>
+          </div>
+        </div>
+      </section>
+      <section class="guide-section" id="pricing" aria-labelledby="pricing-title">
+        <div class="wrap">
+          <div class="guide-heading"><div class="guide-kicker">Clear transaction pricing</div><h2 id="pricing-title">A straightforward 5% fee</h2><p>XLipa charges 5% of the payment amount. The examples below show the estimated balance after this transaction fee.</p></div>
+          <div class="pricing-layout">
+            <div><div class="fee-box"><div class="fee-summary"><span>XLipa transaction fee</span><strong>5%</strong></div><div class="fee-table-wrap"><table class="fee-table"><thead><tr><th scope="col">Customer pays</th><th scope="col">5% fee</th><th scope="col">Balance after fee</th></tr></thead><tbody><tr><td>TZS 5,000</td><td>TZS 250</td><td>TZS 4,750</td></tr><tr><td>TZS 20,000</td><td>TZS 1,000</td><td>TZS 19,000</td></tr><tr><td>TZS 50,000</td><td>TZS 2,500</td><td>TZS 47,500</td></tr><tr><td>TZS 250,000</td><td>TZS 12,500</td><td>TZS 237,500</td></tr></tbody></table></div></div><p class="fee-note">Examples are illustrative calculations based on a 5% transaction fee.</p></div>
+            <aside class="requirements-box"><h3>Prepare to open an account</h3><ul><li><span aria-hidden="true">✓</span><span>Accurate personal or business details for your profile.</span></li><li><span aria-hidden="true">✓</span><span>A reachable phone number and email address.</span></li><li><span aria-hidden="true">✓</span><span>Identity or business documents for verification, if requested.</span></li><li><span aria-hidden="true">✓</span><span>Your preferred supported destination for withdrawals.</span></li></ul></aside>
+          </div>
+        </div>
+      </section>
+      <section class="guide-section soft" aria-labelledby="trust-title">
+        <div class="wrap guide-grid">
+          <div class="guide-copy"><div class="guide-kicker">Payment handling</div><h2 id="trust-title">Know how each payment moves</h2><p>XLipa provides the tools to request and track payments. Mobile money providers present the customer’s approval prompt, and Selcom processes payments for XLipa. Your account shows transaction updates and references to help you keep records.</p></div>
+          <div class="guide-card"><h3>What you can expect</h3><ul class="api-points"><li>Your customer confirms the payment on their mobile money service.</li><li>Payment progress is reflected in your XLipa account.</li><li>Use the transaction reference when you need to review a payment.</li></ul></div>
+        </div>
+      </section>
+      <section class="guide-section" aria-labelledby="faq-title">
+        <div class="wrap">
+          <div class="guide-heading"><div class="guide-kicker">Help when you need it</div><h2 id="faq-title">Common questions</h2><p>Quick answers to help you get started with XLipa payments.</p></div>
+          <div class="faq-grid">
+            <details class="faq-item"><summary>How long does account review take?</summary><p>Review time depends on the information provided. Submit complete and accurate details, and check your account for any follow-up request.</p></details>
+            <details class="faq-item"><summary>What if the customer does not receive a prompt?</summary><p>Ask them to confirm the phone number and check their mobile network, then try the payment again from the same request.</p></details>
+            <details class="faq-item"><summary>How can I withdraw my balance?</summary><p>Use the withdrawal options shown in your XLipa account and check the details there before submitting a request.</p></details>
+            <details class="faq-item"><summary>Can I connect my website or app?</summary><p>Yes. You can integrate XLipa with a website or app using the developer documentation and the integration options available to your account.</p></details>
+          </div>
+        </div>
+      </section>
     </main>
     <footer>
       <div class="wrap footer-inner">
         <div class="footer-main">
           <a class="footer-logo" href="index33.html" aria-label="XLipa home"><img class="logo-mark" src="assets/xlipa-favicon.svg" alt=""><span class="footer-logo-word"><span class="footer-logo-x">X</span>Lipa</span></a>
           <nav class="footer-nav" aria-label="Footer navigation">
-            <a href="#">Pricing</a>
+            <a href="#pricing">Pricing</a>
             <a href="#">API docs</a>
             <a href="#">About</a>
             <a href="#">Contact</a>
