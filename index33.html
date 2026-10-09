@@ -814,7 +814,7 @@
         .right { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
         .right h4 { margin: 0; }
       }
-      @media (max-width: 860px) {
+      @media (max-width: 960px) {
         .nav { position: relative; }
         .burger { display: flex; }
         nav { top: 100%; left: 0; right: 0; margin: 0; padding: 10px 0 16px; background: #fff; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 14px 14px; box-shadow: 0 16px 28px rgba(16,27,73,.1); }
@@ -850,6 +850,12 @@
         .card .lg, .provider-logo { width: 32px; }
         .selbox, .selcom-logo { width: 140px; }
         .phone { width: 260px; height: 430px; }
+      }
+      @media (max-width: 700px) {
+        .hero { grid-template-columns: minmax(0,1fr); }
+        .copy, .btns { width: 100%; min-width: 0; max-width: 100%; }
+        .hero .sub { width: 100%; max-width: 100%; overflow-wrap: break-word; }
+        .btn { min-width: 0; max-width: 100%; }
       }
       @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
     </style>

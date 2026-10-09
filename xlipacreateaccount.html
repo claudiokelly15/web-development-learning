@@ -100,7 +100,7 @@
     .site-nav .burger{display:none;width:40px;height:40px;border:0;background:transparent;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
     .site-nav .burger i{display:block;width:22px;height:2px;border-radius:2px;background:var(--navy)}
     .brand-panel>.logo,.mobile-logo{display:none!important}
-    @media(max-width:860px){.site-nav{min-height:76px}.site-nav .burger{display:flex;margin-left:auto}.site-nav nav{position:absolute;top:100%;left:20px;right:20px;z-index:10;display:none;margin:0;padding:10px 18px 16px;background:#fff;border:1px solid var(--line);border-radius:0 0 14px 14px;box-shadow:0 16px 28px rgba(16,27,73,.1)}.site-nav nav.open{display:block}.site-nav nav ul{display:flex;flex-direction:column;align-items:stretch;gap:0}.site-nav nav a{display:block;padding:11px 0}.site-nav .nav-actions{margin:8px 0 0}.site-nav .nav-actions a{flex:1}.shell{min-height:calc(100vh - 152px)}}
+    @media(max-width:960px){.site-nav{min-height:76px}.site-nav .burger{display:flex;margin-left:auto}.site-nav nav{position:absolute;top:100%;left:20px;right:20px;z-index:10;display:none;margin:0;padding:10px 18px 16px;background:#fff;border:1px solid var(--line);border-radius:0 0 14px 14px;box-shadow:0 16px 28px rgba(16,27,73,.1)}.site-nav nav.open{display:block}.site-nav nav ul{display:flex;flex-direction:column;align-items:stretch;gap:0}.site-nav nav a{display:block;padding:11px 0}.site-nav .nav-actions{margin:8px 0 0}.site-nav .nav-actions a{flex:1}.shell{min-height:calc(100vh - 152px)}}
     @media(max-width:820px){.shell{display:block;min-height:calc(100vh - 152px);padding:0;background-image:linear-gradient(rgba(36,95,199,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(36,95,199,.035) 1px,transparent 1px);background-size:118px 118px}.brand-panel{display:none}.form-side{min-height:calc(100vh - 152px);display:block;padding:30px 22px;background:transparent}.form-wrap{width:min(100%,680px);margin:0 auto}}
     @media(max-width:560px){.shell{padding:0}.form-side{padding:24px 20px 20px}.mobile-logo{margin-bottom:24px}}
     .site-footer{background:var(--navy);color:#dce5f4}
@@ -144,9 +144,10 @@
     .submit{height:50px;font-size:15px;font-weight:600;letter-spacing:.1px}
     .signin{font-size:13px;line-height:1.6}
     .secure{font-size:11px}
-    @media(max-width:820px){.mobile-logo{display:flex!important;margin:0 auto 26px}.form-side{padding-top:30px;padding-bottom:32px}.form-wrap{max-width:620px}}
+    @media(max-width:820px){.mobile-logo{display:none!important}.form-side{padding-top:30px;padding-bottom:32px}.form-wrap{max-width:620px}}
     @media(max-width:560px){.form-side{padding:24px 20px 28px}.mobile-logo{margin-bottom:24px}.form-head{margin-bottom:22px}.form-head h2{font-size:30px}.form-grid{grid-template-columns:1fr;row-gap:14px}.field input{height:49px}.check-row{font-size:12px}.submit{height:50px}}
     @media(max-height:800px) and (min-width:821px){.shell{padding-top:24px;padding-bottom:24px}.form-side{padding-top:20px;padding-bottom:20px}.form-head{margin-bottom:18px}.form-grid{row-gap:12px}.field input{height:45px}.check-row{margin:13px 0}.secure{margin-top:16px}}
+    @media(max-width:560px){.shell,.form-side,.form-wrap,form,.form-grid,.field{width:100%;min-width:0;max-width:100%}.form-side{padding-left:20px;padding-right:20px}.form-wrap{margin:0 auto}.form-grid{grid-template-columns:minmax(0,1fr)}.field input{width:100%;max-width:100%}}
   </style>
 </head>
 <body>
