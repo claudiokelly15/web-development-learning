@@ -740,11 +740,12 @@
         --pad: clamp(20px, 4vw, 56px);
       }
       body { background: linear-gradient(180deg,#fff 0%,#f7faff 46%,#eaf3fb 100%); color: var(--text-main); overflow-x: clip; }
-      .wrap { width: 100%; max-width: 1920px; }
+      .wrap { width: 100%; max-width: 1920px; padding: 0 clamp(20px,3vw,58px); }
       header { background: rgba(255,255,255,.97); box-shadow: 0 1px 0 var(--line); }
       .nav { min-height: 82px; }
-      .logo svg { width: 190px; height: auto; }
-      .logo svg text { fill: var(--brand-navy); }
+      .logo-mark { width: 48px; height: 48px; flex: none; object-fit: contain; filter: none; }
+      .logo-word { color: #2b609a; font-size: 30px; font-weight: 700; letter-spacing: -1.2px; }
+      .logo-x { color: var(--brand-navy); }
       nav { margin-left: auto; gap: clamp(24px,3vw,42px); }
       nav ul { gap: clamp(18px,2.2vw,30px); }
       nav a { color: var(--brand-navy); font-size: 15px; font-weight: 500; }
@@ -752,18 +753,20 @@
       .nav-actions { margin-left: clamp(22px,3vw,40px); gap: 10px; }
       .nav-actions a { border-radius: 11px; font-size: 14px; }
       .nav-actions .signin { color: var(--brand-navy); border-color: var(--line); background: #fff; }
-      .nav-actions .create { color: #fff; background: var(--brand-blue); box-shadow: none; }
+      .nav-actions .create { color: #fff; background: linear-gradient(110deg,#101b49,#245fc7); box-shadow: 0 8px 20px rgba(16,27,73,.16); }
       .nav-actions .create:hover, .btn.primary:hover { background: #1d50a9; }
       .hero {
         grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr);
         gap: clamp(36px,6vw,80px);
         min-height: 500px;
-        padding: clamp(52px,7vw,88px) clamp(8px,2vw,26px);
-        margin: 0;
+        padding: clamp(52px,4vw,64px) clamp(20px,3vw,58px);
+        margin: 0 calc(-1 * clamp(20px,3vw,58px));
         border: 0;
         border-radius: 0;
         color: var(--text-main);
-        background: radial-gradient(ellipse at 88% 45%, #f1f7ff 0, #fff 52%);
+        background-color: #f6f9fd;
+        background-image: linear-gradient(rgba(36,95,199,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(36,95,199,.035) 1px,transparent 1px),radial-gradient(ellipse at 88% 45%,rgba(198,220,246,.72) 0,rgba(241,247,255,.88) 44%,transparent 78%),linear-gradient(180deg,#fbfdff,#eaf3fb);
+        background-size: 118px 118px,118px 118px,auto,auto;
         box-shadow: none;
       }
       .eyebrow { color: var(--brand-blue); font-size: 12px; letter-spacing: 1.5px; font-weight: 600; }
@@ -772,7 +775,7 @@
       .hero .sub { max-width: 620px; margin-top: 22px; color: var(--text-muted); font-size: clamp(16px,1.3vw,18px); line-height: 1.7; }
       .btns { margin-top: 30px; gap: 12px; }
       .btn { min-height: 52px; height: auto; padding: 0 24px; border-radius: 12px; font-weight: 600; }
-      .btn.primary { color: #fff; background: var(--brand-blue); box-shadow: 0 7px 18px rgba(36,95,199,.18); }
+      .btn.primary { color: #fff; background: linear-gradient(110deg,#101b49,#245fc7); box-shadow: 0 8px 20px rgba(16,27,73,.16); }
       .btn.ghost { color: var(--brand-navy); border: 1px solid var(--line); background: #fff; }
       .btn.ghost:hover { color: var(--brand-blue); border-color: #a8bfeb; }
       .phone { width: min(240px,100%); height: 484px; background: #101b49; box-shadow: 0 0 0 2px #243969,0 0 0 4px #101b49,0 24px 48px rgba(16,27,73,.2); }
@@ -785,8 +788,8 @@
       .provider-logo { width: 42px; max-height: 42px; }
       .card:nth-child(n) span:last-child { color: var(--text-main); }
       .divider { background: var(--line); }
-      .selbox { width: 176px; height: 58px; border-radius: 12px; background: #ed0033; }
-      .selcom-logo { width: 148px; }
+      .selbox { width: 176px; height: 58px; overflow: hidden; border-radius: 12px; background: #ed0033; }
+      .selcom-logo { width: 176px; height: 58px; object-fit: cover; object-position: center; border-radius: 12px; }
       footer { background: var(--brand-navy); color: #dce5f4; }
       .footer-inner { min-height: 76px; font-size: 13px; }
       .footer-links a:hover { color: #fff; }
@@ -810,7 +813,7 @@
         .nav-actions a { min-height: 42px; font-size: 13px; }
       }
       @media (max-width: 700px) {
-        .hero { grid-template-columns: 1fr; gap: 34px; min-height: auto; padding: 48px 0 38px; }
+        .hero { grid-template-columns: 1fr; gap: 34px; min-height: auto; margin: 0 calc(-1 * clamp(20px,3vw,58px)); padding: 48px clamp(20px,3vw,58px) 38px; }
         .hero h1 { max-width: 13em; font-size: clamp(36px,8vw,48px); }
         .hero .sub { font-size: 16px; line-height: 1.65; }
         .phone-wrap { padding: 0 0 8px; }
@@ -822,7 +825,8 @@
         .footer-links { flex-wrap: wrap; justify-content: center; gap: 14px 20px; }
       }
       @media (max-width: 480px) {
-        .logo svg { width: 150px; }
+        .logo-mark { width: 42px; height: 42px; }
+        .logo-word { font-size: 27px; }
         .nav-actions .signin { display: none; }
         .nav-actions .create { min-height: 38px; padding: 0 11px; font-size: 12px; }
         .burger { width: 36px; }
@@ -842,14 +846,7 @@
   <body>
     <header>
       <div class="wrap nav">
-        <a href="index33.html" class="logo" aria-label="XLipa home">
-          <svg viewBox="0 0 420 100" role="img" aria-label="XLipa">
-            <defs><linearGradient id="xlipa-x" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#0875ff"/><stop offset=".52" stop-color="#08d7e8"/><stop offset="1" stop-color="#00bce9"/></linearGradient></defs>
-            <path d="m13 18 17-8 34 32 29-31 17 8-36 39 35 32-18 7-35-32-29 32-18-8 37-39z" fill="url(#xlipa-x)"/>
-            <path d="M14 77C2 66 22 41 58 24c28-13 57-17 69-9 13 9-9 31-33 47" fill="none" stroke="url(#xlipa-x)" stroke-width="6" stroke-linecap="round"/>
-            <text x="145" y="74" fill="#f4f8ff" font-family="Inter,Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="-5">XLipa</text>
-          </svg>
-        </a>
+        <a href="index33.html" class="logo" aria-label="XLipa home"><img class="logo-mark" src="assets/xlipa-favicon.svg" alt=""><span class="logo-word"><span class="logo-x">X</span>Lipa</span></a>
         <button
           class="burger"
           aria-label="Menu"
