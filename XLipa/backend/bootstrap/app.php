@@ -24,16 +24,20 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->dontFlash(['password', 'password_confirmation', 'confirmPassword', 'current_password', 'token', '_token']);
         $exceptions->respond(function (Response $response): Response {
-            if (request()->is('register', 'login', 'logout', 'forgot-password', 'reset-password*', 'email/*', 'account')) {
+            if (request()->is('register', 'login', 'logout', 'forgot-password', 'reset-password*', 'email/*', 'account', 'merchants', 'merchants/*')) {
                 $response->headers->set('Cache-Control', 'no-store, private');
                 $response->headers->set('Referrer-Policy', 'no-referrer');
+                if (request()->is('merchants', 'merchants/*')) {
+                    $response->headers->set('X-Content-Type-Options', 'nosniff');
+                    $response->headers->set('X-Frame-Options', 'DENY');
+                }
             }
 
             return $response;
         });
         $exceptions->report(function (Throwable $exception): ?bool {
-            if (request()->is('register', 'login', 'logout', 'forgot-password', 'reset-password*', 'email/*', 'account')) {
-                Log::error('Authentication request failed.', ['exception_type' => $exception::class]);
+            if (request()->is('register', 'login', 'logout', 'forgot-password', 'reset-password*', 'email/*', 'account', 'merchants', 'merchants/*')) {
+                Log::error(request()->is('merchants', 'merchants/*') ? 'Merchant request failed.' : 'Authentication request failed.', ['exception_type' => $exception::class]);
 
                 return false;
             }

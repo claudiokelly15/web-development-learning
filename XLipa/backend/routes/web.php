@@ -5,9 +5,11 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\MerchantOnboardingController;
 use App\Http\Middleware\AuthenticationResponseHeaders;
 use App\Http\Middleware\EnsureActiveAuthentication;
 use App\Http\Middleware\EnsureAuthenticationReady;
+use App\Http\Middleware\ResolveMerchantContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,5 +48,7 @@ Route::middleware([AuthenticationResponseHeaders::class, 'auth'])->group(functio
         Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware(['signed', 'throttle:auth-verify'])->name('verification.verify');
         Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('throttle:auth-verify')->name('verification.send');
         Route::get('/account', [AccountController::class, 'show'])->middleware('verified')->name('account');
+        Route::get('/merchants/{merchant}/onboarding', [MerchantOnboardingController::class, 'show'])
+            ->middleware(['verified', ResolveMerchantContext::class])->whereUlid('merchant')->name('merchants.onboarding');
     });
 });
