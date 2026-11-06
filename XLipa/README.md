@@ -1,6 +1,8 @@
 ﻿# XLipa — mazingira ya kazi
 
-**Current activation status:** B1 migrations zimeapplyiwa; local authentication verification imekamilika kwa isolated suite (63 tests / 521 assertions) na non-creating live HTTP checks. Working users/admins bado 0; database hash unchanged. [Verification report na limitations](LOCAL-AUTHENTICATION-VERIFICATION-2026-11-06.md). Previous milestone paragraphs ni historical checkpoints.
+**Hali ya sasa — 6 Novemba 2026:** B1 imekamilika na local database imeactivateiwa (application tables 14, migration records 9). B2 authentication na duplicate-submit correction zimekamilika; recovery audit imehakiki tests 64 / assertions 543 na frontend interaction checks 31. Working database ina user mmoja aliyethibitisha email, merchant mmoja wa onboarding/unverified, active owner membership moja, draft application moja, audit record moja na administrator assignments 0. Counts ni snapshot, si thamani za kudumu. [Recovery audit na mipaka ya verification](XLIPA-POST-REINSTALL-RECOVERY-AUDIT-2026-11-06.md).
+
+**Hatua inayofuata:** B3 planning imekamilika; **B3.1 haijaanza** na inahitaji idhini ya utekelezaji. [Mpango wa B3](PHASE-3-B3-ONBOARDING-AUTHORIZATION-PLAN-2026-11-06.md). Production domain bado **haijachaguliwa**; `http://xlipa.test` ni local URL pekee. Selcom integration, public payment API na real payment processing havijatekelezwa. [Pre-B3.1 safety report, backup/restore evidence na proposed hardening](XLIPA-PRE-B3-1-SAFETY-HARDENING-REPORT-2026-11-06.md).
 
 Fungua `XLipa.code-workspace` kwenye VS Code.
 
@@ -27,13 +29,17 @@ Baada ya kuhariri `frontend/`, endesha `XLipa: Sync frontend` au script ya Sync-
 
 Backup imetoka MariaDB 11.4 na imehifadhiwa bila import. **Usi-import SQL au kuendesha migrations bila approval tofauti.** Usitumie `composer run setup`: ina `artisan migrate --force`. Usitumie hosting credentials kwenye local development.
 
-Phase 2 inatumia `backend/database/database.sqlite` iliyokuwepo, yenye foundation tables 9. Hakuna schema iliyobadilishwa. File sessions/cache na sync queue ziko active. `.env` ni local, `APP_DEBUG=false`, na `APP_URL=http://xlipa.test`. `.env.example` sasa ina defaults hizo za local bila secrets.
+Working database ni `backend/database/database.sqlite`; baada ya approved B1 activation ina application tables 14 na migration records 9. File sessions/cache na sync queue ziko active. `.env` ni local, `APP_DEBUG=false`, na `APP_URL=http://xlipa.test`. `.env.example` ina local defaults bila secrets. Historical SQL ya hosting haija-importiwa.
 
 Old `xlipa-system.test` bado inaelekeza Downloads kwa recovery; si canonical XLipa na inaweza bado kushindwa kwa old MySQL configuration. Haijabadilishwa.
 
 ## Hali ya programu
 
-Laravel ya chanzo ilikuwa skeleton yenye welcome route tu. Sasa B2 imeongeza native authentication na kuunganisha existing forms, lakini working database bado inasubiri foundation-migration approval na auth writes zina safe 503 gate. Hakuna financial dashboard, payment API au miamala iliyounganishwa. Backup ya hosting bado imehifadhiwa bila import.
+Laravel ya chanzo ilikuwa skeleton yenye welcome route tu. B2 sasa ina native registration/login/logout/reset/verification na existing forms zimeunganishwa. Local schema imeactivateiwa. Authentication readiness gate bado huhitaji schema sahihi, environment local/testing na mailer log/array; si production enablement. Hakuna financial dashboard, payment API au miamala iliyounganishwa. Backup ya hosting bado imehifadhiwa bila import.
+
+### Historia ya Phase 2
+
+Takwimu na visual-QA limitations katika aya mbili zinazofuata ni checkpoint ya Phase 2; current verification ipo kwenye ripoti zilizounganishwa juu.
 
 Phase 2: routes 11 (root + kurasa 10 za XLipa), PHP tests 16/80 assertions zimepita, HTTP assets 9 zimehakikiwa na DOM interaction checks 24 zimepita. BongoPay reference imehifadhiwa kwenye ignored `references/` nje ya serving paths; URL yake inarudisha 404. Haikuwa ukurasa wa XLipa. Application haina runtime dependency ya BongoPay.
 
@@ -56,13 +62,15 @@ Rollback snapshot: `.recovery/phase2-before/files/` pamoja na `manifest.json`; i
 
 Mafaili ya awali ya WEB-DEVELOPMENT na Downloads yamehifadhiwa. Endelea kuhariri nakala ya frontend ndani ya XLipa ili kuepuka matoleo kutofautiana.
 
-## Phase 3 — B0/B1 foundation prepared
+## Historia ya Phase 3 — B0/B1 kabla ya activation
+
+Aya zinazofuata zimehifadhiwa kama historical checkpoints. Madai ya migrations pending/users 0/B2 not started hapa hayawakilishi hali ya sasa; soma current status juu na activation/recovery reports.
 
 Six new migrations, models/enums/factories na isolated constraint tests zimeandaliwa. **Migrations hazija-run kwenye working database**; bado ina original tables 9 na migrations 3. Usitumie new factories/seeders humo mpaka upate approval ya schema execution. B2 authentication/frontend integration bado haijaanza.
 
 Final B1 suite: tests 35 / assertions 264 passed; tests mpya hutumia guarded `:memory:` SQLite na disposable concurrency fixture pekee. Migrations hizi ni SQLite-targeted; engine nyingine inahitaji migration review. [B0/B1 report na exact pending migrations](PHASE-3-B0-B1-REPORT-2026-11-06.md).
 
-## Phase 3 — B2 authentication implemented, activation pending
+## Historia ya Phase 3 — B2 kabla ya activation
 
 Native registration/login/logout/reset/verification, account/auth-version enforcement, rate limits na original-form POST integration vimeandikwa na kuthibitishwa kwenye isolated tests. Final suite ni **63 tests / 521 assertions passed**, pamoja na DOM checks 24. [B2 report, files, risks na manual steps](PHASE-3-B2-REPORT-2026-11-06.md).
 

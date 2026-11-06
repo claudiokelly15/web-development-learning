@@ -1,0 +1,14 @@
+diff --git a/XLipa/backend/bootstrap/app.php b/XLipa/backend/bootstrap/app.php
+--- a/XLipa/backend/bootstrap/app.php
++++ b/XLipa/backend/bootstrap/app.php
+@@ -17,6 +17,10 @@
+         health: '/up',
+     )
+     ->withMiddleware(function (Middleware $middleware): void {
++        $middleware->trustHosts(
++            at: fn (): array => ['^'.preg_quote((string) parse_url(config('app.url'), PHP_URL_HOST), '/').'$'],
++            subdomains: false,
++        );
+         $middleware->redirectGuestsTo(fn () => route('login'));
+         $middleware->redirectUsersTo(fn () => route('account'));
+     })
