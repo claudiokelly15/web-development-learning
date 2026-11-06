@@ -1,0 +1,14 @@
+{
+  "folders": [{ "name": "XLipa", "path": "." }],
+  "settings": {
+    "files.exclude": { "**/vendor": true, "**/node_modules": true },
+    "search.exclude": { "**/vendor/**": true, "**/node_modules/**": true, "**/*.sql": true }
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      { "label": "XLipa: Sync frontend", "type": "shell", "command": "powershell", "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/scripts/Sync-Frontend.ps1"], "problemMatcher": [] },
+      { "label": "XLipa: Open Herd site", "type": "shell", "command": "powershell", "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/scripts/Start-XLipa.ps1"], "problemMatcher": [] }
+    ]
+  }
+}

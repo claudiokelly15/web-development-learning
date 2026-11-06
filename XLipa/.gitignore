@@ -1,0 +1,10 @@
+/backend/.env
+/backend/vendor/
+/backend/node_modules/
+/backend/public/assets/
+/backend/resources/views/xlipa/
+/backend/storage/logs/*
+/database/*.sql
+/database/*.sql.gz
+/.recovery/
+/references/

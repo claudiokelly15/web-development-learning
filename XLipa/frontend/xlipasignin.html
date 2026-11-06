@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sign in to XLipa to review payments and manage withdrawals." />
+    <meta name="theme-color" content="#101b49">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Sign in | XLipa</title>
+  <link rel="icon" type="image/svg+xml" sizes="any" href="assets/xlipa-favicon.svg?v=2">
+  <link rel="shortcut icon" href="assets/xlipa-favicon.svg?v=2">
+  <style>
+    :root{--navy:#06142f;--teal:#08c9d8;--blue:#078cf1;--ink:#10213d;--muted:#718099;--line:#e3eaf2;--bg:#f4f7fb}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}button,input{font:inherit}.shell{min-height:100vh;display:grid;grid-template-columns:minmax(390px,.92fr) 1.08fr;padding:14px;gap:14px}
+    .brand-panel{position:relative;overflow:hidden;min-height:calc(100vh - 28px);border-radius:22px;padding:clamp(30px,5vw,68px);display:flex;flex-direction:column;color:#fff;background:radial-gradient(ellipse at 7% 0%,rgba(0,157,255,.3),transparent 38%),radial-gradient(ellipse at 100% 90%,rgba(8,201,216,.17),transparent 36%),linear-gradient(145deg,#06142f,#092349 60%,#06142f)}.brand-panel:after{content:"";position:absolute;width:440px;height:440px;border:1px solid rgba(137,225,255,.1);border-radius:50%;right:-220px;top:28%;box-shadow:0 0 0 48px rgba(137,225,255,.025),0 0 0 96px rgba(137,225,255,.02);pointer-events:none}
+    .logo{display:inline-flex;align-items:center;width:max-content}.logo svg{display:block;width:168px;height:40px;overflow:visible}.intro{position:relative;z-index:1;margin:auto 0;padding:72px 0 54px;max-width:540px}.eyebrow{display:inline-flex;align-items:center;gap:9px;color:#9bdde9;font-size:12px;font-weight:700;letter-spacing:1.7px;text-transform:uppercase}.eyebrow:before{content:"";height:1px;width:24px;background:var(--teal)}h1{font-size:clamp(36px,4vw,58px);line-height:1.08;letter-spacing:-2.7px;margin:21px 0 19px}.intro>p{color:#bfcee1;line-height:1.8;font-size:15px;max-width:435px}.trust-card{position:relative;z-index:1;margin-top:35px;padding:18px 20px;border:1px solid #b9dff027;border-radius:15px;background:#ffffff08;max-width:390px}.trust-card strong{display:block;font-size:13px;margin-bottom:6px}.trust-card span{color:#afc2da;font-size:12px;line-height:1.6}.brand-foot{position:relative;z-index:1;color:#92a8c4;font-size:12px;line-height:1.7}.brand-foot b{color:#dceafa;font-weight:600}
+    .form-side{display:grid;place-items:center;padding:clamp(24px,5vw,72px)}.form-wrap{width:min(100%,460px)}.mobile-logo{display:none}.form-head{margin-bottom:32px}.form-head .kicker{color:#087f9c;font-size:11px;font-weight:750;letter-spacing:1.5px;text-transform:uppercase}.form-head h2{font-size:clamp(30px,3vw,40px);letter-spacing:-1.7px;margin:10px 0 9px;color:var(--navy)}.form-head p{color:var(--muted);font-size:14px;line-height:1.7;margin:0}.field{display:grid;gap:8px;margin-bottom:19px}.field label{font-size:12px;font-weight:650;color:#34445d}.field input{width:100%;height:51px;padding:0 14px;border:1px solid #dce4ee;border-radius:10px;background:#fff;color:var(--ink);outline:none;transition:border .2s,box-shadow .2s}.field input::placeholder{color:#a3afbf}.field input:focus{border-color:#08a9cb;box-shadow:0 0 0 3px #08c9d81c}.password-wrap{position:relative}.password-wrap input{padding-right:48px}.reveal{position:absolute;right:9px;top:8px;height:35px;width:35px;border:0;background:transparent;color:#8391a4;cursor:pointer;border-radius:8px;display:grid;place-items:center}.reveal svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.reveal .slash{opacity:1}.reveal[aria-pressed="true"] .slash{opacity:0}.reveal:hover{background:#f1f6fa;color:#087f9c}.options{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:2px 0 23px;font-size:12px;color:#65748a}.remember{display:flex;align-items:center;gap:8px}.remember input{accent-color:#078cf1;width:15px;height:15px;margin:0}.text-button{border:0;padding:0;background:none;color:#087f9c;font-size:12px;font-weight:650;cursor:pointer}.submit{width:100%;height:52px;border:0;border-radius:11px;color:#06142f;font-size:14px;font-weight:750;background:linear-gradient(105deg,#29e0d5,#08b9de 48%,#078cf1);box-shadow:0 10px 22px #078cf126;cursor:pointer;transition:transform .18s,box-shadow .18s}.submit:hover{transform:translateY(-1px);box-shadow:0 13px 28px #078cf13c}.notice{display:none;margin:14px 0 0;padding:12px 14px;border-radius:9px;color:#176d50;background:#e9f7f1;font-size:13px;line-height:1.5}.notice.show{display:block}.signup{text-align:center;margin:22px 0 0;color:#7b8798;font-size:13px}.signup a{color:#087f9c;font-weight:700}.secure{text-align:center;margin-top:31px;color:#9aa6b5;font-size:11px}.secure span{color:#15878b;margin-right:5px}
+    @media(max-width:900px){.shell{grid-template-columns:.8fr 1.2fr}.brand-panel{padding:34px}.form-side{padding:30px}.intro{padding:54px 0}}
+    @media(max-width:680px){.shell{display:block;padding:0}.brand-panel{display:none}.form-side{min-height:100vh;display:block;padding:26px 21px 36px}.mobile-logo{display:flex;margin:2px 0 48px;padding:8px 12px;border-radius:13px;background:var(--navy)}.form-head{margin-bottom:28px}.secure{margin-top:25px}}
+    /* Match the supplied split-screen sign-in reference while retaining XLipa branding. */
+    .shell{grid-template-columns:1fr 1fr;padding:0;gap:0}
+    .brand-panel{min-height:100vh;border-radius:0;padding:clamp(34px,3.3vw,64px)}
+    .brand-panel:after{width:520px;height:520px;right:-260px;top:25%;border-color:#8cecff12;box-shadow:0 0 0 60px #8cecff08,0 0 0 120px #8cecff05}
+    .intro{max-width:500px;padding:0;margin:auto 0}
+    .eyebrow{display:none}
+    h1{max-width:430px;font-size:clamp(36px,3vw,48px);line-height:1.12;letter-spacing:-1.9px;margin:0 0 18px}
+    .intro>p{max-width:460px;font-size:15px;line-height:1.75}
+    .benefits{display:grid;gap:19px;margin:34px 0 0;padding:0;list-style:none}
+    .benefits li{display:flex;align-items:center;gap:14px;color:#edf5ff;font-size:14px;line-height:1.5}
+    .benefit-icon{width:19px;height:20px;flex:0 0 19px;color:#70d9f5}
+    .benefit-icon svg{display:block;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .trust-card{display:none}
+    .form-side{background:#f8f9fc;padding:clamp(32px,6.3vw,120px)}
+    .form-wrap{width:min(100%,450px)}
+    .form-head{margin-bottom:29px}
+    .form-head .kicker{display:none}
+    .form-head h2{font-size:clamp(29px,2.3vw,38px);letter-spacing:-1.25px;margin:0 0 8px}
+    .form-head p{font-size:14px}
+    .field{gap:9px;margin-bottom:19px}
+    .field label{font-size:13px}
+    .field input{height:54px;border-radius:9px}
+    .options{justify-content:flex-end;margin:0 0 24px}
+    .remember{display:none}
+    .submit{height:53px;border-radius:9px;color:#06142f;background:linear-gradient(105deg,#29e0d5,#08b9de 48%,#078cf1);box-shadow:0 8px 22px #078cf12b}
+    .submit:hover{box-shadow:0 11px 27px #078cf13b}
+    .signup{text-align:left;margin-top:26px;font-size:13px;color:#596981}
+    .secure{display:none}
+    @media(max-width:900px) and (min-width:681px){.form-side{padding:34px}.brand-panel{padding:34px}.benefits{gap:15px}}
+    @media(max-width:680px){.shell{display:block;padding:0}.brand-panel{display:none}.form-side{min-height:100vh;display:block;padding:26px 21px 36px}.mobile-logo{display:flex;margin:2px 0 48px;padding:8px 12px;border-radius:13px;background:var(--navy)}.form-head{margin-bottom:28px}.signup{text-align:center;margin-top:22px}}
+    h1{font-size:clamp(27px,2.5vw,40px);line-height:1.12;letter-spacing:-1.3px;margin-bottom:14px}
+    .intro>p{font-size:14px;line-height:1.6}
+    .benefits{gap:14px;margin-top:25px}
+    .benefits li{font-size:13px;gap:11px}
+    .brand-foot{font-size:11px}
+    .form-side{padding:clamp(24px,4.5vw,78px)}
+    .form-head{margin-bottom:24px}
+    .form-head h2{font-size:clamp(26px,2.1vw,34px);letter-spacing:-1.1px}
+    .form-head p{font-size:13px}
+    .field{gap:7px;margin-bottom:15px}
+    .field label{font-size:12px}
+    .field input{height:48px}
+    .options{margin-bottom:18px}
+    .submit{height:48px}
+    .signup{font-size:12px;margin-top:20px}
+    @media(max-width:900px) and (min-width:681px){.brand-panel{padding:28px}.form-side{padding:26px}.benefits{gap:11px;margin-top:20px}.benefits li{font-size:12px}}
+    @media(max-width:680px){.form-side{padding:22px 20px 28px}.mobile-logo{margin:0 0 30px}.form-head{margin-bottom:22px}.field{margin-bottom:14px}.signup{text-align:center;margin-top:18px}}
+    @media(max-height:700px) and (min-width:681px){.brand-panel{padding-top:22px;padding-bottom:22px}.benefits{gap:9px;margin-top:16px}.form-side{padding-top:14px;padding-bottom:14px}.form-head{margin-bottom:16px}.field{margin-bottom:10px}.field input{height:43px}.options{margin-bottom:13px}.submit{height:44px}.signup{margin-top:14px}}
+    :root{--ink:#253b60;--muted:#7587a3}
+    h1{font-weight:500}
+    .intro>p{color:#c5d1e2;font-weight:300}
+    .benefits li{color:#e0e9f5;font-weight:400}
+    .form-head h2{font-weight:600;color:#2b456d}
+    .form-head p{color:#7889a4;font-weight:400}
+    .field label{color:#5b6f8e;font-weight:500}
+    .field input{color:#263e64}
+    .signup{color:#71829b}
+    .brand-panel h1{color:#fbfaff}
+    .intro>p{color:#d8d8ef}
+    .benefits li{color:#ece9fa}
+    .form-head h2{color:#405b86}
+    .form-head p{color:#7f8fab}
+    .field label{color:#637a9a}
+    .signup{color:#7b8ca7}
+    body{background:radial-gradient(ellipse at 88% 90%,rgba(39,68,255,.48),transparent 42%),radial-gradient(ellipse at 18% 9%,rgba(66,42,190,.4),transparent 42%),linear-gradient(145deg,#070621,#111052 58%,#101b69)}
+    .shell{position:relative}
+    .brand-panel{background:radial-gradient(circle at 9% 18%,rgba(180,138,255,.42) 1px,transparent 2px),radial-gradient(circle at 67% 80%,rgba(180,138,255,.35) 1.5px,transparent 2.5px),radial-gradient(ellipse at 88% 90%,rgba(40,66,255,.6),transparent 43%),linear-gradient(145deg,#090627,#111052 58%,#14218b);border:1px solid rgba(142,122,255,.22);box-shadow:0 22px 60px rgba(1,2,24,.3)}
+    .brand-panel:after{border-color:rgba(178,150,255,.18);box-shadow:0 0 0 60px rgba(112,93,255,.07),0 0 0 120px rgba(55,77,255,.06)}
+    .form-side{background:transparent}
+    .form-wrap{padding:clamp(28px,3.5vw,44px);border:1px solid rgba(164,177,255,.35);border-radius:22px;background:rgba(250,251,255,.97);box-shadow:0 24px 60px rgba(2,4,35,.32)}
+    .submit{background:linear-gradient(110deg,#246dff,#3d39ed);box-shadow:0 9px 24px rgba(43,77,255,.28)}
+    .submit:hover{box-shadow:0 12px 29px rgba(43,77,255,.4)}
+    @media(max-width:680px){.shell{padding:0;gap:0}.brand-panel{min-height:0;border-radius:0}.form-side{padding:20px 16px 26px}.form-wrap{padding:23px 20px;border-radius:18px}}
+    body{background:#fff}
+    .brand-panel{background:radial-gradient(circle at 9% 18%,rgba(180,138,255,.42) 1px,transparent 2px),radial-gradient(circle at 67% 80%,rgba(180,138,255,.35) 1.5px,transparent 2.5px),radial-gradient(ellipse at 88% 90%,rgba(40,66,255,.6),transparent 43%),linear-gradient(145deg,#090627,#111052 58%,#14218b);border:1px solid rgba(142,122,255,.22);box-shadow:0 22px 60px rgba(1,2,24,.3)}
+    .brand-panel:after{border-color:rgba(178,150,255,.18);box-shadow:0 0 0 48px rgba(112,93,255,.07),0 0 0 96px rgba(55,77,255,.06)}
+    .form-side{background:#fff}
+    .form-wrap{padding:clamp(25px,3vw,42px);border:1px solid rgba(164,177,255,.35);border-radius:22px;background:rgba(250,251,255,.97);box-shadow:0 24px 60px rgba(2,4,35,.32)}
+    .shell{padding:14px;gap:14px}
+    .brand-panel{min-height:calc(100vh - 28px);border-radius:22px}
+    @media(max-width:680px){.form-side{padding:20px 16px 26px}.form-wrap{padding:23px 20px;border-radius:18px}}
+    .intro{max-width:460px}
+    .benefits{gap:18px;margin-top:28px;max-width:430px}
+    .benefits li{font-size:13px;line-height:1.5}
+    .benefit-icon{width:18px;height:18px;flex-basis:18px}
+    @media(max-width:900px) and (min-width:681px){.benefits{gap:14px;margin-top:22px}}
+    .submit{height:52px;border:0;border-radius:8px;color:#fff;font-size:16px;font-weight:500;background:linear-gradient(135deg,#20d8d1,#078cf1);box-shadow:0 8px 20px rgba(0,170,220,.26);transition:.2s}
+    .submit:hover{filter:brightness(1.08);transform:none;box-shadow:0 8px 20px rgba(0,170,220,.26)}
+    @media(max-height:700px) and (min-width:681px){.submit{height:44px}}
+    @media(max-width:820px){.shell{display:block;padding:0;gap:0}.brand-panel{display:none}.form-side{min-height:100vh;display:block;padding:30px 22px}.form-wrap{width:min(100%,450px);margin:0 auto}.mobile-logo{display:flex;margin:0 auto 26px;padding:8px 12px;border-radius:13px;background:var(--navy)}}
+    @media(max-width:560px){.form-side{padding:20px 16px 28px}.form-wrap{padding:0;border:0;border-radius:0;box-shadow:none;background:transparent}.mobile-logo{margin-bottom:24px}}
+    /* XLipa light, open page theme */
+    :root{--navy:#101b49;--teal:#18c7d9;--blue:#245fc7;--ink:#101b49;--muted:#52617f;--line:#dfe6f0;--bg:#f3f7fc}
+    body{background:linear-gradient(150deg,#fff 0%,#f6f9fd 100%)}
+    .shell{max-width:1920px;min-height:calc(100vh - 158px);margin:0 auto;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(32px,6vw,88px);padding:clamp(28px,4vw,58px);align-items:center;background-image:linear-gradient(100deg,rgba(36,95,199,.13) 0%,rgba(36,95,199,.08) 30%,rgba(36,95,199,.03) 58%,rgba(36,95,199,0) 82%),linear-gradient(rgba(36,95,199,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(36,95,199,.035) 1px,transparent 1px);background-size:auto,118px 118px,118px 118px;background-repeat:no-repeat,repeat,repeat}
+    .brand-panel{min-height:0;padding:0;color:var(--navy);background:transparent;border:0;border-radius:0;box-shadow:none}
+    .brand-panel:after{display:none}
+    .brand-panel h1{max-width:12em;margin:0 0 22px;color:var(--navy);font-size:clamp(42px,5vw,62px);font-weight:700;line-height:1.08;letter-spacing:-.045em}
+    .intro>p{max-width:620px;color:var(--muted);font-size:clamp(16px,1.3vw,18px);line-height:1.7}
+    .benefits li{color:#344b70}
+    .benefit-icon{color:var(--blue)}
+    .brand-foot{color:var(--muted)}
+    .brand-foot b,.brand-foot .slogan{color:var(--navy)}
+    .logo svg text{fill:var(--navy)}
+    .form-side{min-height:0;padding:0;background:transparent}
+    .form-wrap{width:min(100%,450px);padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+    .form-head h2{color:var(--navy)}
+    .form-head p,.field label,.signup{color:var(--muted)}
+    .form-head .kicker,.text-button,.signup a{color:var(--blue)}
+    .field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(36,95,199,.12)}
+    .submit{color:#fff;background:linear-gradient(110deg,#101b49,#245fc7);box-shadow:0 8px 20px rgba(16,27,73,.16)}
+    .submit:hover{background:#1d50a9;box-shadow:0 6px 16px rgba(36,95,199,.18)}
+    .mobile-logo{background:transparent}
+    .mobile-footer{display:none}
+    .site-header{position:relative;z-index:5;background:rgba(255,255,255,.97);box-shadow:0 1px 0 var(--line)}
+    .site-nav{position:relative;display:flex;align-items:center;min-height:82px;max-width:1920px;margin:0 auto;padding:0 clamp(20px,3vw,58px)}
+    .site-nav .logo{display:flex;flex:none;align-items:center;gap:10px;width:auto;color:var(--navy);font-size:30px;font-weight:800;letter-spacing:-1.5px;line-height:1}
+    .site-nav .logo-mark{display:block;width:48px;height:48px;flex:none;object-fit:contain}
+    .site-nav .logo-word{color:#2b609a;font-size:30px;font-weight:700;letter-spacing:-1.2px}
+    .site-nav .logo-x{color:var(--navy)}
+    .site-nav nav{display:flex;align-items:center;gap:clamp(24px,3vw,42px);margin-left:auto}
+    .site-nav nav ul{display:flex;align-items:center;gap:clamp(18px,2.2vw,30px);list-style:none}
+    .site-nav nav a{display:inline-block;padding:8px 0;color:var(--navy);font-size:15px;font-weight:500}
+    .site-nav nav a:hover{color:var(--blue)}
+    .site-nav .nav-actions{display:flex;align-items:center;gap:10px;margin-left:clamp(22px,3vw,40px)}
+    .site-nav .nav-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 17px;border:1px solid var(--line);border-radius:11px;font-size:14px;font-weight:600}
+    .site-nav .nav-actions .signin{margin:0;color:var(--navy);background:#fff}
+    .site-nav .nav-actions .create{color:#fff;background:linear-gradient(110deg,#101b49,#245fc7);border-color:transparent;box-shadow:0 8px 20px rgba(16,27,73,.16)}
+    .site-nav .burger{display:none;width:40px;height:40px;border:0;background:transparent;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+    .site-nav .burger i{display:block;width:22px;height:2px;border-radius:2px;background:var(--navy)}
+    .brand-panel>.logo,.mobile-logo{display:none!important}
+    @media(max-width:960px){.site-nav{min-height:76px}.site-nav .burger{display:flex;margin-left:auto}.site-nav nav{position:absolute;top:100%;left:20px;right:20px;z-index:10;display:none;margin:0;padding:10px 18px 16px;background:#fff;border:1px solid var(--line);border-radius:0 0 14px 14px;box-shadow:0 16px 28px rgba(16,27,73,.1)}.site-nav nav.open{display:block}.site-nav nav ul{display:flex;flex-direction:column;align-items:stretch;gap:0}.site-nav nav a{display:block;padding:11px 0}.site-nav .nav-actions{margin:8px 0 0}.site-nav .nav-actions a{flex:1}.shell{min-height:calc(100vh - 152px)}}
+    @media(max-width:820px){.shell{display:block;min-height:calc(100vh - 152px);padding:0;background-image:linear-gradient(rgba(36,95,199,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(36,95,199,.035) 1px,transparent 1px);background-size:118px 118px}.brand-panel{display:none}.form-side{min-height:calc(100vh - 152px);display:block;padding:30px 22px;background:transparent}.form-wrap{width:min(100%,450px);margin:0 auto}}
+    @media(max-width:560px){.shell{padding:0}.form-side{padding:24px 20px 20px}.mobile-logo{margin-bottom:24px}}
+    .site-footer{background:var(--navy);color:#dce5f4}
+    .site-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:1920px;min-height:76px;margin:0 auto;padding:16px clamp(20px,3vw,58px);font-size:13px}
+    .site-footer-inner p{margin:0}
+    .site-footer-links{display:flex;gap:24px}
+    .site-footer-links a:hover{color:#fff}
+    @media(max-width:560px){.site-footer-inner{flex-direction:column;justify-content:center;text-align:center;padding:20px;font-size:12px}.site-footer-links{flex-wrap:wrap;justify-content:center;gap:12px 20px}}
+    /* Final XLipa lockup and compact, consistent account typography. */
+    .mobile-logo{display:none!important;align-items:center;gap:10px;width:max-content;margin:0 auto 30px;padding:0;background:transparent!important;border:0;border-radius:0}
+    .mobile-logo svg{display:none!important}
+    .mobile-logo::before{content:"";display:block;width:44px;height:44px;flex:none;background:url("assets/xlipa-favicon.svg") center/contain no-repeat}
+    .mobile-logo::after{content:"XLipa";color:#2b609a;font-size:28px;font-weight:700;letter-spacing:-1.1px}
+    .form-head h2{color:var(--navy);font-size:clamp(28px,2.4vw,34px);font-weight:650;line-height:1.18;letter-spacing:-.9px;margin-bottom:8px}
+    .form-head .kicker{display:block;color:var(--blue);font-size:12px;font-weight:650;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:9px}
+    .form-head h2{font-size:clamp(29px,2.5vw,36px);letter-spacing:-1px}
+    .form-head p{color:#65758f;font-size:14px;line-height:1.6;max-width:38ch}
+    .field label{color:#344b70;font-size:13px;font-weight:600;letter-spacing:.05px}
+    .field input{font-size:16px}
+    .options,.text-button,.signup{font-size:13px}
+    .options{display:flex;justify-content:space-between;align-items:center;margin:4px 0 20px;color:var(--muted)}
+    .remember{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}
+    .remember input{width:15px;height:15px;margin:0;accent-color:var(--blue)}
+    .text-button{color:var(--blue)}
+    .submit{font-size:15px;font-weight:600;letter-spacing:.1px}
+    @media(max-width:820px){.mobile-logo{display:none!important}.form-wrap{max-width:440px}.form-side{padding-top:32px;padding-bottom:32px}}
+    @media(max-width:560px){.mobile-logo{margin-bottom:28px}.form-head h2{font-size:30px}.form-head p{font-size:14px}.field input{height:50px}.submit{height:50px}.options{gap:10px;font-size:12px}.remember{font-size:12px}}
+    @media(max-height:760px) and (min-width:821px){.shell{padding-top:28px;padding-bottom:28px}.form-side{padding-top:24px;padding-bottom:24px}.form-head{margin-bottom:18px}.field{margin-bottom:13px}.field input{height:46px}.options{margin-bottom:16px}.submit{height:48px}.signup{margin-top:17px}}
+    @media(max-width:560px){.shell,.form-side,.form-wrap,form,.field,.options{width:100%;min-width:0;max-width:100%}.form-side{padding-left:20px;padding-right:20px}.form-wrap{margin:0 auto}.field input{width:100%;max-width:100%}}
+  </style>
+  <link rel="stylesheet" href="assets/xlipa-responsive.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-nav">
+      <a href="xlipahomepage.html" class="logo" aria-label="XLipa home"><img class="logo-mark" src="assets/xlipa-favicon.svg" alt=""><span class="logo-word"><span class="logo-x">X</span>Lipa</span></a>
+      <button class="burger" type="button" aria-label="Menu" aria-expanded="false" onclick="var n=this.parentElement.querySelector('nav');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)"><i></i><i></i><i></i></button>
+      <nav>
+        <ul><li><a href="xlipahomepage.html#pricing">Pricing</a></li><li><a href="xlipahomepage.html#how-it-works">How it works</a></li><li><a href="developers.html">Developers</a></li><li><a href="contact.html">Contacts</a></li><li><a href="about.html">About</a></li></ul>
+        <div class="nav-actions"><a class="signin" href="xlipasignin.html">Sign in</a><a class="create" href="xlipacreateaccount.html">Create account</a></div>
+      </nav>
+    </div>
+  </header>
+  <main class="shell">
+    <aside class="brand-panel" aria-label="XLipa account access">
+      <a class="logo" href="xlipahomepage.html" aria-label="XLipa home"><svg viewBox="0 0 420 100" role="img" aria-label="XLipa"><defs><linearGradient id="xlipa-x-brand" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#0875ff"/><stop offset=".52" stop-color="#08d7e8"/><stop offset="1" stop-color="#00bce9"/></linearGradient></defs><path d="m13 18 17-8 34 32 29-31 17 8-36 39 35 32-18 7-35-32-29 32-18-8 37-39z" fill="url(#xlipa-x-brand)"/><path d="M14 77C2 66 22 41 58 24c28-13 57-17 69-9 13 9-9 31-33 47" fill="none" stroke="url(#xlipa-x-brand)" stroke-width="6" stroke-linecap="round"/><text x="145" y="74" fill="#f4f8ff" font-family="Inter,Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="-5">XLipa</text></svg></a>
+      <div class="intro"><h1>Your payments,<br>in one place.</h1><p>Sign in to review your payments and manage withdrawals from one place.</p><ul class="benefits"><li><span class="benefit-icon"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 18h4"/></svg></span><span>M-Pesa, Airtel Money, Mixx by Yas and HaloPesa</span></li><li><span class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M3 17 9 11l4 3 8-9"/><path d="M15 5h6v6"/></svg></span><span>Track today's takings at a glance</span></li><li><span class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M3 9h18M5 9V5l7-3 7 3v4M5 21V9m4 12V9m6 12V9m4 12V9M3 21h18"/></svg></span><span>Withdraw to mobile money or your bank</span></li></ul></div>
+    </aside>
+    <section class="form-side"><div class="form-wrap">
+      <a class="logo mobile-logo" href="xlipahomepage.html" aria-label="XLipa home"><svg viewBox="0 0 420 100" role="img" aria-label="XLipa"><defs><linearGradient id="xlipa-x-mobile" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#0875ff"/><stop offset=".52" stop-color="#08d7e8"/><stop offset="1" stop-color="#00bce9"/></linearGradient></defs><path d="m13 18 17-8 34 32 29-31 17 8-36 39 35 32-18 7-35-32-29 32-18-8 37-39z" fill="url(#xlipa-x-mobile)"/><path d="M14 77C2 66 22 41 58 24c28-13 57-17 69-9 13 9-9 31-33 47" fill="none" stroke="url(#xlipa-x-mobile)" stroke-width="6" stroke-linecap="round"/><text x="145" y="74" fill="#f4f8ff" font-family="Inter,Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="-5">XLipa</text></svg></a>
+      <header class="form-head"><div class="kicker">Welcome back</div><h2>Sign in to XLipa</h2><p>Enter your account details to manage payments and withdrawals.</p></header>
+      <form id="signInForm" method="post" action="{{ route('login.store') }}" autocomplete="on"><input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="username" placeholder="you@business.co.tz" value="{{ old('email') }}" required></div>
+        <div class="field"><label for="password">Password</label><div class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Your password" required><button class="reveal" type="button" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="m4 4 16 16"/></svg></button></div></div>
+        <div class="options"><label class="remember"><input type="checkbox" name="remember"> <span>Remember me</span></label><a class="text-button" id="forgotPassword" href="{{ route('password.request') }}">Forgot password?</a></div>
+        <button class="submit" type="submit">Sign in <span aria-hidden="true">→</span></button><div id="notice" class="notice{{ session('status') || $errors->any() ? ' show' : '' }}" role="status" aria-live="polite">{{ session('status') }} @if($errors->any())<ul>@foreach($errors->all() as $message)<li>{{ $message }}</li>@endforeach</ul>@endif</div>
+      </form>
+      <p class="signup">Don't have an account? <a href="xlipacreateaccount.html">Create one free</a></p>
+      <div class="secure"><span>●</span> Your information is protected with XLipa security</div>
+    </div></section>
+  </main>
+  <footer class="site-footer"><div class="site-footer-inner"><p>© 2026 XLipa. Payments made simple.</p><div class="site-footer-links"><a href="about.html">About XLipa</a><a href="xlipahomepage.html#pricing">Pricing</a><a href="xlipahomepage.html#how-it-works">How it works</a><a href="contact.html">Contact</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a><a href="prohibited-businesses.html">Prohibited businesses</a></div></div></footer>
+  <script>
+    const accountNav = document.querySelector('.site-nav nav');
+    const accountMenuToggle = document.querySelector('.site-nav .burger');
+    accountNav.addEventListener('click', event => {
+      if (event.target.closest('a') && accountNav.classList.contains('open')) {
+        accountNav.classList.remove('open');
+        accountMenuToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && accountNav.classList.contains('open')) {
+        accountNav.classList.remove('open');
+        accountMenuToggle.setAttribute('aria-expanded', 'false');
+        accountMenuToggle.focus();
+      }
+    });
+    const passwordField=document.getElementById('password');
+    const revealButton=document.querySelector('.reveal');
+    revealButton.addEventListener('click',()=>{const show=passwordField.type==='password';passwordField.type=show?'text':'password';revealButton.setAttribute('aria-label',show?'Hide password':'Show password');revealButton.setAttribute('aria-pressed',String(show))});
+    const notice=document.getElementById('notice');
+  </script>
+</body>
+</html>

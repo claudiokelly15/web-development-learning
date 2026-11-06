@@ -1,0 +1,3 @@
+@extends('auth.layout')
+@section('title', 'Verify your email address')
+@section('content')<p>Check your email for the verification link, then sign in to complete verification. Your merchant account is not approved by email verification.</p><form method="post" action="{{ route('verification.send') }}">@csrf<button type="submit">Resend verification message</button></form><form method="post" action="{{ route('logout') }}">@csrf<button type="submit">Sign out</button></form>@endsection

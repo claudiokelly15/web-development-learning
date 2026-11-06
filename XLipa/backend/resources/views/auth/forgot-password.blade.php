@@ -1,0 +1,3 @@
+@extends('auth.layout')
+@section('title', 'Reset your password')
+@section('content')<p>Enter your email address to request password reset instructions.</p><form method="post" action="{{ route('password.email') }}">@csrf <p><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" value="{{ old('email') }}" required></p><button type="submit">Request reset instructions</button></form>@endsection

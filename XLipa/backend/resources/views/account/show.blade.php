@@ -1,0 +1,3 @@
+@extends('auth.layout')
+@section('title', 'Your XLipa account')
+@section('content')<p>Signed in as {{ auth()->user()->name }}.</p><p>Your email is verified. Business profile completion and merchant review are separate steps.</p><ul>@forelse($merchants as $merchant)<li>{{ $merchant->business_name }} ? {{ $merchant->operational_status->value }} / {{ $merchant->verification_status->value }}</li>@empty<li>No active merchant memberships.</li>@endforelse</ul><form method="post" action="{{ route('logout') }}">@csrf<button type="submit">Sign out</button></form>@endsection

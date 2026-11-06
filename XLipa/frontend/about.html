@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Learn about XLipa, its payment tools for businesses in Tanzania, and how payments are processed by Selcom." />
+    <meta name="theme-color" content="#101b49" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <title>About XLipa</title>
+    <link rel="icon" type="image/svg+xml" sizes="any" href="assets/xlipa-favicon.svg?v=2" />
+    <link rel="shortcut icon" href="assets/xlipa-favicon.svg?v=2" />
+    <link rel="stylesheet" href="assets/xlipa-site.css" />
+    <link rel="stylesheet" href="assets/xlipa-responsive.css" />
+  </head>
+  <body>
+    <header>
+      <div class="wrap nav">
+        <a href="xlipahomepage.html" class="logo" aria-label="XLipa home"><img class="logo-mark" src="assets/xlipa-favicon.svg" alt=""><span class="logo-word"><span class="logo-x">X</span>Lipa</span></a>
+        <button
+          class="burger"
+          aria-label="Menu"
+          aria-expanded="false"
+          onclick="
+            var n = document.getElementById('menu');
+            var o = n.classList.toggle('open');
+            this.setAttribute('aria-expanded', o);
+          "
+        >
+          <i></i><i></i><i></i>
+        </button>
+        <nav id="menu">
+          <ul>
+            <li><a href="xlipahomepage.html#pricing">Pricing</a></li>
+            <li><a href="xlipahomepage.html#how-it-works">How it works</a></li>
+            <li><a href="developers.html">Developers</a></li>
+            <li><a href="contact.html">Contacts</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+          <div class="nav-actions">
+            <a class="signin" href="xlipasignin.html">Sign in</a>
+            <a class="create" href="xlipacreateaccount.html">Create account</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="about-intro" id="about" aria-labelledby="about-title">
+        <div class="wrap about-intro-inner">
+          <div class="guide-kicker">About XLipa</div>
+          <h1 id="about-title">Payment tools for businesses ready to grow.</h1>
+          <p>XLipa helps businesses in Tanzania collect mobile money payments through shareable payment links and online integrations. It also gives you a place to follow payment activity and references.</p>
+        </div>
+      </section>
+      <section class="guide-section soft" aria-labelledby="why-xlipa-title">
+        <div class="wrap about-story">
+          <div class="about-story-copy"><div class="guide-kicker">Why XLipa exists</div><h2 id="why-xlipa-title">Make it easier to get paid for the work you do.</h2><p>Businesses often need a clear way to ask customers to pay, confirm what happened, and keep useful records. XLipa brings these steps into one payment experience, whether you share a link or connect a website or app.</p><p>Customers pay using supported mobile money options, and you can review payment activity in your XLipa account.</p></div>
+          <div class="about-facts" aria-label="XLipa service details">
+            <div class="about-fact"><span class="about-fact-icon" aria-hidden="true">◇</span><div><strong>Payments processed by Selcom</strong><p>Selcom processes and settles XLipa payments.</p></div></div>
+            <div class="about-fact"><span class="about-fact-icon" aria-hidden="true">✓</span><div><strong>Account setup and review</strong><p>Follow the account setup steps and provide any verification details requested for your account.</p></div></div>
+            <div class="about-fact"><span class="about-fact-icon" aria-hidden="true">↗</span><div><strong>Payment activity you can follow</strong><p>Review payment statuses and transaction references in your XLipa account.</p></div></div>
+            <div class="about-fact"><span class="about-fact-icon" aria-hidden="true">%</span><div><strong>5% transaction fee</strong><p>See the pricing section for examples of how the fee is calculated.</p></div></div>
+          </div>
+        </div>
+      </section>
+      <section class="guide-section about-boundaries" aria-labelledby="about-boundaries-title">
+        <div class="wrap">
+          <div class="guide-heading"><div class="guide-kicker">A clear service boundary</div><h2 id="about-boundaries-title">What XLipa is—and what it isn’t</h2><p>Know what the service is designed to do before you get started.</p></div>
+          <div class="guide-grid">
+            <article class="guide-card"><span class="card-symbol" aria-hidden="true">⌂</span><h3>A payment service, not a bank</h3><p>XLipa provides payment technology for businesses. It is not a bank and does not offer deposit accounts or interest-bearing savings.</p></article>
+            <article class="guide-card"><span class="card-symbol" aria-hidden="true">↗</span><h3>Built for collecting payments</h3><p>XLipa helps you request and track customer payments. It is not a lending or credit service.</p></article>
+            <article class="guide-card" id="privacy"><span class="card-symbol" aria-hidden="true">◎</span><h3>Account details support your service</h3><p>Read the <a href="privacy.html" style="color:var(--brand-blue);text-decoration:underline">XLipa Privacy Notice</a> to understand how account and transaction information is handled.</p></article>
+            <article class="guide-card" id="prohibited-businesses"><span class="card-symbol" aria-hidden="true">✓</span><h3>Business use is reviewed</h3><p>Review the <a href="prohibited-businesses.html" style="color:var(--brand-blue);text-decoration:underline">Prohibited Businesses Policy</a> before onboarding. Approval depends on completing setup and meeting applicable requirements.</p></article>
+          </div>
+          <div class="about-cta"><div><h3>Ready to collect payments with XLipa?</h3><p>Create an account or explore how payment links and integrations work.</p></div><div class="about-cta-actions"><a href="xlipacreateaccount.html" class="btn primary">Create an account</a><a href="xlipahomepage.html#how-it-works" class="btn ghost">How it works</a></div></div>
+        </div>
+      </section>
+      <section class="guide-section soft" id="payment-handling" aria-labelledby="trust-title">
+        <div class="wrap guide-grid">
+          <div class="guide-copy"><div class="guide-kicker">Payment handling</div><h2 id="trust-title">Who handles your money</h2><p>XLipa is a technology service, not a bank. It gives your business tools to request and track payments. Selcom processes and settles payments, while your customers approve transactions through their own mobile money service.</p><p>Each transaction is recorded with a unique reference in your XLipa account. Keep that reference handy if you need help reviewing a payment.</p></div>
+          <div class="money-details" aria-label="XLipa payment and support details">
+            <div class="money-row"><span class="money-icon" aria-hidden="true">✉</span><div><span>Email support</span><strong><a href="mailto:support@xlipa.net">support@xlipa.net</a></strong></div></div>
+            <div class="money-row"><span class="money-icon" aria-hidden="true">◷</span><div><span>Support hours</span><strong>Monday to Friday, 8:00 to 18:00 EAT</strong></div></div>
+            <div class="money-row"><span class="money-icon" aria-hidden="true">◇</span><div><span>Payments processed and settled by</span><strong>Selcom</strong></div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <div class="footer-main">
+          <a class="footer-logo" href="xlipahomepage.html" aria-label="XLipa home"><img class="logo-mark" src="assets/xlipa-favicon.svg" alt=""><span class="footer-logo-word"><span class="footer-logo-x">X</span>Lipa</span></a>
+          <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="xlipahomepage.html#pricing">Pricing</a>
+            <a href="xlipahomepage.html#how-it-works">How it works</a>
+            <a href="developers.html">API docs</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="terms.html">Terms</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="disclaimer.html">Disclaimer</a>
+            <a href="prohibited-businesses.html">Prohibited businesses</a>
+          </nav>
+        </div>
+        <p class="footer-legal">© 2026 XLipa. XLipa is a technology service, not a bank. Payments are processed and settled by Selcom.</p>
+      </div>
+    </footer>
+  <script>
+    document.querySelectorAll('header .nav').forEach(function (navigation) {
+      const menu = navigation.querySelector('nav');
+      const toggle = navigation.querySelector('.burger');
+      if (!menu || !toggle) return;
+      menu.addEventListener('click', function (event) {
+        if (event.target.closest('a') && menu.classList.contains('open')) {
+          menu.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && menu.classList.contains('open')) {
+          menu.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.focus();
+        }
+      });
+    });
+  </script>
+  </body>
+</html>
