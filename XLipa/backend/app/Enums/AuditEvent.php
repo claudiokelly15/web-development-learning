@@ -12,4 +12,12 @@ enum AuditEvent: string
     case PlatformRoleRevoked = 'platform_role.revoked';
     case AccountStatusChanged = 'account.status_changed';
     case MerchantStatusChanged = 'merchant.status_changed';
+    case IdentityRecorded = 'identity.recorded';
+    case IdentityChanged = 'identity.changed';
+    case ContactCreated = 'contact.created';
+    case ContactChanged = 'contact.changed';
+    case OtpRequested = 'otp.requested';
+    case OtpChanged = 'otp.changed';
+    case OtpVerified = 'otp.verified';
+    case ContactProofChanged = 'contact.proof_changed';
 }

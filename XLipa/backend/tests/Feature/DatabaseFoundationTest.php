@@ -38,7 +38,7 @@ class DatabaseFoundationTest extends TestCase
 
     private function migrateFoundation(): void
     {
-        $this->artisan('migrate', ['--database' => 'sqlite', '--path' => array_map(fn (string $file): string => 'database/migrations/'.basename($file), glob(database_path('migrations/2026_11_06_*.php'))), '--no-interaction' => true])->assertExitCode(0);
+        $this->artisan('migrate', ['--database' => 'sqlite', '--path' => array_map(fn (string $file): string => 'database/migrations/'.basename($file), glob(database_path('migrations/2026_11_06_00000*.php'))), '--no-interaction' => true])->assertExitCode(0);
     }
 
     private function rejectedWrite(callable $write): void

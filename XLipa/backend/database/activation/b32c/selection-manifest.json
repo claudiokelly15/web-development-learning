@@ -1,0 +1,124 @@
+{
+    "version": 1,
+    "mode": "isolated-rehearsal-only",
+    "artifact": "2026_11_07_200000_activate_b32_security_contract.php",
+    "artifact_sha256": "be27fdee16c972244688bac7a1eac3b46c0e7a11bcb5a9189bc460b59e337e97",
+    "contract_sha256": "09d12df3d292445f89b81d9200370a65ae4a74caba05b086367b35dbdb2e44a0",
+    "selection": "Explicit --path + --realpath; b32c.selected must equal canonical artifact path.",
+    "working_execution": "DISABLED: separate reviewed target-bound gate and owner authorization required.",
+    "exclude_from_working_release": [
+        "2026_11_06_100000_create_synthetic_verification_contract.php",
+        "2026_11_06_100001_extend_synthetic_audit_contract.php",
+        "2026_11_06_100002_add_synthetic_pending_audit_obligations.php"
+    ],
+    "foundation": {
+        "0001_01_01_000000_create_users_table": "10d79883bc08ce46510f9ad8b1830b4d06d586dc56ae2c8bac3b3e491f69a90f",
+        "0001_01_01_000001_create_cache_table": "fbb4665e5a977e71df4e74ec75b3c06ca4f17ad0de7138fe9786639189978e77",
+        "0001_01_01_000002_create_jobs_table": "df4910687180313a14a3f96a8bddd808ae145ed1b107cd772caf865c0dc2b746",
+        "2026_11_06_000001_add_account_controls_to_users": "4fcc219beec0913549ed7dfe863d465558f5424d1717e521903050e139ecba75",
+        "2026_11_06_000002_create_merchants": "8b5f63ba0cbd920a767324723ccc0723233e73c806afe7846628b8fe9e67a18f",
+        "2026_11_06_000003_create_merchant_memberships": "26aabc5dee0b16fd20be3eafbd87bb4d96097d4096aaac509104e874082ecb03",
+        "2026_11_06_000004_create_platform_role_assignments": "4c7ebd91139335a93849cedf6fba987d40ad166446ddee1f23bfc1849bc0cc39",
+        "2026_11_06_000005_create_merchant_applications": "8f7df1d677de7ae9b57f68c22ca7d6891a3bf3ebe4021089d224cb59fcd0c5a4",
+        "2026_11_06_000006_create_audit_logs": "f4716d7abe3a65cdcdc7270e82b2913726d8ab63890b54ef9fd63bfb8bfb1f24"
+    },
+    "foundation_tables": [
+        "audit_logs",
+        "cache",
+        "cache_locks",
+        "failed_jobs",
+        "job_batches",
+        "jobs",
+        "merchant_applications",
+        "merchant_memberships",
+        "merchants",
+        "migrations",
+        "password_reset_tokens",
+        "platform_role_assignments",
+        "sessions",
+        "users"
+    ],
+    "foundation_ledger": [
+        {
+            "migration": "0001_01_01_000000_create_users_table",
+            "batch": 1
+        },
+        {
+            "migration": "0001_01_01_000001_create_cache_table",
+            "batch": 1
+        },
+        {
+            "migration": "0001_01_01_000002_create_jobs_table",
+            "batch": 1
+        },
+        {
+            "migration": "2026_11_06_000001_add_account_controls_to_users",
+            "batch": 2
+        },
+        {
+            "migration": "2026_11_06_000002_create_merchants",
+            "batch": 2
+        },
+        {
+            "migration": "2026_11_06_000003_create_merchant_memberships",
+            "batch": 2
+        },
+        {
+            "migration": "2026_11_06_000004_create_platform_role_assignments",
+            "batch": 2
+        },
+        {
+            "migration": "2026_11_06_000005_create_merchant_applications",
+            "batch": 2
+        },
+        {
+            "migration": "2026_11_06_000006_create_audit_logs",
+            "batch": 2
+        }
+    ],
+    "old_audit_sql_sha256": "7aafd23afa9cb08ca36a2f8298d1849acd1a7ef632084f854cd43b8afca9166e",
+    "foundation_objects": {
+        "index:audit_logs_actor_user_id_occurred_at_index": "d99695b8378543561203bb6ca9432c0b53678fc5d86dab72a377edebdd6ac6cd",
+        "index:audit_logs_event_type_occurred_at_index": "0429324dc1fa30df6154c7ccf3608c3b0ad141b91e5c0ac90fc8a27b2628a9fa",
+        "index:audit_logs_merchant_id_occurred_at_index": "4a41e98e4fdcc3e0399b4703a992bc8e147871412f890e686e885a2c44ebe79f",
+        "index:cache_expiration_index": "cdb3942495806986c8b91867dc3aecebd64dfd9dac60697287b5742fef38703e",
+        "index:cache_locks_expiration_index": "a7c78859fc04ea390b08e66df8382ef05c1fdd87a0b6fc75d6c8ca61bbf1e895",
+        "index:failed_jobs_connection_queue_failed_at_index": "46423741f7886abf029d68c286a3e5db2e8845cfb760324860156bbf987494af",
+        "index:failed_jobs_uuid_unique": "fb43b00caf6cb20faadc9ada72bfb38d6e2967405c7fd5f373bc3c3da43ab277",
+        "index:jobs_queue_index": "4f4a92c6e41797044f73587202cf461bde8e4accc70c915f62a3ecaee58775a5",
+        "index:merchant_applications_id_merchant_id_unique": "fe99dd88f22b15e55a1e890238ce042426db3b85e877b7c3218cc196d96b14f4",
+        "index:merchant_applications_merchant_id_attempt_number_unique": "665bc6d29b2db37e1d2c9f685cf4a17d11eeefd7e095d6f5853a5f67b6793c2c",
+        "index:merchant_applications_merchant_id_created_at_index": "d2f04073156358e8648e926c46379f9fd02d0852f837156b2d4221b298d52566",
+        "index:merchant_applications_merchant_id_current_slot_unique": "44b316027e7e8cb87c42a0b01d4cdd01f34e8168b6a0607de49e5ad6cffabf04",
+        "index:merchant_applications_status_submitted_at_index": "444517556cdd39252782e48749a6535e472aacb4221ae1b8309d6ff97cdcaf84",
+        "index:merchant_memberships_merchant_id_role_status_index": "2111de6ca50bdb3f72fee1607872542244805e5f7f311b3b44b6791d3b12d9b7",
+        "index:merchant_memberships_merchant_id_user_id_unique": "b6a55fbf62e6db847b551fb1cce078ff5376d555b4c6737c8ddf5773fb64967b",
+        "index:merchant_memberships_user_id_status_index": "f1b492ee8e34e932a031411946539aa25ad565a2da86298273d11fdf693bb638",
+        "index:merchants_operational_status_created_at_index": "841d9517bcc997862f317d91795b93a8dbfab40661a2bddc9176ceaa8c1cbbf5",
+        "index:merchants_registration_country_registration_number_index": "4c6bf76e2b387832c5f1dc0a1a0c9660f30b3a105f37b5283991b8176e6cdf9e",
+        "index:merchants_verification_status_updated_at_index": "be86d25e2dfdcc3110692d25ae4aaa66a7c19a063494f4b75c9f6aa96887df05",
+        "index:sessions_last_activity_index": "7ad30edc550b1d039f2a547489a7d2898756ec0eab8d7da6fef99a93c3c1f4bb",
+        "index:sessions_user_id_index": "6caedcc13b5dff29d11af85ec238cf52e56cc48a301f5cc663ed1b6acb45009e",
+        "index:users_email_unique": "e4771bfefc0d5fb1bdedfe8e8b31c4af33584a8586cf0a84d9d32add60cd3679",
+        "table:audit_logs": "7aafd23afa9cb08ca36a2f8298d1849acd1a7ef632084f854cd43b8afca9166e",
+        "table:cache": "808631bd44334dda96e6919b7b4748d07678fa23d5f2b497244d7769a7abfd4d",
+        "table:cache_locks": "d03120756bdf7ea6cab7aa78312a89fbd922b947202365fb438a8b82a56eff63",
+        "table:failed_jobs": "4334e238f5a5be3c59d08b43fb6a822ec38acf2bfa17773281e6587cf2acf8c6",
+        "table:job_batches": "c183090a7901e66eb390d99ce9df5f37fb450cedb1a293952d9bb2b20b8208c5",
+        "table:jobs": "6e9338b70ea3b3661b2b10e78fc81f58b95c9745963c78ab16ead6b3e01d1a3b",
+        "table:merchant_applications": "3175141adaa030285ffce72428edc65c223bfec69c795d7e8bb9685ebb27f025",
+        "table:merchant_memberships": "366b9d5101a9166412157635dc3b4dcc1d227a7a5da2ca16b949b8515632a36a",
+        "table:merchants": "468f8c96669fac7548621df9d38e62e5a406beb1aa8f7531f0bd3377d8c0e8be",
+        "table:migrations": "b1b654eee24a030d3f20d4c23b8920525a31c7d693a546249bbf4dfc7929c308",
+        "table:password_reset_tokens": "76cefacfd481aeb3df2601360fd07ef75ffb621587a0a0d72de7251b9dd1bc99",
+        "table:platform_role_assignments": "b5e9607d32806c86a05f0c7958b0a4492fc5b8971ed24bb4672a06926db1ba1b",
+        "table:sessions": "394f2f3213a56bed07f906db1e83ef0fd414e8adb80ef3167eae934d742bd152",
+        "table:users": "26aadb6f0e68d2a62f3ec10dfbde68d991f211429f439b9cc6cc4a919b90fb4b",
+        "trigger:applications_versions_INSERT": "ffa247eb77bc04820cb3c177a1ff27a0048db3ca7ce4fca8cdd61dfd40b2018d",
+        "trigger:applications_versions_UPDATE": "7bc64ddf7f7ed6100c1f4f1f307d4a169dae2cf864fa9dda1a20a55ab469f2d6",
+        "trigger:merchants_profile_version_INSERT": "71da4fad3fc54214173f6b129c268013a003eec4b4dd4393d5b616e9352ec4c3",
+        "trigger:merchants_profile_version_UPDATE": "791e3727a6b4c5a5a6268c5857b63c518f0b28d584e97a67065b5282460533b4",
+        "trigger:users_auth_version_INSERT": "36caba0bfa8974870d2b9037137b9e7f36be139bd77a809ca5ae59f5e39c3d99",
+        "trigger:users_auth_version_UPDATE": "3c3a968d4952e89f304e918f604563bd45fa04d11bb50468ec47e4c0497424df"
+    }
+}
