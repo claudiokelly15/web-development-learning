@@ -14,4 +14,5 @@
         @if($summary->publicFeedback)<dt>Public feedback</dt><dd>{{ $summary->publicFeedback }}</dd>@endif
     @endif
 </dl>
+@can('manageVerification', $merchant)<p><a href="{{ route('merchants.verification', ['merchant' => $merchant->id]) }}">Private contact and identity verification</a></p><p>Capture and delivery remain unavailable until their operational prerequisites are approved and ready.</p>@endcan
 @endsection

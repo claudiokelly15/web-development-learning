@@ -1,0 +1,40 @@
+.admin-workspace .dash-shell { grid-template-columns: 280px minmax(0, 1fr); }
+.admin-workspace .dash-navigation a, .admin-workspace .dash-navigation button { font-size: 11px; gap: 9px; }
+.admin-workspace .dash-nav-unavailable { font-size: 8px; }
+.admin-workspace .dash-workspace { margin-bottom: 25px; }
+.admin-workspace .dash-sidebar-note { padding-top: 35px; }
+.admin-workspace .dash-hero { margin-bottom: 22px; }
+.admin-workspace .dash-facts { margin-top: 0; }
+.admin-workspace .admin-detail-grid { grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); }
+.admin-workspace .admin-capability-list > div { gap: 18px; }
+.admin-workspace .admin-capability-list dt { max-width: 72%; }
+.admin-workspace .admin-capability-list dd { flex-shrink: 0; align-self: flex-start; }
+.admin-workspace .dash-account .dash-button + form .dash-button { margin-top: 10px; }
+.admin-workspace .admin-unavailable { cursor: default; }
+.admin-workspace .admin-unavailable:hover { border-color: var(--dash-line); }
+.admin-workspace .admin-unavailable h3 { margin-top: 19px; }
+.admin-workspace .admin-support-link { display: inline-block; font-size: 11px; font-weight: 600; margin-top: 12px; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 1180px) {
+  .admin-workspace .dash-shell { grid-template-columns: 252px minmax(0, 1fr); }
+  .admin-workspace .admin-detail-grid { grid-template-columns: minmax(0, 1fr); }
+  .admin-workspace .dash-account .dash-button { max-width: 320px; }
+  .admin-workspace .admin-availability-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 850px) {
+  .admin-workspace .dash-shell { display: block; }
+  .admin-workspace .dash-sidebar-note { display: none; }
+  .admin-workspace .dash-workspace { margin-bottom: 17px; }
+  .admin-workspace .admin-detail-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+  .admin-workspace .admin-availability-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .admin-workspace .dash-account .dash-button { max-width: none; }
+}
+@media (max-width: 580px) {
+  .admin-workspace .admin-detail-grid, .admin-workspace .admin-availability-grid { grid-template-columns: minmax(0, 1fr); }
+  .admin-workspace .dash-breadcrumb { gap: 7px; font-size: 9px; }
+  .admin-workspace .dash-topbar-actions { gap: 8px; }
+  .admin-workspace .dash-switch { font-size: 10px; }
+  .admin-workspace .admin-capability-list > div { font-size: 11px; gap: 12px; }
+  .admin-workspace .admin-capability-list dt { max-width: 68%; }
+  .admin-workspace .admin-capability-list dd { max-width: 35%; }
+  .admin-workspace .dash-panel-heading { align-items: flex-start; }
+}
