@@ -267,13 +267,19 @@ class AdminWorkspaceTest extends TestCase
         $html = $this->signIn($user)->get(route($this->ownRoute($role)))->assertOk()->getContent();
         $document = $this->document($html);
         $buttons = $document->query('//nav[@aria-label="Administrative navigation"]//button');
-        $this->assertSame($role === 'chief_admin' ? 15 : 3, $buttons->length);
+        $this->assertSame($role === 'chief_admin' ? 14 : 3, $buttons->length);
         foreach ($buttons as $button) {
             $this->assertTrue($button->hasAttribute('disabled'));
             $this->assertSame('true', $button->getAttribute('aria-disabled'));
             $this->assertStringContainsString('Unavailable', $button->textContent);
         }
         $allowed = [route('home'), route('account'), route($this->ownRoute($role)), route('admin.access'), route('pages.contact'), '#admin-content'];
+        if ($role === 'chief_admin') {
+            $allowed[] = route('admin.applications');
+            $this->assertSame(1, $document->query('//a[@href="'.route('admin.applications').'"]')->length);
+        } else {
+            $this->assertSame(0, $document->query('//a[@href="'.route('admin.applications').'"]')->length);
+        }
         foreach ($document->query('//a[@href]') as $anchor) {
             $this->assertContains($anchor->getAttribute('href'), $allowed);
         }
@@ -304,10 +310,10 @@ class AdminWorkspaceTest extends TestCase
         $user = $this->actor($role);
         $this->signIn($user);
         $before = $this->fingerprint();
-        foreach (['/admin/merchants', '/admin/applications', '/admin/transactions', '/admin/staff-management', '/admin/audit-logs', '/admin/settings', '/admin/access/'.$user->id] as $url) {
+        foreach (['/admin/merchants', '/admin/applications/approve', '/admin/transactions', '/admin/staff-management', '/admin/audit-logs', '/admin/settings', '/admin/access/'.$user->id] as $url) {
             $this->get($url)->assertNotFound()->assertHeader('Cache-Control', 'no-store, private')->assertHeader('X-Frame-Options', 'DENY');
         }
-        foreach (['admin.index', 'admin.chief', 'admin.staff', 'admin.access'] as $name) {
+        foreach (['admin.index', 'admin.chief', 'admin.staff', 'admin.access', 'admin.applications'] as $name) {
             foreach (['post', 'put', 'patch', 'delete'] as $method) {
                 $this->{$method}(route($name), ['role' => 'chief_admin', 'status' => 'approved', 'user_id' => $user->id])->assertStatus(405)->assertHeader('Cache-Control', 'no-store, private');
             }

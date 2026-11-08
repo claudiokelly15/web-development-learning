@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AdminApplicationController;
 use App\Http\Controllers\AdminWorkspaceController;
 use App\Http\Controllers\Auth\AccountController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\MerchantApplicationController;
 use App\Http\Controllers\MerchantDashboardController;
 use App\Http\Controllers\MerchantOnboardingController;
 use App\Http\Controllers\MerchantVerificationController;
@@ -56,6 +58,7 @@ Route::middleware([AuthenticationResponseHeaders::class, 'auth'])->group(functio
             Route::get('/chief', [AdminWorkspaceController::class, 'chief'])->name('admin.chief');
             Route::get('/staff', [AdminWorkspaceController::class, 'staff'])->name('admin.staff');
             Route::get('/access', [AdminWorkspaceController::class, 'access'])->name('admin.access');
+            Route::get('/applications', [AdminApplicationController::class, 'index'])->name('admin.applications');
         });
         Route::get('/merchants/{merchant}/dashboard', [MerchantDashboardController::class, 'show'])
             ->middleware(['verified', ResolveMerchantContext::class])->whereUlid('merchant')->name('merchants.dashboard');
@@ -68,5 +71,9 @@ Route::middleware([AuthenticationResponseHeaders::class, 'auth'])->group(functio
         });
         Route::get('/merchants/{merchant}/onboarding', [MerchantOnboardingController::class, 'show'])
             ->middleware(['verified', ResolveMerchantContext::class])->whereUlid('merchant')->name('merchants.onboarding');
+        Route::middleware(['verified', ResolveMerchantContext::class])->prefix('/merchants/{merchant}/applications')->whereUlid('merchant')->group(function (): void {
+            Route::get('/', [MerchantApplicationController::class, 'index'])->name('merchants.applications');
+            Route::post('/submit', [MerchantApplicationController::class, 'submit'])->middleware('throttle:10,1')->name('merchants.applications.submit');
+        });
     });
 });

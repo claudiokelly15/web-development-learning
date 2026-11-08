@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Actions\Merchants\DeniedSubmissionAdmission;
+use App\Actions\Merchants\SubmissionAdmission;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -15,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(SubmissionAdmission::class, DeniedSubmissionAdmission::class);
     }
 
     /**

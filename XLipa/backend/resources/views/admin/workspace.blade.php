@@ -22,7 +22,11 @@
                 <li><a href="{{ route($overview->overviewRoute()) }}" @if(!$overview->accessPage)aria-current="page"@endif><span class="dash-nav-icon" aria-hidden="true">◫</span>Overview<span class="dash-nav-arrow" aria-hidden="true">↗</span></a></li>
                 <li><a href="{{ route('admin.access') }}" @if($overview->accessPage)aria-current="page"@endif><span class="dash-nav-icon" aria-hidden="true">↳</span>Access scope<span class="dash-nav-arrow" aria-hidden="true">↗</span></a></li>
                 @foreach($overview->unavailableNavigation() as $feature)
+                    @if($overview->chief() && $feature === 'Merchant Applications')
+                    <li><a href="{{ route('admin.applications') }}">Merchant Applications <span class="dash-nav-unavailable">Read-only</span></a></li>
+                    @else
                     <li><button type="button" disabled aria-disabled="true"><span class="dash-nav-icon" aria-hidden="true">○</span>{{ $feature }}<span class="dash-nav-unavailable">Unavailable</span></button></li>
+                    @endif
                 @endforeach
                 <li><a href="{{ route('pages.contact') }}"><span class="dash-nav-icon" aria-hidden="true">?</span>Support<span class="dash-nav-arrow" aria-hidden="true">↗</span></a></li>
             </ul>
@@ -40,7 +44,7 @@
 
             @if(!$overview->accessPage)
                 <section class="dash-hero" aria-labelledby="workspace-title">
-                    <div><span class="dash-hero-label"><span aria-hidden="true">◉</span> {{ $overview->chief() ? 'PLATFORM OVERSIGHT' : 'SCOPED ADMINISTRATION' }}</span><h2 id="workspace-title">{{ $overview->chief() ? 'Your platform workspace starts here.' : 'A focused workspace for your role.' }}</h2><p>Your current access covers this overview and your own access scope. Merchant records, review actions and financial tools are unavailable.</p><a class="dash-button dash-button-light" href="{{ route('admin.access') }}">View your access scope <span aria-hidden="true">↗</span></a></div>
+                    <div><span class="dash-hero-label"><span aria-hidden="true">◉</span> {{ $overview->chief() ? 'PLATFORM OVERSIGHT' : 'SCOPED ADMINISTRATION' }}</span><h2 id="workspace-title">{{ $overview->chief() ? 'Your platform workspace starts here.' : 'A focused workspace for your role.' }}</h2><p>Your current access covers this overview and your own access scope. Chief Admins can also open redacted application review preparation. Review actions and financial tools are unavailable.</p><a class="dash-button dash-button-light" href="{{ route('admin.access') }}">View your access scope <span aria-hidden="true">↗</span></a></div>
                     <div class="dash-hero-aside" aria-hidden="true"><span class="dash-orbit"></span><span class="dash-orbit dash-orbit-inner"></span><span class="dash-orbit-label">{{ $overview->chief() ? 'CLEAR' : 'FOCUSED' }}<br>OVERSIGHT.</span></div>
                 </section>
 
@@ -75,7 +79,7 @@
                 <section class="dash-resources" aria-labelledby="availability-title">
                     <div class="dash-section-heading"><div><p class="dash-eyebrow">OPERATIONS AVAILABILITY</p><h2 id="availability-title">What’s available today</h2></div><p>Only approved, implemented capabilities.</p></div>
                     <div class="dash-resource-grid admin-availability-grid">
-                        <article class="dash-resource admin-unavailable"><span class="dash-badge">Unavailable</span><h3>Merchant operations</h3><p>Merchant directories, application review and identity processing are not available in this workspace.</p></article>
+                        <article class="dash-resource admin-unavailable"><span class="dash-badge">Unavailable</span><h3>Merchant operations</h3><p>Chief Admins can open redacted application review preparation from navigation. Merchant directories, review decisions and identity processing are unavailable.</p></article>
                         <article class="dash-resource admin-unavailable"><span class="dash-badge">Unavailable</span><h3>Financial operations</h3><p>Transactions, revenue, wallets, withdrawals and settlements are not connected. No financial totals are shown.</p></article>
                         <article class="dash-resource admin-unavailable"><span class="dash-badge">Unavailable</span><h3>Platform management</h3><p>Staff changes, audit-record browsing, provider tools and system settings are not enabled.</p></article>
                     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\Merchants\LifecycleMutation;
 use App\Enums\AccountStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
@@ -30,7 +31,10 @@ class PasswordResetController extends Controller
     {
         $credentials = [...$request->validated(), 'account_status' => 'active'];
         $resetUser = null;
-        $status = DB::transaction(function () use ($credentials, &$resetUser): string {
+        $mutations = app(LifecycleMutation::class);
+        $versioned = $mutations->versioned();
+        abort_if($versioned, 503, 'Password reset is unavailable pending account lifecycle review.');
+        $status = $mutations->run(function () use ($credentials, &$resetUser): string {
             DB::table('password_reset_tokens')->where('email', $credentials['email'])->lockForUpdate()->first();
 
             return Password::reset($credentials, function (User $user, string $password) use (&$resetUser): void {
@@ -38,10 +42,12 @@ class PasswordResetController extends Controller
                 if ($user->account_status !== AccountStatus::Active) {
                     throw ValidationException::withMessages(['email' => 'This reset request could not be completed. Request a new link.']);
                 }
-                $user->forceFill(['password' => Hash::make($password), 'remember_token' => Str::random(60), 'auth_version' => $user->auth_version + 1])->save();
+                $changes = ['password' => Hash::make($password), 'remember_token' => Str::random(60), 'auth_version' => LifecycleMutation::next($user->auth_version)];
+                abort_unless(DB::table('users')->where('id', $user->id)->where('auth_version', $user->auth_version)->where('account_status', 'active')->update($changes) === 1, 409, 'The account state changed.');
+                $user->refresh();
                 $resetUser = $user;
             });
-        }, 3);
+        });
         if ($status !== Password::PASSWORD_RESET) {
             return redirect()->route('password.request')->withErrors(['email' => 'This reset request could not be completed. Request a new link.']);
         }

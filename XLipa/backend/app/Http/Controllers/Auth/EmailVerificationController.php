@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\Auth\VerifyAccountEmail;
+use App\Actions\Merchants\LifecycleMutation;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -17,7 +19,13 @@ class EmailVerificationController extends Controller
 
     public function verify(EmailVerificationRequest $request): RedirectResponse
     {
-        $request->fulfill();
+        if (app(LifecycleMutation::class)->versioned()) {
+            $version = filter_var($request->query('binding_version'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            abort_unless($version !== false, 409, 'Request a current verification link.');
+            app(VerifyAccountEmail::class)->execute($request->user(), $version);
+        } else {
+            $request->fulfill();
+        }
 
         return redirect()->route('account')->with('status', 'Your email address has been verified.');
     }

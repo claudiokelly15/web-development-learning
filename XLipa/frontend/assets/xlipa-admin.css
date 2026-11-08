@@ -1,6 +1,6 @@
 .admin-workspace .dash-shell { grid-template-columns: 280px minmax(0, 1fr); }
-.admin-workspace .dash-navigation a, .admin-workspace .dash-navigation button { font-size: 11px; gap: 9px; }
-.admin-workspace .dash-nav-unavailable { font-size: 8px; }
+.admin-workspace .dash-navigation a, .admin-workspace .dash-navigation button { font-size: 13px; gap: 9px; }
+.admin-workspace .dash-nav-unavailable { font-size: 10px; }
 .admin-workspace .dash-workspace { margin-bottom: 25px; }
 .admin-workspace .dash-sidebar-note { padding-top: 35px; }
 .admin-workspace .dash-hero { margin-bottom: 22px; }
@@ -13,7 +13,7 @@
 .admin-workspace .admin-unavailable { cursor: default; }
 .admin-workspace .admin-unavailable:hover { border-color: var(--dash-line); }
 .admin-workspace .admin-unavailable h3 { margin-top: 19px; }
-.admin-workspace .admin-support-link { display: inline-block; font-size: 11px; font-weight: 600; margin-top: 12px; text-decoration: underline; text-underline-offset: 3px; }
+.admin-workspace .admin-support-link { display: inline-block; font-size: 13px; font-weight: 600; margin-top: 12px; text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 1180px) {
   .admin-workspace .dash-shell { grid-template-columns: 252px minmax(0, 1fr); }
   .admin-workspace .admin-detail-grid { grid-template-columns: minmax(0, 1fr); }

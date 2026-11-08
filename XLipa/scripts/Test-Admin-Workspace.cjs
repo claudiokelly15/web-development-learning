@@ -14,7 +14,7 @@ async function main() {
   assert.ok(['chief_admin', 'admin'].includes(marker.role));
   assert.deepEqual(marker, { synthetic: true, feature: 'PD-02', role: marker.role });
   const roleLabel = marker.role === 'chief_admin' ? 'Chief Admin' : 'Staff Admin';
-  const disabledSections = marker.role === 'chief_admin' ? 15 : 3;
+  const disabledSections = marker.role === 'chief_admin' ? 14 : 3;
   for (const page of ['workspace', 'access']) assert.ok(fs.statSync(path.join(fixture, `${page}.html`)).isFile());
   const chrome = ['C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'].find(fs.existsSync);
   assert.ok(chrome, 'Existing Chrome/Edge required; no browser installation occurs');
@@ -85,6 +85,8 @@ async function main() {
             role: document.querySelector('.dash-workspace strong').textContent,
             heading: document.querySelector('h1').textContent,
             headingColor: getComputedStyle(document.querySelector('h1')).color,
+            sidebarBackground: getComputedStyle(document.querySelector('.dash-sidebar')).backgroundColor,
+            heroBackground: document.querySelector('.dash-hero') ? getComputedStyle(document.querySelector('.dash-hero')).backgroundColor : null,
             disabled: document.querySelectorAll('nav button[disabled][aria-disabled="true"]').length, boxes };
         })()`, awaitPromise: true, returnByValue: true });
         assert.ok(!measured.exceptionDetails, 'Layout measurement failed');
@@ -96,7 +98,9 @@ async function main() {
         assert.equal(data.role, roleLabel);
         assert.equal(data.heading, page === 'workspace' ? 'Overview.' : 'Access scope.');
         assert.ok(data.current.includes(page === 'workspace' ? 'Overview' : 'Access scope'));
-        assert.equal(data.headingColor, 'rgb(23, 23, 25)');
+        assert.equal(data.sidebarBackground, 'rgb(255, 255, 255)');
+        assert.equal(data.heroBackground, page === 'workspace' ? 'rgb(237, 244, 255)' : null);
+        assert.equal(data.headingColor, 'rgb(7, 26, 53)');
         assert.equal(data.disabled, disabledSections);
         for (const box of data.boxes) assert.ok(box.left >= 0 && box.right <= width + 1, `${page}/${name}: clipped ${box.selector}`);
         const { cssContentSize } = await command('Page.getLayoutMetrics');

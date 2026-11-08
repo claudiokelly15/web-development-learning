@@ -1,0 +1,9 @@
+{
+    "version":  "submission-evidence-v1",
+    "mode":  "isolated-only",
+    "migration":  "2026_11_08_210000_add_se1_submission_evidence",
+    "schema_sha256":  "1fde336da8709ea7d052fe4fdb41262e47cea4aad5cd505e32d26c0ee769ee61",
+    "artifact_sha256":  "75cbd497fa5f5b219087d2777c376f3e0234fb6007be10c48da9e0666dd10431",
+    "c_contract_sha256":  "09d12df3d292445f89b81d9200370a65ae4a74caba05b086367b35dbdb2e44a0",
+    "c_manifest_sha256":  "20fbe5628164853b6a023ff98feaa1ae8a8a0ce9bf9572b64df9e361e34f2873"
+}

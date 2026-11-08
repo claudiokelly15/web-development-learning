@@ -44,7 +44,7 @@ final readonly class AdminWorkspaceOverview
             ['label' => 'View Chief Admin overview', 'state' => $this->chief() ? 'Available' : 'Not permitted'],
             ['label' => 'View Staff Admin overview', 'state' => $this->chief() ? 'Not permitted' : 'Available'],
             ['label' => 'View your own access scope', 'state' => 'Available'],
-            ['label' => 'Browse merchant or application records', 'state' => 'Unavailable'],
+            ['label' => 'Browse merchant or application records', 'state' => $this->chief() ? 'Redacted application preparation only' : 'Unavailable'],
             ['label' => 'Approve or reject applications', 'state' => 'Unavailable'],
             ['label' => 'View transactions, balances or settlements', 'state' => 'Unavailable'],
             ['label' => 'Manage staff or system settings', 'state' => 'Unavailable'],

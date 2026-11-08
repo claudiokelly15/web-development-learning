@@ -16,6 +16,11 @@ class PlatformRoleAssignmentPolicy
         return $this->roles->execute($user) === PlatformRole::ChiefAdmin;
     }
 
+    public function viewApplicationReviewQueue(User $user): bool
+    {
+        return $this->roles->execute($user) === PlatformRole::ChiefAdmin;
+    }
+
     public function viewStaffWorkspace(User $user): bool
     {
         return $this->roles->execute($user) === PlatformRole::Admin;

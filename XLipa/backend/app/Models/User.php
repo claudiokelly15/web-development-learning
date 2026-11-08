@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Actions\Merchants\LifecycleMutation;
 use App\Enums\AccountStatus;
+use App\Notifications\VersionedVerifyEmail;
 use Database\Factories\UserFactory;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -19,6 +22,15 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail
 {
+    public function sendEmailVerificationNotification(): void
+    {
+        if (app(LifecycleMutation::class)->versioned()) {
+            $this->fresh()->notify(new VersionedVerifyEmail);
+        } else {
+            $this->notify(new VerifyEmail);
+        }
+    }
+
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 

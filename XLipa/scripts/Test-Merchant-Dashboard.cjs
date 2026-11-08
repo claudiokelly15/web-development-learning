@@ -82,6 +82,8 @@ async function main() {
         return { viewport: innerWidth, documentWidth: document.documentElement.scrollWidth, skipAccessible,
           navigationVisible: navBox.height > 0 && currentBox.width > 0 && currentBox.left >= 0 && currentBox.right <= innerWidth,
           headingColor: getComputedStyle(document.querySelector('h1')).color,
+            sidebarBackground: getComputedStyle(document.querySelector('.dash-sidebar')).backgroundColor,
+            heroBackground: getComputedStyle(document.querySelector('.dash-hero')).backgroundColor,
           footerBackground: getComputedStyle(document.querySelector('.dash-footer')).backgroundColor,
           disabledSections: document.querySelectorAll('nav button[disabled][aria-disabled="true"]').length,
           heading: document.querySelector('h1').textContent, boxes };
@@ -92,7 +94,9 @@ async function main() {
       assert.ok(measurements.documentWidth <= width, `${name}: page overflows horizontally`);
       assert.ok(measurements.skipAccessible, `${name}: keyboard skip link is hidden`);
       assert.ok(measurements.navigationVisible, `${name}: navigation is hidden or clipped`);
-      assert.equal(measurements.headingColor, 'rgb(23, 23, 25)', `${name}: heading theme overridden`);
+      assert.equal(measurements.sidebarBackground, 'rgb(255, 255, 255)');
+      assert.equal(measurements.heroBackground, 'rgb(237, 244, 255)');
+      assert.equal(measurements.headingColor, 'rgb(7, 26, 53)', `${name}: heading theme overridden`);
       assert.equal(measurements.footerBackground, 'rgba(0, 0, 0, 0)', `${name}: footer theme overridden`);
       assert.equal(measurements.disabledSections, 9);
       assert.equal(measurements.heading, 'Overview.');
