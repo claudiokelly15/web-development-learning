@@ -30,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($error instanceof AuthenticationException) {
                 return null;
             }
-            if (! $request->is('merchants/*/verification', 'merchants/*/verification/*', 'merchants/*/applications', 'merchants/*/applications/*', 'admin/applications')) {
+            if (! $request->is('merchants/*/verification', 'merchants/*/verification/*', 'merchants/*/applications', 'merchants/*/applications/*', 'admin/applications', 'admin/applications/*')) {
                 return null;
             }
             $status = $error instanceof HttpExceptionInterface ? $error->getStatusCode() : 503;
@@ -38,7 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 $status = 503;
             }
             $message = 'Verification is unavailable or the request could not be accepted. No sensitive values are displayed.';
-            if ($request->is('merchants/*/applications', 'merchants/*/applications/*', 'admin/applications')) {
+            if ($request->is('merchants/*/applications', 'merchants/*/applications/*', 'admin/applications', 'admin/applications/*')) {
                 $message = 'Application access is unavailable or the request could not be accepted. No application was changed.';
             }
 

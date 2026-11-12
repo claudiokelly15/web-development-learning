@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use LogicException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -382,5 +383,121 @@ class AuthenticationTest extends TestCase
         $this->post('/login', ['email' => $user->email, 'password' => $password.'y'])->assertSessionHasErrors('password');
         $this->assertGuest();
         $this->post('/login', ['email' => $user->email, 'password' => $password])->assertRedirect(route('account'));
+    }
+
+    public static function absentBusinessNames(): array
+    {
+        return ['omitted' => [[]], 'null' => [['businessName' => null]], 'empty' => [['businessName' => '']], 'whitespace' => [['businessName' => " \t\r\n "]]];
+    }
+
+    #[DataProvider('absentBusinessNames')]
+    public function test_minimal_signup_preserves_the_graph_and_email_only_dashboard_gate(array $name): void
+    {
+        $input = $this->registration();
+        unset($input['businessName']);
+        $this->post('/register', [...$input, ...$name])->assertRedirect(route('login'))->assertSessionHasNoErrors();
+        $this->assertGuest();
+        $user = User::sole();
+        $merchant = Merchant::sole();
+        $membership = $merchant->memberships()->sole();
+        $draft = $merchant->applications()->sole();
+        $this->assertSame('', $merchant->business_name);
+        $this->assertSame(1, $merchant->profile_version);
+        $this->assertSame('+255675760723', $merchant->business_phone);
+        $this->assertSame($user->id, $merchant->created_by_user_id);
+        $this->assertSame($user->id, $membership->user_id);
+        $this->assertSame('owner', $membership->role->value);
+        $this->assertSame('active', $membership->status->value);
+        $this->assertSame(1, $draft->attempt_number);
+        $this->assertSame(1, $draft->current_slot);
+        $this->assertSame(1, $draft->profile_version);
+        $this->assertSame('draft', $draft->status->value);
+        $this->assertNull($draft->submitted_at);
+        $this->assertNull($draft->getRawOriginal('profile_snapshot'));
+        $this->assertSame('2026-11-06', $user->terms_version);
+        $this->assertNotNull($user->terms_accepted_at);
+        $this->assertSame('merchant.created', AuditLog::sole()->event_type->value);
+        $this->assertSame($draft->id, AuditLog::sole()->application_id);
+        $this->assertSame(0, DB::table('platform_role_assignments')->count());
+        $this->post('/login', ['email' => $user->email, 'password' => 'SyntheticPassword12'])->assertRedirect(route('verification.notice'));
+        $dashboard = route('merchants.dashboard', ['merchant' => $merchant->id]);
+        $this->get($dashboard)->assertRedirect(route('verification.notice'));
+        $this->get($this->signedVerification($user))->assertRedirect(route('account'));
+        foreach ([route('account'), $dashboard, route('merchants.onboarding', ['merchant' => $merchant->id])] as $url) {
+            $this->get($url)->assertOk()->assertSee('Business name not provided')->assertHeader('Cache-Control', 'no-store, private');
+        }
+        $this->assertSame('', $merchant->fresh()->business_name);
+        $this->assertSame('onboarding', $merchant->fresh()->operational_status->value);
+        $this->assertSame('unverified', $merchant->fresh()->verification_status->value);
+    }
+
+    public static function invalidBusinessNames(): array
+    {
+        return [[['array']], [[]], [['name' => 'forged']], [false], [true], [123], [12.5], [str_repeat('a', 201)]];
+    }
+
+    #[DataProvider('invalidBusinessNames')]
+    public function test_minimal_signup_rejects_malformed_or_oversize_names(mixed $name): void
+    {
+        $this->postJson('/register', $this->registration(['businessName' => $name]))->assertUnprocessable()->assertJsonValidationErrors('businessName');
+        $this->assertSame(0, User::count());
+        $this->assertSame(0, Merchant::count());
+        Notification::assertNothingSent();
+    }
+
+    public function test_minimal_signup_trims_valid_names_and_preserves_duplicate_privacy(): void
+    {
+        $input = $this->registration(['businessName' => '  Fictional Store  ']);
+        $first = $this->post('/register', $input)->assertRedirect(route('login'))->assertSessionHasNoErrors();
+        $this->assertSame('Fictional Store', Merchant::sole()->business_name);
+        $message = session('status');
+        unset($input['businessName']);
+        $second = $this->post('/register', $input)->assertRedirect(route('login'))->assertSessionHas('status', $message);
+        $this->assertSame($first->headers->get('Location'), $second->headers->get('Location'));
+        $this->assertSame(1, User::count());
+        $this->assertSame(1, Merchant::count());
+        $this->assertSame(1, AuditLog::count());
+        Notification::assertSentTimes(VerifyEmail::class, 1);
+        $this->assertGuest();
+    }
+
+    public function test_minimal_signup_rolls_back_unnamed_bundle_on_audit_failure(): void
+    {
+        DB::unprepared("CREATE TRIGGER reject_unnamed_audit BEFORE INSERT ON audit_logs BEGIN SELECT RAISE(ABORT, 'fictional failure'); END");
+        $input = $this->registration();
+        unset($input['businessName']);
+        $this->post('/register', $input)->assertStatus(500);
+        foreach (['users', 'merchants', 'merchant_memberships', 'merchant_applications', 'audit_logs'] as $table) {
+            $this->assertSame(0, DB::table($table)->count());
+        }
+        Notification::assertNothingSent();
+    }
+
+    public function test_minimal_signup_form_keeps_other_required_inputs_and_canonical_copy(): void
+    {
+        $html = $this->get(route('register'))->assertOk()->assertSee('Business name (optional)')->getContent();
+        $document = new \DOMDocument;
+        @$document->loadHTML($html);
+        $xpath = new \DOMXPath($document);
+        $this->assertSame(0, $xpath->query('//input[@name="businessName" and @required]')->length);
+        foreach (['fullName', 'email', 'phone', 'password', 'password_confirmation', 'terms'] as $field) {
+            $this->assertSame(1, $xpath->query('//input[@name="'.$field.'" and @required]')->length, $field);
+        }
+        $this->assertSame(file_get_contents(base_path('../frontend/xlipacreateaccount.html')), file_get_contents(resource_path('views/xlipa/xlipacreateaccount.blade.php')));
+    }
+
+    public static function requiredMinimalFields(): array
+    {
+        return [['fullName', 'fullName'], ['email', 'email'], ['phone', 'phone'], ['password', 'password'], ['password_confirmation', 'password'], ['terms', 'terms']];
+    }
+
+    #[DataProvider('requiredMinimalFields')]
+    public function test_minimal_signup_preserves_required_account_fields(string $field, string $error): void
+    {
+        $input = $this->registration();
+        unset($input['businessName'], $input[$field]);
+        $this->postJson('/register', $input)->assertUnprocessable()->assertJsonValidationErrors($error);
+        $this->assertSame(0, User::count());
+        Notification::assertNothingSent();
     }
 }

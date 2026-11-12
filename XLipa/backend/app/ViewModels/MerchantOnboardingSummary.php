@@ -30,7 +30,7 @@ final readonly class MerchantOnboardingSummary
         } : null;
 
         return new self(
-            $merchant->business_name,
+            $merchant->businessNameLabel(),
             $merchant->operational_status->value,
             $merchant->verification_status->value,
             $status,

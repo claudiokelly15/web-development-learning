@@ -14,12 +14,12 @@ use InvalidArgumentException;
 
 class CreateMerchant
 {
-    public function execute(User $owner, string $businessName, ?string $businessPhone = null): Merchant
+    public function execute(User $owner, ?string $businessName, ?string $businessPhone = null): Merchant
     {
-        $businessName = trim($businessName);
-        if ($businessName === '' || mb_strlen($businessName) > 200) {
+        if ($businessName !== null && (trim($businessName) === '' || mb_strlen(trim($businessName)) > 200)) {
             throw new InvalidArgumentException('A bounded business name is required.');
         }
+        $businessName = trim($businessName ?? '');
 
         if ($businessPhone !== null && ! preg_match('/^\+[1-9][0-9]{7,14}$/D', $businessPhone)) {
             throw new InvalidArgumentException('A valid registration contact is required.');

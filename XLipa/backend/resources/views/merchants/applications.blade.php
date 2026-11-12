@@ -4,7 +4,7 @@
 @section('content')
 <p><a href="{{ route('merchants.onboarding', ['merchant' => $merchant->id]) }}">Onboarding status</a></p>
 <h2>Application history</h2>
-<p>{{ $merchant->business_name }} · Tanzania · TZS only</p>
+<p>{{ $merchant->businessNameLabel() }} · Tanzania · TZS only</p>
 <p>Submitted applications await review. There is no separate under-review state. Approval does not enable financial services.</p>
 @forelse($applications as $application)
 <section aria-labelledby="attempt-{{ $application->attempt_number }}">

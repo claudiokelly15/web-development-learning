@@ -301,6 +301,39 @@ class MerchantDashboardTest extends TestCase
         Log::shouldHaveReceived('error')->once()->with('Merchant request failed.', ['exception_type' => RuntimeException::class]);
     }
 
+    public function test_minimal_signup_unnamed_pages_have_labels_and_optional_offline_exports(): void
+    {
+        $signup = $this->get(route('register'))->assertOk()->getContent();
+        $merchant = Merchant::factory()->create(['business_name' => '']);
+        $this->signIn($merchant->creator);
+        $before = $this->fingerprint();
+        $exports = ['signup' => $signup];
+        foreach (['account' => route('account'), 'dashboard' => $this->dashboardUrl($merchant), 'onboarding' => route('merchants.onboarding', ['merchant' => $merchant->id]), 'applications' => route('merchants.applications', ['merchant' => $merchant->id]), 'verification' => route('merchants.verification', ['merchant' => $merchant->id])] as $page => $url) {
+            $html = $this->get($url)->assertOk()->assertSee('Business name not provided')->getContent();
+            $document = $this->document($html);
+            $this->assertSame(1, $document->query('//h1')->length);
+            foreach ($document->query('//a[@href]') as $anchor) {
+                $this->assertNotSame('', trim($anchor->textContent.$anchor->getAttribute('aria-label')));
+            }
+            $exports[$page] = $html;
+        }
+        $this->assertSame('', $merchant->fresh()->business_name);
+        $this->assertSame($before, $this->fingerprint());
+        if (getenv('XLIPA_MINIMAL_VISUAL') === '1') {
+            $directory = storage_path('framework/testing/minimal-visual-'.bin2hex(random_bytes(10)));
+            mkdir($directory, 0700, true);
+            foreach ($exports as $page => $html) {
+                foreach (['xlipa-site.css', 'xlipa-dashboard.css', 'xlipa-responsive.css', 'xlipa-legal.css', 'xlipa-verification.css'] as $stylesheet) {
+                    $html = preg_replace('~<link rel="stylesheet" href="(?:'.preg_quote(rtrim(asset('assets'), '/').'/', '~').'|assets/)'.preg_quote($stylesheet, '~').'"\s*/?>~', '<style>'.file_get_contents(public_path('assets/'.$stylesheet)).'</style>', $html);
+                }
+                $html = str_replace([asset('assets/xlipa-favicon.svg'), 'assets/xlipa-favicon.svg?v=2', 'assets/xlipa-favicon.svg'], 'data:image/svg+xml;base64,'.base64_encode(file_get_contents(public_path('assets/xlipa-favicon.svg'))), $html);
+                file_put_contents($directory.'/'.$page.'.html', $html);
+            }
+            file_put_contents($directory.'/fixture.json', '{"synthetic":true,"feature":"MINIMAL-REGISTRATION"}');
+            fwrite(STDOUT, 'MINIMAL_VISUAL='.$directory.PHP_EOL);
+        }
+    }
+
     public function test_accessible_layout_and_canonical_assets_with_optional_offline_fixture_export(): void
     {
         $merchant = Merchant::factory()->create(['business_name' => 'Kijani Studio']);

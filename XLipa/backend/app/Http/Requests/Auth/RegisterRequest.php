@@ -16,6 +16,10 @@ class RegisterRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
+        $businessName = $this->input('businessName');
+        if ($businessName === null || is_string($businessName)) {
+            $this->merge(['businessName' => trim($businessName ?? '')]);
+        }
         if (is_string($this->input('email'))) {
             $this->merge(['email' => strtolower(trim($this->input('email')))]);
         }
@@ -31,7 +35,7 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fullName' => ['required', 'string', 'max:200'], 'businessName' => ['required', 'string', 'max:200'],
+            'fullName' => ['required', 'string', 'max:200'], 'businessName' => ['nullable', 'string', 'max:200'],
             'email' => ['required', 'string', 'email:rfc', 'max:254', 'regex:/^[\x00-\x7F]+$/'],
             'phone' => ['required', 'string', 'regex:/^\+[1-9][0-9]{7,14}$/'],
             'password' => ['required', 'string', 'confirmed', Password::min(12), function (string $attribute, mixed $value, \Closure $fail): void {

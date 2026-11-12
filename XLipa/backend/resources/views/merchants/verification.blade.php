@@ -5,7 +5,7 @@
 <a class="dash-skip" href="#verification-main">Skip to verification</a>
 <header class="verification-header"><a class="dash-brand" href="{{ route('merchants.dashboard',['merchant'=>$merchant->id]) }}"><img src="{{ asset('assets/xlipa-favicon.svg') }}" alt="" width="36" height="36"><span>XLipa.</span></a><a href="{{ route('merchants.dashboard',['merchant'=>$merchant->id]) }}">Back to dashboard</a></header>
 <main id="verification-main" class="verification-main">
-<div class="dash-section-heading"><div><p class="dash-eyebrow">PRIVATE ONBOARDING</p><h1>Merchant verification.</h1><p>{{ $merchant->business_name }}</p></div><span class="dash-badge">TZS only</span></div>
+<div class="dash-section-heading"><div><p class="dash-eyebrow">PRIVATE ONBOARDING</p><h1>Merchant verification.</h1><p>{{ $merchant->businessNameLabel() }}</p></div><span class="dash-badge">TZS only</span></div>
 @if(session('status'))<p class="verification-notice" role="status">{{ session('status') }}</p>@endif
 @if($errors->any())<p class="verification-notice" role="alert">Check the required fields and your password. Sensitive values have not been retained.</p>@endif
 @if(!$verification['available'])<section class="verification-notice" role="status"><h2>Capture and delivery are unavailable</h2><p>Operational authorization, protected keys, approved policies and database capabilities must be ready before private information can be entered. Do not enter identity information here yet.</p></section>

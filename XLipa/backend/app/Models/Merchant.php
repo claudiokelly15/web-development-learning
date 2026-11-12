@@ -18,6 +18,11 @@ class Merchant extends Model
 
     protected $guarded = ['*'];
 
+    public function businessNameLabel(): string
+    {
+        return trim($this->business_name) === '' ? 'Business name not provided' : $this->business_name;
+    }
+
     protected function casts(): array
     {
         return ['operational_status' => MerchantStatus::class, 'verification_status' => VerificationStatus::class, 'profile_version' => 'integer'];

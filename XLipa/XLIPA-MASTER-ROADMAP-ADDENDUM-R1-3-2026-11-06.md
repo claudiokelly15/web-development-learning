@@ -304,3 +304,15 @@ No tests are run in this documentation task. Later stages must record actual res
 Only this requested Markdown file is added. Existing R1.0–R1.2, architecture/specification/historical documents, code/frontend/migrations/tests, other tracked projects, `.env` and working SQLite are preserved against the 185-file baseline; HEAD remains the existing checkpoint, verified before delivery. No runtime/tests, migrations, dependencies, accounts, messages, financial documents, provider integration, config changes, commit/push or deployment. Six pre-existing untracked documents remain separate from this one addition.
 
 **NO-GO for implementation/production activation under this task. STOP — await explicit owner approval of the next concrete stage.**
+
+## 12 November 2026 — Owner scope freeze and development status
+
+The owner has frozen all new feature/service additions. Earlier proposed roadmap items are historical direction, not authorization to expand this task. Complete, integrate, test and stabilize existing work only.
+
+Completed development milestones retained: PD-01 Merchant Dashboard; PD-02 Chief/Staff workspace foundation; PD-03 merchant verification; PD-04A/B/B.1/B.2/B.3 submission guard, evidence contract/schema, lifecycle/crypto and internal submission service; UI-01 premium light design. The confirmed PD-04B.3 baseline was 368 tests / 3,024 assertions, with public successful submission disabled.
+
+Current milestone: **PD-05A read-only Chief application review foundation implemented; STOP FOR OWNER REVIEW.** Includes status filtering/pagination, scoped redacted detail, recorded verification/evidence indicators, submission timeline and read-only application audit history. Decision writes remain blocked: existing status columns/transitions do not establish an approved atomic decision/audit, idempotency, authority and current-evidence contract. No schema amendment or workaround was introduced.
+
+Remaining work in this approved scope is owner/security resolution of that decision-contract blocker. Next required step is review of the concrete PD-05A diff and evidence, not automatic PD-05B/PD-06 implementation. See [PD-05A delivery report](XLIPA-PD-05A-CHIEF-ADMIN-APPLICATION-REVIEW-2026-11-12.md) for exact files, final actual tests, preservation checks and operational blockers. No completion percentages are assigned.
+
+Development progress is separate from production readiness. Trusted admission/issuer trust, key custody/recovery, lawful identity/retention policy, time and authoritative restore admission, lifecycle/release decisions and production crash/concurrency evidence remain operational blockers. **Working B3.2-C activation: NO-GO. Working SE-1.0 activation: NO-GO. Public successful submission: DISABLED. Live payments: DISABLED.** No working migration, approval, real identity processing, commit, push or deployment is authorized by this update.

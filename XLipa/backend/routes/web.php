@@ -59,6 +59,7 @@ Route::middleware([AuthenticationResponseHeaders::class, 'auth'])->group(functio
             Route::get('/staff', [AdminWorkspaceController::class, 'staff'])->name('admin.staff');
             Route::get('/access', [AdminWorkspaceController::class, 'access'])->name('admin.access');
             Route::get('/applications', [AdminApplicationController::class, 'index'])->name('admin.applications');
+            Route::get('/applications/{application}', [AdminApplicationController::class, 'show'])->whereUlid('application')->name('admin.applications.show');
         });
         Route::get('/merchants/{merchant}/dashboard', [MerchantDashboardController::class, 'show'])
             ->middleware(['verified', ResolveMerchantContext::class])->whereUlid('merchant')->name('merchants.dashboard');

@@ -13,8 +13,10 @@ use App\Actions\Merchants\VerificationAuditReconciler;
 use App\Actions\Merchants\VerificationCipher;
 use App\Actions\Merchants\VerificationEnvironment;
 use App\Models\Merchant;
+use App\Models\PlatformRoleAssignment;
 use App\Models\User;
 use Illuminate\Database\Connection;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -467,5 +469,37 @@ class ApplicationSubmissionServiceTest extends TestCase
         }
         $this->assertSame($before, $this->fingerprint());
         $this->assertSame(0, DB::connection()->transactionLevel());
+    }
+
+    public function test_chief_read_foundation_shows_fictional_bundle_without_crypto_or_decision_authority(): void
+    {
+        $receipt = $this->submit();
+        $chief = User::factory()->create();
+        PlatformRoleAssignment::factory()->create(['user_id' => $chief->id, 'role' => 'chief_admin']);
+        $this->actingAs($chief)->withSession(['auth_version' => $chief->auth_version]);
+        $before = DB::table('audit_logs')->count();
+        $this->get(route('admin.applications.show', ['application' => $receipt['application_id']]))->assertOk()
+            ->assertSee('Evidence recorded; selected application and audit references agree')
+            ->assertSee('Submission recorded')->assertSee('current verification eligibility are unverified')
+            ->assertDontSee('owner@fixture.test')->assertDontSee('+255712345678')->assertDontSee('FIXTURE-ABCDEFGH')
+            ->assertDontSee($this->evidence['proof_id'])->assertDontSee($this->evidence['submission_request_id']);
+        $this->assertSame($before, DB::table('audit_logs')->count());
+        $this->assertSame('pending_review', DB::table('merchant_applications')->where('id', $receipt['application_id'])->value('status'));
+    }
+
+    public function test_minimal_signup_unnamed_merchant_cannot_submit_even_with_fictional_admission(): void
+    {
+        DB::table('merchants')->where('id', $this->evidence['merchant_id'])->update(['business_name' => '', 'profile_version' => 2]);
+        DB::table('merchant_applications')->where('id', $this->expected['application_id'])->update(['profile_version' => 2]);
+        $this->expected['profile_version'] = 2;
+        $this->denied(fn () => $this->submit(), 503);
+        $this->assertSame(0, DB::table(SE::TABLE)->count());
+        $this->assertSame('available', DB::table('contact_verification_proofs')->value('state'));
+        try {
+            DB::table(SE::TABLE)->insert([...$this->evidence, 'profile_version' => 2]);
+            $this->fail('Unnamed evidence must be denied by the frozen schema.');
+        } catch (QueryException) {
+            $this->assertSame(0, DB::table(SE::TABLE)->count());
+        }
     }
 }

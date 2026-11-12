@@ -47,6 +47,30 @@ class SubmissionLifecycleTest extends TestCase
         return URL::temporarySignedRoute('verification.verify', now()->addMinutes(10), ['id' => $user->id, 'hash' => sha1($user->email), 'binding_version' => $version]);
     }
 
+    public function test_minimal_signup_preserves_se1_readiness_epochs_and_unnamed_dashboard_access(): void
+    {
+        $this->post('/register', ['fullName' => 'Fictional Owner', 'email' => 'minimal@fixture.test', 'phone' => '0712345678', 'password' => 'FictionalPassword123', 'password_confirmation' => 'FictionalPassword123', 'terms' => '1'])->assertRedirect(route('login'))->assertSessionHasNoErrors();
+        $this->assertGuest();
+        $user = User::sole();
+        $merchant = Merchant::sole();
+        $this->assertSame('', $merchant->business_name);
+        $this->assertSame(1, $merchant->profile_version);
+        $this->assertSame(1, $merchant->applications()->sole()->profile_version);
+        $this->assertSame(1, $merchant->memberships()->sole()->authority_version);
+        $this->assertSame(1, $user->email_binding_version);
+        Notification::assertSentTo($user, VersionedVerifyEmail::class);
+        $this->signIn($user)->get($this->signed($user, 1))->assertRedirect(route('account'));
+        $this->get(route('merchants.dashboard', ['merchant' => $merchant->id]))->assertOk()->assertSee('Business name not provided');
+        $this->get(route('merchants.applications', ['merchant' => $merchant->id]))->assertOk()->assertSee('An available merchant with a business name is required.');
+        $this->postJson(route('merchants.applications.submit', ['merchant' => $merchant->id]), ['application_id' => $merchant->applications()->sole()->id, 'profile_version' => 1, 'context_version' => 0])->assertStatus(503);
+        foreach (['merchant_identity_records', 'merchant_contact_versions', 'contact_verification_proofs', 'merchant_application_submission_evidence'] as $table) {
+            $this->assertSame(0, DB::table($table)->count());
+        }
+        $this->assertTrue(SubmissionEvidenceSchema::ready());
+        $this->assertSame(1, $merchant->fresh()->profile_version);
+        $this->assertSame('draft', $merchant->applications()->sole()->status->value);
+    }
+
     private function signIn(User $user): static
     {
         return $this->actingAs($user)->withSession(['auth_version' => $user->auth_version]);

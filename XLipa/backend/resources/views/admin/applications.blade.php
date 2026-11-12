@@ -7,10 +7,16 @@
 <p>Redacted submitted application history · Tanzania · TZS only</p>
 <p>Your own and membership-linked applications are excluded. Drafts are private to merchants.</p>
 <p>Submitted / awaiting review is one supported state. A separate under-review state is unavailable. Recorded approval does not grant payment eligibility.</p>
+<form method="get" action="{{ route('admin.applications') }}">
+<label for="status">Application status</label>
+<select id="status" name="status"><option value="">All submitted statuses</option>
+@foreach($statuses as $option)<option value="{{ $option->value }}" @selected($status === $option->value)>{{ \App\ViewModels\ApplicationHistoryEntry::label($option->value) }}</option>@endforeach
+</select><button type="submit">Filter applications</button>
+</form>
 @forelse($applications as $application)
 <section aria-labelledby="application-{{ $application->id }}">
     <h3 id="application-{{ $application->id }}">{{ $application->business_name }} · Attempt {{ $application->attempt_number }}</h3>
-    <dl>
+    <p><a href="{{ route('admin.applications.show', ['application' => $application->id]) }}">View application</a></p><dl>
         <dt>Status</dt><dd>{{ \App\ViewModels\ApplicationHistoryEntry::label($application->status) }}</dd>
         <dt>Submitted</dt><dd>{{ $application->submitted_at ?? 'Not recorded' }} (UTC)</dd>
         <dt>Reviewed</dt><dd>{{ $application->reviewed_at ?? 'No review recorded' }} (UTC)</dd>
