@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
+use Tests\Support\B32CRehearsal;
 use Tests\TestCase;
 
 class MerchantAccessTest extends TestCase
@@ -29,7 +30,7 @@ class MerchantAccessTest extends TestCase
         }
         DB::purge('sqlite');
         $this->assertSame(':memory:', DB::connection()->getDatabaseName());
-        $this->artisan('migrate', ['--database' => 'sqlite', '--no-interaction' => true])->assertExitCode(0);
+        B32CRehearsal::foundation();
         Notification::fake();
     }
 

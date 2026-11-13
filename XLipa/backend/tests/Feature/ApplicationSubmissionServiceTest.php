@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Actions\Merchants\ApplicationSubmissionService;
+use App\Actions\Merchants\BusinessNameCompletionSchema;
 use App\Actions\Merchants\DeniedSubmissionAdmission;
 use App\Actions\Merchants\SubmissionAdmission;
 use App\Actions\Merchants\SubmissionEvidenceEnvironment;
@@ -12,6 +13,7 @@ use App\Actions\Merchants\SubmissionTransaction;
 use App\Actions\Merchants\VerificationAuditReconciler;
 use App\Actions\Merchants\VerificationCipher;
 use App\Actions\Merchants\VerificationEnvironment;
+use App\Actions\Merchants\WorkflowSchemaReadiness;
 use App\Models\Merchant;
 use App\Models\PlatformRoleAssignment;
 use App\Models\User;
@@ -501,5 +503,48 @@ class ApplicationSubmissionServiceTest extends TestCase
         } catch (QueryException) {
             $this->assertSame(0, DB::table(SE::TABLE)->count());
         }
+    }
+
+    private function installBncIntegration(): void
+    {
+        config(['bnc1.selected' => realpath(BusinessNameCompletionSchema::artifact())]);
+        BusinessNameCompletionSchema::install();
+        $this->assertFalse(SE::ready());
+        $this->assertSame(WorkflowSchemaReadiness::BNC, app(WorkflowSchemaReadiness::class)->profile());
+    }
+
+    public function test_bnc_int01_normal_submission_replay_and_resolution(): void
+    {
+        $this->installBncIntegration();
+        $this->test_fictional_bundle_commits_once_with_canonical_audit_and_private_receipt();
+        $this->assertSame(0, DB::table(BusinessNameCompletionSchema::TABLE)->count());
+    }
+
+    public function test_bnc_int01_writer_contention_preserves_one_submission(): void
+    {
+        $this->installBncIntegration();
+        $this->test_generated_database_writer_contention_then_one_winner_and_replay();
+    }
+
+    #[DataProvider('acknowledgements')]
+    public function test_bnc_int01_unknown_commit_keeps_conservative_resolution(bool $committed): void
+    {
+        $this->installBncIntegration();
+        $this->test_unknown_commit_requires_fresh_resolution_without_automatic_retry($committed);
+    }
+
+    public function test_bnc_int01_rechecks_profile_under_submission_writer(): void
+    {
+        $this->installBncIntegration();
+        $changed = false;
+        DB::listen(function ($query) use (&$changed): void {
+            if (! $changed && str_starts_with($query->sql, 'UPDATE merchant_onboarding_contexts')) {
+                $changed = true;
+                config(['workflow_schema.expected_profile' => WorkflowSchemaReadiness::SE]);
+            }
+        });
+        $this->denied(fn () => $this->submit(), 503);
+        $this->assertTrue($changed);
+        $this->assertSame(0, DB::table(SE::TABLE)->count());
     }
 }

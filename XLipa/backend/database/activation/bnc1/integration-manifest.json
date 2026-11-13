@@ -1,0 +1,17 @@
+{
+    "version": "BNC-INT-01",
+    "mode": "isolated-only",
+    "profiles": [
+        "foundation",
+        "b32c",
+        "se1",
+        "b32c+se1+bnc1"
+    ],
+    "bnc_manifest_sha256": "2a151dd33e7ce5735f38a9b3363d79375684b81bd728366285f05702499049a3",
+    "source_pins": {
+        "app/Actions/Merchants/WorkflowSchemaReadiness.php": "b5a1eb748d7512a2537d6200a786fbeab1000d4ff4df0bf645990958951af7f7",
+        "app/Actions/Merchants/ApplicationSubmissionService.php": "b37821531cd0447bece877daca388b4e076d6bbb3e08f62456108211735ffe8b",
+        "app/Actions/Merchants/LifecycleMutation.php": "59354766808fc89b841bafb19d1a7b2249b6c810ea0adf928e419a1dfce3038e",
+        "app/Actions/Merchants/VerificationReadiness.php": "66730dad1bf9c09b73169f13c496d6c76c0fb82e4758c1b1df4f52d75b7728f5"
+    }
+}

@@ -82,11 +82,11 @@ final class ApplicationSubmissionService
         abort_unless(auth()->id() === $actor->id, 403, 'Submission access denied.');
         try {
             $this->operational($actor, $merchant, $expected);
-            abort_unless(SubmissionEvidenceSchema::ready(), 503, 'Submission schema unavailable.');
+            $schemaProfile = app(WorkflowSchemaReadiness::class)->submissionProfile();
 
-            return $this->transaction->run(function () use ($actor, $merchant, $expected, $resolve): ?array {
+            return $this->transaction->run(function () use ($actor, $merchant, $expected, $resolve, $schemaProfile): ?array {
                 $now = $this->operational($actor, $merchant, $expected);
-                abort_unless(SubmissionEvidenceSchema::ready(), 503, 'Submission schema unavailable.');
+                abort_unless(app(WorkflowSchemaReadiness::class)->submissionProfile() === $schemaProfile, 503, 'Submission schema unavailable.');
                 [$user, $business, $membership] = $this->authority($actor, $merchant, $expected);
                 $existing = DB::table(SubmissionEvidenceSchema::TABLE)->where('merchant_id', $merchant)->where('actor_user_id', $actor->id)->where('submission_request_id', $expected['submission_request_id'])->first();
                 if ($existing) {

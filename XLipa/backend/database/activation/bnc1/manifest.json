@@ -1,0 +1,173 @@
+{
+    "version": "BNC-1.0",
+    "record_contract": "business-name-completion-v1",
+    "profile": "b32c+se1+bnc1",
+    "mode": "isolated-only",
+    "migration": "2026_11_13_210000_add_bnc1_business_name_completion",
+    "base_pins": {
+        "app/Actions/Merchants/SubmissionEvidenceSchema.php": "1fde336da8709ea7d052fe4fdb41262e47cea4aad5cd505e32d26c0ee769ee61",
+        "database/activation/b32c/2026_11_07_200000_activate_b32_security_contract.php": "be27fdee16c972244688bac7a1eac3b46c0e7a11bcb5a9189bc460b59e337e97",
+        "database/activation/b32c/security-contract.json": "09d12df3d292445f89b81d9200370a65ae4a74caba05b086367b35dbdb2e44a0",
+        "database/activation/b32c/selection-manifest.json": "20fbe5628164853b6a023ff98feaa1ae8a8a0ce9bf9572b64df9e361e34f2873",
+        "database/activation/se1/2026_11_08_210000_add_se1_submission_evidence.php": "75cbd497fa5f5b219087d2777c376f3e0234fb6007be10c48da9e0666dd10431",
+        "database/activation/se1/manifest.json": "a44be8d2c4ff2cc228b25a55fd4c22ffb90912aebb393251c14a408cf5be7034"
+    },
+    "source_pins": {
+        "app/Actions/Merchants/BusinessNameCompletionSchema.php": "0b581d576a818d2e7fb684ea414fb4e9d9cd063c236d8c64e714181ad50d302a",
+        "app/Actions/Merchants/ComposedSubmissionSchema.php": "5320c1d623873d0d8b0da525c2074c56b74e5b563cf0d464690d82f1b91a2b76",
+        "database/activation/bnc1/2026_11_13_210000_add_bnc1_business_name_completion.php": "9080c232392f8ae1caf3258361234455f349b97ba8496ba63f925ff1f1aac017"
+    },
+    "objects": [
+        {
+            "type": "index",
+            "name": "bnc1_application_identity_tuple",
+            "table": "merchant_applications",
+            "sql_sha256": "b3c3d418fc36e80ef35a8f9841a8bf82cf8f425b70121476c77ec9561f298e0d"
+        },
+        {
+            "type": "trigger",
+            "name": "bnc1_completion_delete",
+            "table": "merchant_business_name_completions",
+            "sql_sha256": "52b38519e4f59888b8e70324c50c9a662094d5c99d25441318a4c00a48b29390"
+        },
+        {
+            "type": "trigger",
+            "name": "bnc1_completion_insert",
+            "table": "merchant_business_name_completions",
+            "sql_sha256": "c1082439e1d40f4b64735a35c90a63b6d63ce310a123ea97b67a0005d61054e3"
+        },
+        {
+            "type": "trigger",
+            "name": "bnc1_completion_update",
+            "table": "merchant_business_name_completions",
+            "sql_sha256": "d323ebe41e2d81dea1e6ba4eaa72c53d2813f1ad01ad09cbba68a06b77a79d7c"
+        },
+        {
+            "type": "trigger",
+            "name": "bnc1_draft_profile_guard",
+            "table": "merchant_applications",
+            "sql_sha256": "86d83da49e21092c38df7245c28978b774d33dd3d79df945990a8adb5b641e62"
+        },
+        {
+            "type": "trigger",
+            "name": "bnc1_merchant_completion_apply",
+            "table": "merchants",
+            "sql_sha256": "248c5c816f37773e94509bf372ff34a6173be5c8711393124f6b1801004dd729"
+        },
+        {
+            "type": "trigger",
+            "name": "bnc1_merchant_completion_guard",
+            "table": "merchants",
+            "sql_sha256": "fa4dcf1c166ad103f6c7300bb18f76da188a88248fd24731c3684448b6fa5fa3"
+        },
+        {
+            "type": "index",
+            "name": "bnc1_request_tuple",
+            "table": "merchant_business_name_completions",
+            "sql_sha256": "c3124d86c2254cb4069e418fea71ad5b4a05c751d0b94fa3dfdb60fd0765489c"
+        },
+        {
+            "type": "index",
+            "name": "bnc1_transition_tuple",
+            "table": "merchant_business_name_completions",
+            "sql_sha256": "22b48a50efcf4e8b3e47afd342166f0a330cf80fab9a4c37c968b02b3764bbca"
+        },
+        {
+            "type": "trigger",
+            "name": "bnc1_witness_delete",
+            "table": "merchant_business_name_completion_witnesses",
+            "sql_sha256": "737369c32c7b1ad789ed7b2f61a37b9a120a9409fa462e384a606277e2e0f0ee"
+        },
+        {
+            "type": "trigger",
+            "name": "bnc1_witness_insert",
+            "table": "merchant_business_name_completion_witnesses",
+            "sql_sha256": "ca438b67314f77b561676904e0778ab1d9659ffbb11508b5fcd7bed1494f29bb"
+        },
+        {
+            "type": "trigger",
+            "name": "bnc1_witness_update",
+            "table": "merchant_business_name_completion_witnesses",
+            "sql_sha256": "85b0228d7f54e2c9004dc175bdbde6d29c51b89ab61dea507f4e3ce23e43786a"
+        },
+        {
+            "type": "table",
+            "name": "merchant_business_name_completion_witnesses",
+            "table": "merchant_business_name_completion_witnesses",
+            "sql_sha256": "8283f5529cd99b229ad792cfe267c5651a855fe98b2e9ab12f1c0524fe3d6351"
+        },
+        {
+            "type": "table",
+            "name": "merchant_business_name_completions",
+            "table": "merchant_business_name_completions",
+            "sql_sha256": "77db253939781a68a6dbe00155a125bc1503b7214e82c382aa7ff43fb28584be"
+        }
+    ],
+    "ledger": [
+        {
+            "id": 1,
+            "migration": "0001_01_01_000000_create_users_table",
+            "batch": 1
+        },
+        {
+            "id": 2,
+            "migration": "0001_01_01_000001_create_cache_table",
+            "batch": 1
+        },
+        {
+            "id": 3,
+            "migration": "0001_01_01_000002_create_jobs_table",
+            "batch": 1
+        },
+        {
+            "id": 4,
+            "migration": "2026_11_06_000001_add_account_controls_to_users",
+            "batch": 2
+        },
+        {
+            "id": 5,
+            "migration": "2026_11_06_000002_create_merchants",
+            "batch": 2
+        },
+        {
+            "id": 6,
+            "migration": "2026_11_06_000003_create_merchant_memberships",
+            "batch": 2
+        },
+        {
+            "id": 7,
+            "migration": "2026_11_06_000004_create_platform_role_assignments",
+            "batch": 2
+        },
+        {
+            "id": 8,
+            "migration": "2026_11_06_000005_create_merchant_applications",
+            "batch": 2
+        },
+        {
+            "id": 9,
+            "migration": "2026_11_06_000006_create_audit_logs",
+            "batch": 2
+        },
+        {
+            "id": 10,
+            "migration": "2026_11_07_200000_activate_b32_security_contract",
+            "batch": 3
+        },
+        {
+            "id": 11,
+            "migration": "2026_11_08_210000_add_se1_submission_evidence",
+            "batch": 4
+        },
+        {
+            "id": 12,
+            "migration": "2026_11_13_210000_add_bnc1_business_name_completion",
+            "batch": 5
+        }
+    ],
+    "connection_requirements": {
+        "driver": "sqlite",
+        "foreign_keys": 1,
+        "recursive_triggers": 1
+    }
+}

@@ -4,23 +4,35 @@ namespace App\Actions\Merchants;
 
 use Closure;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
-/** Existing lifecycle operations only; partial SE profiles never fall back to legacy writes. */
+/** Existing lifecycle operations under a trusted, exact schema profile. */
 final class LifecycleMutation
 {
     public function versioned(): bool
     {
-        $present = Schema::hasColumn('users', 'email_binding_version') || Schema::hasColumn('merchant_memberships', 'authority_version') || Schema::hasTable(SubmissionEvidenceSchema::TABLE);
-        abort_if($present && ! SubmissionEvidenceSchema::ready(), 503, 'Account changes are unavailable.');
-
-        return $present;
+        return in_array(app(WorkflowSchemaReadiness::class)->profile(), [WorkflowSchemaReadiness::SE, WorkflowSchemaReadiness::BNC], true);
     }
 
     public function run(Closure $operation): mixed
     {
-        return $this->versioned() ? app(VerificationStore::class)->run($operation) : DB::transaction($operation, 1);
+        $readiness = app(WorkflowSchemaReadiness::class);
+        $profile = $readiness->profile();
+        $checked = function () use ($readiness, $profile, $operation): mixed {
+            abort_unless($readiness->profile() === $profile, 503, 'Account changes are unavailable.');
+
+            return $operation();
+        };
+
+        if (in_array($profile, [WorkflowSchemaReadiness::SE, WorkflowSchemaReadiness::BNC], true)) {
+            return app(VerificationStore::class)->run($checked);
+        }
+
+        return DB::transaction(function () use ($checked): mixed {
+            DB::update('UPDATE merchants SET profile_version=profile_version WHERE 0');
+
+            return $checked();
+        }, 1);
     }
 
     public static function next(int $version): int

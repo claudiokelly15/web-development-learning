@@ -25,6 +25,7 @@ final class B32CRehearsal
                 throw new LogicException('B32C foundation fixture migration failed.');
             }
         }
+        DB::statement('PRAGMA recursive_triggers=ON');
     }
 
     public static function activate(): void

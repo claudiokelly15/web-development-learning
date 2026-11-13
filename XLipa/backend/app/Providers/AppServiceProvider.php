@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Actions\Merchants\BusinessNameCompletionAdmission;
+use App\Actions\Merchants\DeniedBusinessNameCompletionAdmission;
 use App\Actions\Merchants\DeniedSubmissionAdmission;
 use App\Actions\Merchants\SubmissionAdmission;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->bind(BusinessNameCompletionAdmission::class, DeniedBusinessNameCompletionAdmission::class);
         $this->app->bind(SubmissionAdmission::class, DeniedSubmissionAdmission::class);
     }
 

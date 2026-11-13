@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\Support\B32CRehearsal;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -28,7 +29,7 @@ class AuthenticationTest extends TestCase
         }
         DB::purge('sqlite');
         $this->assertSame(':memory:', DB::connection()->getDatabaseName());
-        $this->artisan('migrate', ['--database' => 'sqlite', '--no-interaction' => true])->assertExitCode(0);
+        B32CRehearsal::foundation();
         Notification::fake();
     }
 
@@ -108,7 +109,11 @@ class AuthenticationTest extends TestCase
 
     public function test_registration_rolls_back_user_and_draft_graph_when_audit_fails(): void
     {
-        DB::unprepared("CREATE TRIGGER reject_registration_audit BEFORE INSERT ON audit_logs BEGIN SELECT RAISE(ABORT, 'synthetic audit failure'); END");
+        DB::connection()->beforeExecuting(function (string $query): void {
+            if (str_starts_with($query, 'insert into "audit_logs"')) {
+                throw new \RuntimeException('Fictional audit outage');
+            }
+        });
         $this->post('/register', $this->registration())->assertStatus(500);
         foreach (['users', 'merchants', 'merchant_memberships', 'merchant_applications', 'audit_logs'] as $table) {
             $this->assertSame(0, DB::table($table)->count());
@@ -463,7 +468,11 @@ class AuthenticationTest extends TestCase
 
     public function test_minimal_signup_rolls_back_unnamed_bundle_on_audit_failure(): void
     {
-        DB::unprepared("CREATE TRIGGER reject_unnamed_audit BEFORE INSERT ON audit_logs BEGIN SELECT RAISE(ABORT, 'fictional failure'); END");
+        DB::connection()->beforeExecuting(function (string $query): void {
+            if (str_starts_with($query, 'insert into "audit_logs"')) {
+                throw new \RuntimeException('Fictional audit outage');
+            }
+        });
         $input = $this->registration();
         unset($input['businessName']);
         $this->post('/register', $input)->assertStatus(500);

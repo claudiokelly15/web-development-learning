@@ -1,0 +1,14 @@
+{
+    "version": "BNC-INT-02",
+    "mode": "isolated-only",
+    "integration_manifest_sha256": "f6e4c09840b5943268a21b2b6e33eb38d74a32e56abae0b4a5ef25a7ce97e47a",
+    "source_pins": {
+        "app/Actions/Merchants/BusinessNameCompletionAdmission.php": "e07544e316988a448175c0c5bf13f80f8fb643d12f54c014448f0109838785ad",
+        "app/Actions/Merchants/DeniedBusinessNameCompletionAdmission.php": "0855fa85429c26f886fdecc3a00be765d167dae8ea19f098dc0cbd7ea1345651",
+        "app/Actions/Merchants/BusinessNameCompletionContext.php": "e82d1bff179f3f9bfd018d52d8cf732d50b60b190daca719da1e73d191923328",
+        "app/Actions/Merchants/BusinessNameCompletionService.php": "86b14197565b47be6642798a12a7aaf9c01508fc6eed09ee1bfa6d3243aa6e79",
+        "app/Actions/Merchants/BusinessNameCompletionResolver.php": "a644c2f731ba378fb173e4cd9ee5ad42844a2ab2ff8d1d707a6fef001a8b5eb7",
+        "app/Actions/Merchants/BusinessNameCompletionOutcomeUnknown.php": "35c2d3fa3d163132923e4343c0c0f4a521cd60f8f89783e761c4801fbd16f96c",
+        "app/Providers/AppServiceProvider.php": "ffe3809476e5c672aa040df8f1ac1ef890368d91b8fd0f2eb5d382d9d0fc9fc7"
+    }
+}

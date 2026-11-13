@@ -2,10 +2,14 @@
 
 namespace Tests;
 
+use App\Actions\Merchants\BusinessNameCompletionSchema;
+use App\Actions\Merchants\SubmissionEvidenceSchema;
+use App\Actions\Merchants\WorkflowSchemaReadiness;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Http;
+use Tests\Support\B32CRehearsal;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -28,5 +32,18 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         Http::preventStrayRequests();
+        config(['workflow_schema.expected_profile' => function (): string {
+            foreach ([
+                'bnc1.selected' => [BusinessNameCompletionSchema::artifact(), WorkflowSchemaReadiness::BNC],
+                'se1.selected' => [SubmissionEvidenceSchema::artifact(), WorkflowSchemaReadiness::SE],
+                'b32c.selected' => [B32CRehearsal::artifact(), WorkflowSchemaReadiness::C],
+            ] as $key => [$artifact, $profile]) {
+                if (config($key) !== null) {
+                    return config($key) === realpath($artifact) ? $profile : 'invalid-fixture-selection';
+                }
+            }
+
+            return WorkflowSchemaReadiness::FOUNDATION;
+        }]);
     }
 }

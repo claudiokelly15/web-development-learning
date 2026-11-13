@@ -191,7 +191,11 @@ class MerchantApplicationSubmissionTest extends TestCase
         $verification = app(MerchantVerification::class);
         $verification->capture($this->owner, $this->merchant, 'contact', ['phone' => '+255712345678', 'context_version' => 0]);
         $challenge = $verification->requestCode($this->owner, $this->merchant, (string) Str::uuid(), '127.0.0.1');
-        DB::unprepared("CREATE TRIGGER fixture_reject_audit BEFORE INSERT ON audit_logs WHEN NEW.event_type='otp.changed' BEGIN SELECT RAISE(ABORT,'Fixture audit unavailable'); END");
+        DB::connection()->beforeExecuting(function (string $query, array $bindings): void {
+            if (str_starts_with($query, 'insert into "audit_logs"') && in_array('otp.changed', $bindings, true)) {
+                throw new \RuntimeException('Fictional audit outage');
+            }
+        });
         $wrong = $this->environment->lastCode === '111111' ? '222222' : '111111';
         for ($attempt = 0; $attempt < 5; $attempt++) {
             $verification->verify($this->owner, $this->merchant, $challenge, $wrong);
@@ -301,6 +305,7 @@ class MerchantApplicationSubmissionTest extends TestCase
             DB::statement('VACUUM INTO '.DB::connection()->getPdo()->quote($path));
             DB::purge('sqlite');
             config(['database.connections.sqlite.database' => $path, 'database.connections.sqlite.busy_timeout' => 0]);
+            DB::statement('PRAGMA recursive_triggers=ON');
             $other = new \PDO('sqlite:'.$path, options: [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
             $other->exec('PRAGMA busy_timeout=0');
             $other->exec('BEGIN IMMEDIATE');

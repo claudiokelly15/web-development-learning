@@ -12,6 +12,9 @@ final class VerificationReadiness
     public function ready(): bool
     {
         try {
+            if (! in_array(app(WorkflowSchemaReadiness::class)->profile(), [WorkflowSchemaReadiness::C, WorkflowSchemaReadiness::SE, WorkflowSchemaReadiness::BNC], true)) {
+                return false;
+            }
             if (! $this->environment->authorized() || ! in_array($this->environment->mode(), ['live', 'simulated'], true)
                 || ($this->environment->mode() === 'simulated' && ! app()->environment('testing'))
                 || DB::getDriverName() !== 'sqlite' || (int) DB::selectOne('PRAGMA foreign_keys')->foreign_keys !== 1) {

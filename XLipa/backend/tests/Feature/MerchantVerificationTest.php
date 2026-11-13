@@ -310,7 +310,12 @@ class MerchantVerificationTest extends TestCase
     {
         $this->capture();
         $id = $this->issue();
-        DB::unprepared("CREATE TRIGGER fixture_audit_outage BEFORE INSERT ON audit_logs WHEN NEW.event_type='otp.changed' BEGIN SELECT RAISE(ABORT,'Fixture outage'); END");
+        $auditDown = true;
+        DB::connection()->beforeExecuting(function (string $query, array $bindings) use (&$auditDown): void {
+            if ($auditDown && str_starts_with($query, 'insert into "audit_logs"') && in_array('otp.changed', $bindings, true)) {
+                throw new \RuntimeException('Fictional audit outage');
+            }
+        });
         for ($i = 0; $i < 5; $i++) {
             $this->assertFalse($this->service()->verify($this->owner, $this->merchant, $id, $this->wrongCode()));
         }
@@ -323,7 +328,7 @@ class MerchantVerificationTest extends TestCase
         $this->assertNull($this->service()->requestCode($this->owner, $this->merchant, (string) Str::uuid(), '127.0.0.1'));
         $this->assertFalse($this->service()->verify($this->owner, $this->merchant, $id, $this->environment->lastCode));
         $this->assertSame($before, $this->fingerprint());
-        DB::statement('DROP TRIGGER fixture_audit_outage');
+        $auditDown = false;
         $this->assertTrue(app(VerificationAuditReconciler::class)->reconcile($limit->scope_key, $limit->scope_key_version, $limit->pending_audit_event_id));
         $this->assertFalse(app(VerificationAuditReconciler::class)->reconcile($limit->scope_key, $limit->scope_key_version, $limit->pending_audit_event_id));
         $this->assertNull(DB::table('verification_limit_state')->value('pending_audit_event_id'));
@@ -509,7 +514,12 @@ class MerchantVerificationTest extends TestCase
     {
         $this->capture();
         $id = $this->issue();
-        DB::unprepared("CREATE TRIGGER fixture_audit_outage BEFORE INSERT ON audit_logs WHEN NEW.event_type='otp.changed' BEGIN SELECT RAISE(ABORT,'Fixture outage'); END");
+        $auditDown = true;
+        DB::connection()->beforeExecuting(function (string $query, array $bindings) use (&$auditDown): void {
+            if ($auditDown && str_starts_with($query, 'insert into "audit_logs"') && in_array('otp.changed', $bindings, true)) {
+                throw new \RuntimeException('Fictional audit outage');
+            }
+        });
         for ($i = 0; $i < 5; $i++) {
             $this->service()->verify($this->owner, $this->merchant, $id, $this->wrongCode());
         }
@@ -517,7 +527,7 @@ class MerchantVerificationTest extends TestCase
         $version = DB::table('merchant_onboarding_contexts')->value('context_version');
         $this->signIn()->postJson($this->url('contact'), ['phone' => '+255712345679', 'password' => 'fixture-password', 'context_version' => $version])->assertConflict();
         $this->assertSame($before, $this->fingerprint());
-        DB::statement('DROP TRIGGER fixture_audit_outage');
+        $auditDown = false;
         $row = DB::table('verification_limit_state')->sole();
         DB::table('audit_logs')->insert(['id' => $row->pending_audit_event_id, 'event_type' => 'otp.changed', 'actor_user_id' => $this->owner->id, 'merchant_id' => $this->merchant->id, 'request_id' => $row->pending_audit_request_id, 'metadata' => '{"reason_code":"wrong"}', 'occurred_at' => $row->pending_audit_occurred_at]);
         try {
