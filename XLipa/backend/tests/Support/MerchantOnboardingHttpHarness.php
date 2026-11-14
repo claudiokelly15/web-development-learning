@@ -163,7 +163,7 @@ final class MerchantOnboardingHttpHarness
         }
     }
 
-    private function guard(): void
+    public function guard(): void
     {
         if (PHP_SAPI !== 'cli' || getenv('XLIPA_SYNTHETIC_ONLY') !== '1' || ! app()->environment('testing') || config('database.default') !== 'sqlite' || config('database.connections.sqlite.database') !== ':memory:' || config('database.connections.sqlite.url') || DB::connection()->getDatabaseName() !== ':memory:' || DB::connection()->getRawPdo() !== $this->ownedPdo) {
             throw new LogicException('Isolated HTTP fixture is unavailable.');

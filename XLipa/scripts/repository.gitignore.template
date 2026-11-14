@@ -1,0 +1,27 @@
+# INACTIVE supplemental rules for the future separated XLipa repository.
+# Merge into its root .gitignore before staging or creating a remote.
+# Preserve the current XLipa/backend .gitignore rules as well.
+.env
+.env.*
+!.env.example
+auth.json
+credentials.json
+credentials.*.json
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+*.sqlite*
+*.db
+*.db-*
+*.sql
+*.sql.gz
+*.dump
+/.recovery/
+/references/
+/backend/vendor/
+/backend/node_modules/
+/backend/storage/
+/backend/bootstrap/cache/*.php

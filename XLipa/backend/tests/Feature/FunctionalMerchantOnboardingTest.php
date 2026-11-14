@@ -3,107 +3,26 @@
 namespace Tests\Feature;
 
 use App\Actions\Merchants\BusinessNameCompletionAdmission;
-use App\Actions\Merchants\BusinessNameCompletionSchema;
 use App\Actions\Merchants\DeniedBusinessNameCompletionAdmission;
-use App\Actions\Merchants\SubmissionEvidenceSchema;
 use App\Actions\Merchants\SubmissionTransaction;
 use App\Models\Merchant;
 use App\Models\MerchantMembership;
 use App\Models\PlatformRoleAssignment;
 use App\Models\User;
-use App\Notifications\VersionedVerifyEmail;
 use Closure;
 use Illuminate\Database\Connection;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Testing\TestResponse;
+use LogicException;
 use PDO;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
-use Tests\Support\B32CRehearsal;
 use Tests\Support\MerchantOnboardingHttpHarness;
+use Tests\Support\MerchantOnboardingJourney;
 use Tests\TestCase;
 
 class FunctionalMerchantOnboardingTest extends TestCase
 {
-    private MerchantOnboardingHttpHarness $harness;
-
-    private PDO $ownedPdo;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        config(['app.debug' => false]);
-        B32CRehearsal::foundation();
-        B32CRehearsal::activate();
-        config(['se1.selected' => realpath(SubmissionEvidenceSchema::artifact())]);
-        $this->assertSame(0, Artisan::call('migrate', ['--database' => 'sqlite', '--path' => [SubmissionEvidenceSchema::artifact()], '--realpath' => true, '--no-interaction' => true]));
-        config(['bnc1.selected' => realpath(BusinessNameCompletionSchema::artifact())]);
-        BusinessNameCompletionSchema::install();
-        Notification::fake();
-        $this->assertInstanceOf(DeniedBusinessNameCompletionAdmission::class, app(BusinessNameCompletionAdmission::class));
-        $this->ownedPdo = DB::connection()->getPdo();
-        $this->harness = new MerchantOnboardingHttpHarness($this->ownedPdo);
-        $this->harness->register();
-    }
-
-    private function url(Merchant $merchant, bool $resolving = false): string
-    {
-        return '/merchants/'.$merchant->id.'/__isolated-completion'.($resolving ? '/resolve' : '');
-    }
-
-    private function journey(): array
-    {
-        $this->get(route('register'))->assertOk();
-        $this->post('/register', ['fullName' => 'Fictional Journey Owner', 'email' => 'journey@fixture.test', 'phone' => '0675760723',
-            'password' => 'FictionalPassword12', 'password_confirmation' => 'FictionalPassword12', 'terms' => '1', '_token' => session()->token()])
-            ->assertRedirect(route('login'))->assertSessionHasNoErrors();
-        $this->assertGuest();
-        $owner = User::sole();
-        $merchant = Merchant::sole();
-        $this->assertSame('', $merchant->business_name);
-        $this->assertNull($owner->email_verified_at);
-        $verificationUrl = null;
-        Notification::assertSentTo($owner, VersionedVerifyEmail::class, function (VersionedVerifyEmail $notification) use ($owner, &$verificationUrl): bool {
-            $verificationUrl = $notification->toMail($owner)->actionUrl;
-
-            return true;
-        });
-        $this->post('/login', ['email' => $owner->email, 'password' => 'FictionalPassword12', '_token' => session()->token()])->assertRedirect(route('verification.notice'));
-        $this->get(route('merchants.dashboard', ['merchant' => $merchant->id]))->assertRedirect(route('verification.notice'));
-        $this->get($verificationUrl)->assertRedirect(route('account'));
-        $this->assertNotNull($owner->fresh()->email_verified_at);
-        $this->assertSame(2, $owner->fresh()->email_binding_version);
-        $this->get(route('merchants.dashboard', ['merchant' => $merchant->id]))->assertOk()->assertSee('Business name not provided');
-        $this->get(route('merchants.onboarding', ['merchant' => $merchant->id]))->assertOk()->assertSee('data-completion-preview', false);
-
-        return [$owner->fresh(), $merchant->fresh()];
-    }
-
-    private function prepare(User $owner, Merchant $merchant, string $name = 'Kijani Studio'): string
-    {
-        return $this->harness->prepare($owner, $merchant, $name, session()->getId());
-    }
-
-    private function body(string $reference, ?string $name = 'Kijani Studio'): string
-    {
-        $body = '_token='.rawurlencode(session()->token()).'&context_ref='.$reference;
-
-        return $name === null ? $body : $body.'&business_name='.rawurlencode($name);
-    }
-
-    private function raw(Merchant $merchant, string $body, bool $resolving = false, string $type = 'application/x-www-form-urlencoded', string $query = '', array $headers = []): TestResponse
-    {
-        parse_str($body, $parameters);
-
-        return $this->call('POST', $this->url($merchant, $resolving).$query, $parameters, [], [], ['CONTENT_TYPE' => $type, 'HTTP_ACCEPT' => 'application/json', ...$headers], $body);
-    }
-
-    private function signIn(User $user): void
-    {
-        $this->actingAs($user)->withSession(['auth_version' => $user->auth_version]);
-    }
+    use MerchantOnboardingJourney;
 
     public function test_real_http_journey_saves_name_once_and_refreshes_existing_dashboard_and_onboarding(): void
     {
@@ -229,6 +148,7 @@ class FunctionalMerchantOnboardingTest extends TestCase
             $body = $this->body($ref, str_repeat('x', 4097));
         } elseif ($case === 'json') {
             $type = 'application/json';
+            $expected = 419;
         } elseif ($case === 'query') {
             $query = '?role=owner';
         } else {
@@ -274,7 +194,7 @@ class FunctionalMerchantOnboardingTest extends TestCase
         {
             public function run(Closure $operation): mixed
             {
-                DB::table('merchant_memberships')->update(['authority_version' => 2]);
+                DB::table('merchant_memberships')->update(['status' => 'revoked', 'revoked_at' => '2026-11-13 00:00:00', 'authority_version' => 2]);
 
                 return parent::run($operation);
             }
@@ -335,5 +255,47 @@ class FunctionalMerchantOnboardingTest extends TestCase
         foreach ($other->make('router')->getRoutes() as $route) {
             $this->assertStringNotContainsString('__isolated-completion', $route->uri());
         }
+    }
+
+    public function test_completion_and_dashboard_remain_isolated_from_another_merchant(): void
+    {
+        [$owner, $merchant] = $this->journey();
+        $foreign = Merchant::factory()->create(['business_name' => 'Private foreign merchant']);
+        $foreignDraft = $foreign->applications()->sole()->getAttributes();
+        $foreignBefore = $foreign->fresh()->getAttributes();
+        $this->get(route('merchants.dashboard', ['merchant' => $foreign->id]))->assertNotFound()->assertDontSee($foreign->business_name);
+        $reference = $this->prepare($owner, $merchant);
+        $this->raw($foreign, $this->body($reference))->assertNotFound();
+        $this->raw($merchant, $this->body($reference))->assertOk()->assertExactJson(['status' => 'completed']);
+        $this->assertSame($foreignBefore, $foreign->fresh()->getAttributes());
+        $this->assertSame($foreignDraft, $foreign->applications()->sole()->getAttributes());
+        $this->assertSame(0, DB::table('merchant_business_name_completions')->where('merchant_id', $foreign->id)->count());
+
+        $this->signIn($foreign->creator);
+        $this->get(route('merchants.dashboard', ['merchant' => $merchant->id]))->assertNotFound()->assertDontSee('Kijani Studio');
+        $this->get(route('merchants.dashboard', ['merchant' => $foreign->id]))->assertOk()->assertSee('Private foreign merchant');
+    }
+
+    public function test_denied_operational_admission_blocks_the_actual_service_even_through_the_fixture(): void
+    {
+        [$owner, $merchant] = $this->journey();
+        $reference = $this->prepare($owner, $merchant);
+        app()->instance(BusinessNameCompletionAdmission::class, new DeniedBusinessNameCompletionAdmission);
+
+        $this->raw($merchant, $this->body($reference))->assertStatus(503)->assertExactJson(['status' => 'unresolved']);
+        $this->assertSame(1, $this->harness->commandCalls);
+        $this->assertSame('', $merchant->fresh()->business_name);
+        $this->assertSame(1, $merchant->fresh()->profile_version);
+        $this->assertSame(1, $merchant->applications()->sole()->profile_version);
+        $this->assertSame(0, DB::table('merchant_business_name_completions')->count());
+        $this->assertSame(0, DB::table('merchant_business_name_completion_witnesses')->count());
+    }
+
+    public function test_fixture_rejects_a_different_memory_connection(): void
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Isolated HTTP fixture is unavailable.');
+
+        new MerchantOnboardingHttpHarness(new PDO('sqlite::memory:'));
     }
 }

@@ -1,0 +1,53 @@
+# INACTIVE TEMPLATE. The shared WEB-DEVELOPMENT repository must not activate this file.
+# After owner-reviewed XLipa repository separation, apply repository.gitignore.template,
+# review dependency/action provenance and replace BOTH action SHA placeholders below.
+# Then copy this file to .github/workflows/isolated.yml in the XLipa repository.
+name: XLipa isolated verification
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  isolated:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      APP_ENV: testing
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ':memory:'
+      DB_URL: ''
+      MAIL_MAILER: array
+      SESSION_DRIVER: array
+      CACHE_STORE: array
+      QUEUE_CONNECTION: 'null'
+      LOG_CHANNEL: 'null'
+      XLIPA_SYNTHETIC_ONLY: '1'
+    steps:
+      - uses: actions/checkout@REPLACE_WITH_REVIEWED_FULL_COMMIT_SHA
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@REPLACE_WITH_REVIEWED_FULL_COMMIT_SHA
+        with:
+          php-version: '8.5'
+          extensions: pdo_sqlite, sqlite3, mbstring, dom, xml, xmlwriter, tokenizer, fileinfo
+          coverage: none
+          tools: composer:v2
+      - name: Install locked development dependencies without hooks or plugins
+        working-directory: backend
+        run: |
+          composer validate --strict --no-check-publish --no-plugins --no-scripts
+          composer install --prefer-dist --no-interaction --no-progress --no-plugins --no-scripts
+          composer check-platform-reqs --no-plugins --no-scripts
+          composer audit --locked --no-interaction --no-plugins --no-scripts
+      - name: Verify in a network namespace with no external interfaces
+        # Network is available for dependency installation only. Tests have no egress.
+        # Hosted runner must provide pwsh, util-linux/unshare and passwordless sudo.
+        shell: bash
+        run: |
+          sudo unshare --net -- sudo -u "$(id -un)" -- pwsh -NoProfile -File "$GITHUB_WORKSPACE/scripts/verify-isolated.ps1" -PhpPath "$(command -v php)"
