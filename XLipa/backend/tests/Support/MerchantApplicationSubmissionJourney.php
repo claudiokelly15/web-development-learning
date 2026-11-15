@@ -4,22 +4,10 @@ namespace Tests\Support;
 
 use App\Actions\Merchants\DeniedSubmissionAdmission;
 use App\Actions\Merchants\SubmissionAdmission;
-use App\Actions\Merchants\SubmissionEvidenceCipher;
-use App\Actions\Merchants\SubmissionTransaction;
 use App\Models\Merchant;
-use App\Models\MerchantMembership;
-use App\Models\PlatformRoleAssignment;
-use App\Models\User;
-use Illuminate\Database\Connection;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\TestResponse;
-use PHPUnit\Framework\Attributes\DataProvider;
-use RuntimeException;
-use Tests\Support\ApplicationSubmissionHttpHarness;
-use Tests\Support\MerchantOnboardingJourney;
-use Tests\TestCase;
 
 trait MerchantApplicationSubmissionJourney
 {
@@ -71,5 +59,4 @@ trait MerchantApplicationSubmissionJourney
         $this->assertSame(0, DB::table('merchant_application_submission_evidence')->count());
         $this->assertSame(0, DB::table('audit_logs')->where('event_type', 'application.submitted')->count());
     }
-
 }

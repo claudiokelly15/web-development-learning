@@ -12,18 +12,15 @@ use App\Models\PlatformRoleAssignment;
 use App\Models\User;
 use Illuminate\Database\Connection;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
-use Tests\Support\ApplicationSubmissionHttpHarness;
-use Tests\Support\MerchantOnboardingJourney;
+use Tests\Support\MerchantApplicationSubmissionJourney;
 use Tests\TestCase;
 
 class FunctionalMerchantApplicationSubmissionTest extends TestCase
 {
-    use \Tests\Support\MerchantApplicationSubmissionJourney;
+    use MerchantApplicationSubmissionJourney;
 
     public function test_same_registered_merchant_completes_the_entire_http_submission_and_chief_queue_journey(): void
     {
