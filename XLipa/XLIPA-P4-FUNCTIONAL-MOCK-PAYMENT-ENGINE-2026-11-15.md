@@ -1,14 +1,16 @@
 # XLIPA P4 provider-neutral mock payment engine
 
-2026-11-15. Isolated implementation. Final regression and preservation checks are in progress.
+2026-11-15. **PASS for the isolated functional mock payment engine.**
 
 ## A. Starting repository state
 
-Recovered shared Git root `C:/Users/hp/OneDrive/Desktop/WEB-DEVELOPMENT`, branch `main`, HEAD `b670fdb12aa65e64e977bb2b677c392028fc0bf2`. The existing P3 service/test/helper modifications and untracked P3 files/report were preserved. The index was empty. Read backend AGENTS.md, P3 completion evidence, payment-related source, schema/profile checks, authorization, transaction helpers and P0 tooling. No applicable `.ai/rules` directory or equivalent Laravel payment/wallet implementation was found. The referenced testing-best-practices skill remains unavailable.
+Resumed shared Git root `C:/Users/hp/OneDrive/Desktop/WEB-DEVELOPMENT`, branch `main`, HEAD `cd0f1cd8970c39b1b178211a31a632d9e2927396`, with a clean working tree, empty index and no untracked work. P4 had already been implemented and committed before this continuation. Its engine, fictional provider, fixture schema, HTTP harness, journey extraction and tests existed; the report still had unfinished verification fields. Continued those files rather than recreating them. The earlier report's `b670fdb...` starting state describes the original P4 development, not this recovery baseline.
+
+Read backend AGENTS.md, the P3 completion report, current P4 draft, payment implementation, schema/profile checks, authorization, transaction helpers, isolation guards and P0 tooling. No additional applicable AGENTS.md or `.ai/rules` was found. The referenced testing-best-practices skill remains unavailable. A fresh 362-file source/report/configuration/template inventory and frozen-pin comparison preceded edits.
 
 ## B. Exact files created or modified
 
-New files relative to `backend` follow.
+The recovered P4 implementation already contained these files, relative to `backend`; all remain present:
 
 - `app/Actions/Payments/PaymentProvider.php`
 - `app/Actions/Payments/FictionalMockProvider.php`
@@ -22,7 +24,15 @@ New files relative to `backend` follow.
 - `tests/Support/MerchantDecisionJourney.php`
 - `tests/Feature/FunctionalMockPaymentTest.php`
 
-The sole existing-file modification is `backend/tests/Feature/FunctionalChiefAdminDecisionTest.php`, extracting its existing journey helpers into `MerchantDecisionJourney` and updating imports. Existing P3 test bodies remain present. This report is the only new document. Existing business services, routes/controllers, provider bindings, operational configuration, SQL, migrations and manifests retain their bytes.
+The P3 test's extraction into `MerchantDecisionJourney` was also already committed. This continuation changed exactly:
+
+| File relative to XLipa | Resumed work |
+|---|---|
+| `backend/app/Actions/Payments/PaymentEngine.php` | Bind reads, queries and idempotent request reuse to the exact current payment authority |
+| `backend/tests/Feature/FunctionalMockPaymentTest.php` | Add six authority-binding regressions |
+| `XLIPA-P4-FUNCTIONAL-MOCK-PAYMENT-ENGINE-2026-11-15.md` | Complete this report with fresh evidence |
+
+No new file was needed. P1/P2/P3 services and helpers, operational routes/controllers, provider bindings, admission controls, configuration, SQL, migrations and manifests retain their recovery-baseline bytes.
 
 ## C. Provider-neutral contract
 
@@ -48,6 +58,8 @@ Application approval alone is insufficient. A separate default-denied `PaymentAd
 
 Tests cover cross-tenant lookup at both HTTP and engine boundaries, bad CSRF/client claims, invalid currency/amounts, signature failures, replayed event IDs with changed bodies, correlation/amount mismatch, stale event timestamps, duplicate requests/events and terminal conflicts. Database uniqueness covers merchant+provider+idempotency, provider correlation and provider event identity. Direct SQL duplicate attempts verify those constraints independently of application checks.
 
+Recovery identified and reproduced one defect: a same-merchant payment with a mismatched actor returned HTTP 200 instead of 404. The engine now checks merchant, provider, actor, auth epoch, membership, authority epoch and approved application before exposing a row, querying it or reusing its idempotency key. Six generated-store cases substitute those bindings independently and verify denial, unchanged payment rows and no extra provider dispatch or confirmation. Ordinary payload conflicts still return 409.
+
 Ordinary application tests find no mock routes and no payment/event grant. Existing operational routes and provider bindings remain unchanged.
 
 ## G. End-to-end merchant journey
@@ -70,19 +82,27 @@ Known pre-commit failures roll back all payment/event/confirmation changes. Unce
 
 ## I. Actual test results
 
-The existing PHP 8.5.12 CLI ran with approved sandbox escalation and auto-prepend disabled. Installed framework/test tooling remains Laravel 13.35.0, PHPUnit 12.5.38 and Pint 1.32.1. No dependencies were installed.
+Fresh execution used the existing PHP 8.5.12 CLI with approved sandbox escalation. Installed tooling remains Laravel 13.35.0, PHPUnit 12.5.38 and Pint 1.32.1. No dependency was installed. All tests used the established isolated bootstrap and generated SQLite fixtures, with no operational environment or real provider delivery.
 
 Commands ran from `XLipa/backend`.
 
 ```powershell
 $php = 'C:/Users/hp/.config/herd/bin/php85/php.exe'
-& $php -d 'auto_prepend_file=' vendor/phpunit/phpunit/phpunit --no-progress --do-not-cache-result tests/Feature/FunctionalMockPaymentTest.php
-& $php -d 'auto_prepend_file=' vendor/phpunit/phpunit/phpunit --no-progress --do-not-cache-result tests/Feature/FunctionalChiefAdminDecisionTest.php tests/Feature/FunctionalMerchantApplicationSubmissionTest.php tests/Feature/FunctionalMerchantOnboardingTest.php tests/Feature/ApplicationSubmissionServiceTest.php tests/Feature/AdminApplicationReviewTest.php tests/Feature/MerchantAccessTest.php
+$options = @('-d','auto_prepend_file=','-d','auto_append_file=','-d','allow_url_fopen=0','-d','allow_url_include=0','-d','disable_functions=curl_exec,curl_multi_exec,fsockopen,pfsockopen,stream_socket_client,socket_create,socket_connect,socket_sendto,socket_sendmsg')
+& $php @options vendor/phpunit/phpunit/phpunit --configuration phpunit.xml --bootstrap tests/bootstrap-isolated.php --no-progress --do-not-cache-result tests/Feature/FunctionalMockPaymentTest.php
+& $php @options vendor/phpunit/phpunit/phpunit --configuration phpunit.xml --bootstrap tests/bootstrap-isolated.php --no-progress --do-not-cache-result tests/Feature/FunctionalChiefAdminDecisionTest.php tests/Feature/FunctionalMerchantApplicationSubmissionTest.php tests/Feature/FunctionalMerchantOnboardingTest.php tests/Feature/ApplicationSubmissionServiceTest.php tests/Feature/AdminApplicationReviewTest.php tests/Feature/MerchantAccessTest.php
 ```
 
-**P4 focused — 30 passed / 1,376 assertions / 25,799 ms, exit 0.** Preserved-functionality result pending capture.
+| Fresh run | Tests passed | Assertions | Runner duration | Exit |
+|---|---:|---:|---:|---:|
+| P4 actual engine/journey/security suite | 37 | 1,705 | 36,085 ms | 0 |
+| P1/P2/P3 functional journeys and submission/Chief-read/merchant-security selection | 176 | 4,506 | 108,460 ms | 0 |
+| P0 functional onboarding selection | 33 | 964 | 23,112 ms | 0 |
+| P0 established bounded regression | 546 | 4,824 | 94,767 ms | 0 |
 
-All twelve task PHP files passed scoped syntax checks. Required scoped dirty/explicit formatting and final non-mutating `vendor/bin/pint --test --no-config --format agent` checks passed. The P0 entry point supplies final whole-scope syntax verification after the last edits.
+All final runs reported zero failures/errors. Counts overlap and are not summed. The new ownership regression first failed with 200 versus expected 404 (one case, 40 assertions), then passed in the full corrected P4 run. Earlier draft counts are historical and superseded by these executions.
+
+All twelve recovered P4 PHP files passed scoped `php -l`. Explicitly non-mutating `vendor/bin/pint --test --no-config --format agent --cache-file <unique-temp-cache> <twelve-task-files>` passed, exit 0. No formatter modified source. P0 independently passed syntax for **201 PHP files** and non-mutating Pint for its **15 files**.
 
 From the shared workspace root, the established verifier command is as follows.
 
@@ -90,20 +110,29 @@ From the shared workspace root, the established verifier command is as follows.
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File XLipa/scripts/verify-isolated.ps1 -PhpPath C:/Users/hp/.config/herd/bin/php85/php.exe
 ```
 
-P0/bounded results pending capture. Overlapping run totals must not be added together. Initial development runs exposed a PHPUnit helper-name collision, object-identity comparison in the catalogue assertion, authorization exception status mapping and Windows temporary-file/statement-handle cleanup. These were corrected within the new test/tooling scope. Intermediate results do not substitute for final evidence.
+The unchanged P0 entry point returned **exit 0**, ending with `PASS isolated verification and source preservation`. It verified 29 frozen pins, three historical manifest digests, four INT-05 protected hashes and four isolation-guard hashes before running its syntax, Pint, functional and bounded checks.
 
 ## J. Preservation evidence
 
-Final inventory and protected-pin verification pending capture. Recovery captured 336 existing source/report/configuration/metadata/template paths, excluding operational environment/credential/key files, databases/sidecars, storage and dependencies. The intended sole existing change is the P3 test's shared-helper extraction. Prior P3 uncommitted work and all existing reports/tooling remain preserved.
+The fresh continuation inventory covered **362** Git-selected source/report/configuration/metadata/template paths, excluding environment/credential/key files, databases/sidecars, storage and dependencies. Final comparison found **359 unchanged, three intentionally changed and zero missing**; the changed paths are exactly the two PHP files and report in section B. The earlier draft's 336-file inventory was not used as a new preservation result. All recovered P3 and other prior work remains present.
+
+Protected sources, all three manifests, migration identities, existing triggers and the P0 verifier were unchanged. No manifest was regenerated. P0 independently verified its source-preservation inventory. Git whitespace checks passed; index remains empty; no untracked files were added.
+
+Final executable SHA-256 values:
+
+| File under backend | SHA-256 |
+|---|---|
+| `app/Actions/Payments/PaymentEngine.php` | `c729a0cdbf958414b1d69d3cfd78e19225a8a1dd8856d308dea4e05fca28866a` |
+| `tests/Feature/FunctionalMockPaymentTest.php` | `bc5bd70604129b2b48acb2434183f47dc340fec4949b68442948cfd25489dfb3` |
 
 No working database, sidecars, real `.env`, operational APP_KEY, private keys or provider credentials were opened, copied, hashed, queried or migrated. No repository reset, commit, push or deployment occurred.
 
 ## K. Remaining blockers
 
-Final local verification is in progress. Operational payment admission, real providers, production webhook authentication, real retention policy, authoritative restore and durable provider-command recovery remain unprovisioned. The mock accepts only isolated testing. The two-connection test establishes controlled fixture contention behavior, with no production multi-process/load or crash durability claim. P5 ledger work remains separate.
+No isolated P4 acceptance blocker remains. Operational payment admission, real providers, production webhook authentication, real retention policy, authoritative restore and durable provider-command recovery remain unprovisioned. The mock accepts only isolated testing. The two-connection and acknowledgement-loss tests establish bounded fixture behavior, with no production multi-process/load, distributed-transaction or crash-durability claim. P5 ledger work remains separate.
 
 ## L. Final assessment
 
-Final assessment pending verification capture.
+**PASS for P4 isolated functional implementation.** The actual engine and fictional provider complete the existing merchant-registration → email-verification → name-completion → submission → Chief-approval journey, require separate mock eligibility, persist an intent, process authenticated provider evidence and return authorized payment status. Pending, failed and unknown outcomes, request/event idempotency, exact ownership, replay/conflict handling, concurrency and ambiguous commits have passing functional coverage. Confirmation creates no wallet credit, withdrawable funds, settlement or fee revenue. No P5 work was implemented.
 
 **STOP FOR OWNER REVIEW.** B3.2-C and SE-1.0 operational activation remain NO-GO. Operational Business Name Completion, public submission, operational Chief decisions, live OTP/NIN, Selcom and live payments remain DISABLED. Working database migration remains unauthorized. No P5 work was started.
