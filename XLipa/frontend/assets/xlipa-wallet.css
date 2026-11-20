@@ -1,0 +1,17 @@
+.financial-workspace .wallet-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.financial-workspace .wallet-metric h2{font-size:14px;line-height:1.5;color:var(--dash-muted);font-weight:600}
+.financial-workspace .wallet-value{font-size:clamp(22px,2.4vw,32px);font-weight:750;letter-spacing:-.8px;line-height:1.3;margin:14px 0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.financial-workspace .wallet-unproven{color:#77520d}.financial-workspace .wallet-section{margin-top:24px}
+.financial-workspace .wallet-filters{display:flex;flex-wrap:wrap;align-items:end;gap:16px}.financial-workspace .wallet-filters>div{flex:1 1 170px;min-width:0}
+.financial-workspace .wallet-filters label{display:block;font-size:12px;font-weight:650;margin-bottom:7px;color:var(--dash-muted)}
+.financial-workspace .wallet-filters input,.financial-workspace .wallet-filters select{width:100%;min-height:44px;border:1px solid var(--dash-line);border-radius:8px;background:#fff;padding:10px;font:inherit;color:var(--dash-ink)}
+.financial-workspace input:focus-visible,.financial-workspace select:focus-visible,.financial-workspace [tabindex]:focus-visible{outline:3px solid var(--dash-blue);outline-offset:3px}
+.financial-workspace .wallet-table-scroll{overflow-x:auto;max-width:100%}.financial-workspace .wallet-table{width:100%;border-collapse:collapse;font-size:13px;text-align:left}
+.financial-workspace .wallet-table caption{text-align:left;color:var(--dash-muted);padding:16px 0}.financial-workspace .wallet-table th{font-size:11px;color:var(--dash-muted);background:#f5f8fc}
+.financial-workspace .wallet-table th,.financial-workspace .wallet-table td{padding:16px 12px;border-bottom:1px solid var(--dash-line);vertical-align:top;min-width:145px}
+.financial-workspace .wallet-table td:first-child{min-width:230px;max-width:330px;overflow-wrap:anywhere}.financial-workspace .wallet-table a{color:#185da9;text-decoration:underline}
+.financial-workspace .wallet-table p{margin:6px 0;color:var(--dash-muted)}.financial-workspace .wallet-state{display:inline-block;background:var(--dash-blue-soft);border-radius:6px;padding:5px 8px;font-weight:600}
+.financial-workspace .wallet-money{white-space:nowrap;font-variant-numeric:tabular-nums}.financial-workspace .wallet-reference,.financial-workspace .wallet-detail dd{overflow-wrap:anywhere}
+.financial-workspace .wallet-pagination{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:14px;padding-top:20px}.financial-workspace .wallet-pagination>span{margin-right:auto;color:var(--dash-muted);font-size:13px}
+@media(max-width:1100px){.financial-workspace .wallet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.financial-workspace .wallet-grid{grid-template-columns:minmax(0,1fr)}.financial-workspace .wallet-detail>div,.financial-workspace .dash-status-list>div{align-items:flex-start;flex-direction:column;gap:6px}.financial-workspace .dash-status-list dd{text-align:left}.financial-workspace .wallet-filters .dash-button{width:100%}}

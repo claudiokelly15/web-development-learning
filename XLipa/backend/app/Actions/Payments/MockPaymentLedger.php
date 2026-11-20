@@ -11,6 +11,12 @@ final class MockPaymentLedger
 {
     public const CONSUMER = 'mock-payment-accounting-v1';
 
+    private const SOURCE_SQL = 'SELECT c.*,p.actor_id,p.auth_version,p.membership_id,p.authority_version,p.application_id,p.provider,p.status,p.dispatch_state,p.provider_reference,p.created_at,p.last_sequence,
+        p.amount_tzs AS payment_amount,p.currency AS payment_currency,p.merchant_id AS payment_merchant,
+        e.provider AS event_provider,e.provider_event_id,e.payment_reference AS event_payment,e.body_hash,e.raw_body,e.normalized_status,e.outcome,e.sequence,e.occurred_at,e.received_at';
+
+    private const SOURCE_FROM = ' FROM payment_confirmations c JOIN payment_intents p ON p.reference=c.payment_reference JOIN payment_events e ON e.id=c.event_id';
+
     public function __construct(private readonly PaymentEngine $payments, private readonly LedgerAdmission $admission) {}
 
     public function post(User $actor, string $merchant, string $confirmation, string $payment, mixed $amount, string $currency): array
@@ -91,6 +97,55 @@ final class MockPaymentLedger
         });
     }
 
+    /** Internal financial projection, under the same current P4/P5 authority and store snapshot. */
+    public function financialRead(User $actor, string $merchant, Closure $work): array
+    {
+        return $this->run($actor, $merchant, 'read', fn (PaymentStore $store): array => $work($store, $this->summary($store, $merchant)));
+    }
+
+    /** Internal additive accounting boundary; callers must also enforce independent lifecycle admission. */
+    public function lifecycleTransaction(User $actor, string $merchant, Closure $work): array
+    {
+        return $this->run($actor, $merchant, 'read', fn (PaymentStore $store, array $authority): array => $work($store, $this->summary($store, $merchant), $authority));
+    }
+
+    /** Bounded evidence batches; no per-payment queries or mutable balance projection. */
+    private function summary(PaymentStore $store, string $merchant): array
+    {
+        $confirmed = $pending = $clearing = $sources = $journals = 0;
+        $after = '';
+        do {
+            $rows = $store->rows(self::SOURCE_SQL.',j.id AS journal_id,j.consumer AS journal_consumer,j.merchant_id AS journal_merchant,j.payment_reference AS journal_payment,j.amount_tzs AS journal_amount,j.currency AS journal_currency,j.source_hash AS journal_hash,s.journal_id AS seal,
+                d.direction AS debit_direction,d.kind AS debit_kind,d.amount_tzs AS debit_amount,d.merchant_id AS debit_merchant,d.currency AS debit_currency,
+                k.direction AS credit_direction,k.kind AS credit_kind,k.amount_tzs AS credit_amount,k.merchant_id AS credit_merchant,k.currency AS credit_currency'
+                .self::SOURCE_FROM.' LEFT JOIN ledger_journals j ON j.confirmation_id=c.id LEFT JOIN ledger_seals s ON s.journal_id=j.id
+                LEFT JOIN ledger_postings d ON d.journal_id=j.id AND d.line=1 LEFT JOIN ledger_postings k ON k.journal_id=j.id AND k.line=2
+                WHERE c.merchant_id=? AND c.id>? ORDER BY c.id LIMIT 100', [$merchant, $after]);
+            foreach ($rows as $row) {
+                $this->validateSource($row, $merchant);
+                $confirmed = $this->add($confirmed, $row['amount_tzs']);
+                $sources++;
+                $after = $row['id'];
+                if ($row['journal_id'] === null) {
+                    continue;
+                }
+                abort_unless($row['journal_consumer'] === self::CONSUMER && $row['journal_merchant'] === $merchant && $row['journal_payment'] === $row['payment_reference']
+                    && $row['journal_amount'] === $row['amount_tzs'] && $row['journal_currency'] === 'TZS' && $row['seal'] === $row['journal_id']
+                    && hash_equals($row['journal_hash'], $this->sourceHash($row))
+                    && [$row['debit_direction'], $row['debit_kind'], $row['debit_amount'], $row['debit_merchant'], $row['debit_currency']] === ['debit', 'simulated_clearing_receivable', $row['amount_tzs'], $merchant, 'TZS']
+                    && [$row['credit_direction'], $row['credit_kind'], $row['credit_amount'], $row['credit_merchant'], $row['credit_currency']] === ['credit', 'merchant_pending_obligation', $row['amount_tzs'], $merchant, 'TZS'], 409);
+                $clearing = $this->add($clearing, $row['debit_amount']);
+                $pending = $this->add($pending, $row['credit_amount']);
+                $journals++;
+            }
+        } while (count($rows) === 100);
+        $counts = $store->rows('SELECT (SELECT count(*) FROM payment_confirmations WHERE merchant_id=?) AS sources,(SELECT count(*) FROM ledger_journals WHERE merchant_id=?) AS journals', [$merchant, $merchant])[0];
+        abort_unless($counts['sources'] === $sources && $counts['journals'] === $journals && $confirmed >= $pending, 409);
+
+        return ['currency' => 'TZS', 'confirmed_fictional_payment_tzs' => $confirmed, 'pending_merchant_obligation_tzs' => $pending,
+            'simulated_clearing_receivable_tzs' => $clearing, 'confirmed_unaccounted_tzs' => $confirmed - $pending, 'withdrawable_tzs' => 0, 'settlement_status' => 'unproven'];
+    }
+
     private function run(User $actor, string $merchant, string $operation, Closure $work): array
     {
         abort_unless(PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing') && $this->admission->authorized($actor->id, $merchant, $operation), 503);
@@ -108,12 +163,14 @@ final class MockPaymentLedger
 
     private function source(PaymentStore $store, string $merchant, string $confirmation): array
     {
-        $rows = $store->rows('SELECT c.*,p.actor_id,p.auth_version,p.membership_id,p.authority_version,p.application_id,p.provider,p.status,p.dispatch_state,p.provider_reference,p.created_at,p.last_sequence,
-            p.amount_tzs AS payment_amount,p.currency AS payment_currency,p.merchant_id AS payment_merchant,
-            e.provider AS event_provider,e.provider_event_id,e.payment_reference AS event_payment,e.body_hash,e.raw_body,e.normalized_status,e.outcome,e.sequence,e.occurred_at,e.received_at
-            FROM payment_confirmations c JOIN payment_intents p ON p.reference=c.payment_reference JOIN payment_events e ON e.id=c.event_id WHERE c.id=? AND c.merchant_id=?', [$confirmation, $merchant]);
+        $rows = $store->rows(self::SOURCE_SQL.self::SOURCE_FROM.' WHERE c.id=? AND c.merchant_id=?', [$confirmation, $merchant]);
         abort_unless(count($rows) === 1, 404);
-        $row = $rows[0];
+
+        return $this->validateSource($rows[0], $merchant);
+    }
+
+    private function validateSource(array $row, string $merchant): array
+    {
         $this->validateAmount($row['amount_tzs'], $row['currency']);
         abort_unless($row['provider'] === 'fictional_mock' && $row['event_provider'] === $row['provider'] && $row['status'] === 'confirmed' && $row['dispatch_state'] === 'attempted'
             && $row['normalized_status'] === 'confirmed' && $row['outcome'] === 'applied' && $row['payment_merchant'] === $merchant

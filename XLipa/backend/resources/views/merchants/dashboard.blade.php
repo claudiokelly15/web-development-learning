@@ -19,6 +19,10 @@
             <p class="dash-nav-label">WORKSPACE</p>
             <ul>
                 <li><a href="{{ route('merchants.dashboard', ['merchant' => $merchantId]) }}" aria-current="page"><span aria-hidden="true" class="dash-nav-icon">◫</span>Overview<span class="dash-nav-arrow" aria-hidden="true">↗</span></a></li>
+                @if($overview->membershipRole === 'owner' && Route::has('isolated.wallet'))
+                    <li><a href="{{ route('isolated.wallet', ['merchant' => $merchantId]) }}">Isolated wallet</a></li>
+                    <li><a href="{{ route('isolated.transactions', ['merchant' => $merchantId]) }}">Isolated transaction history</a></li>
+                @endif
                 @foreach(['Payments', 'Payment Links', 'Checkout', 'QR Payments', 'Wallet', 'Settlements', 'Reports', 'Developers / API', 'Settings'] as $feature)
                     <li><button type="button" disabled aria-disabled="true"><span aria-hidden="true" class="dash-nav-icon">○</span>{{ $feature }}<span class="dash-nav-unavailable">Unavailable</span></button></li>
                 @endforeach

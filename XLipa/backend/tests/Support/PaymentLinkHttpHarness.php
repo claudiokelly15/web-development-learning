@@ -51,6 +51,9 @@ final class PaymentLinkHttpHarness
                         }
                         abort_unless(is_string($request->input('currency')) && is_string($request->input('description')) && is_string($request->input('request_key')) && ($expiry === null || is_int($expiry)), 422);
                         $result = $this->links->create($request->user(), $request->route('merchant')->id, $amount, $request->input('currency'), $request->input('description'), $request->input('request_key'), $expiry);
+                        if (session('link_request_key') === $request->input('request_key')) {
+                            session()->forget('link_request_key');
+                        }
 
                         return $request->expectsJson() ? response()->json($result) : redirect()->route('isolated.links.index', ['merchant' => $request->route('merchant')->id], 303);
                     });

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Actions\Payments\LedgerAdmission;
 use App\Actions\Payments\MockPaymentLedger;
 use App\Actions\Payments\PaymentEngine;
 use App\Actions\Payments\PaymentLinkAdmission;
@@ -60,7 +59,7 @@ class FunctionalPaymentLinkCheckoutTest extends TestCase
         $this->ledgerHttp->register();
         app('router')->getRoutes()->refreshNameLookups();
 
-        return [$owner, $merchant];
+        return [$owner->fresh(), $merchant->fresh()];
     }
 
     private function merchantUrl(Merchant $merchant): string
@@ -326,6 +325,120 @@ class FunctionalPaymentLinkCheckoutTest extends TestCase
         $this->syncSession();
         $this->post($this->customerUrl($link), ['_token' => session()->token(), 'request_nonce' => session('checkout.nonces.'.$link['public_token'])])->assertStatus(303);
         $this->assertSame(1, $this->provider->creates);
+    }
+
+    public function test_merchant_form_rotates_creation_key_after_success_and_preserves_duplicate_receipt(): void
+    {
+        [, $merchant] = $this->ready();
+        $this->get($this->merchantUrl($merchant))->assertOk();
+        $key = session('link_request_key');
+        $this->createLink($merchant, ['request_key' => $key])->assertOk();
+        $this->assertNull(session('link_request_key'));
+        $this->get($this->merchantUrl($merchant))->assertOk();
+        $next = session('link_request_key');
+        $this->assertNotSame($key, $next);
+        $this->createLink($merchant, ['request_key' => $key])->assertOk();
+        $this->assertSame($next, session('link_request_key'));
+        $this->createLink($merchant, ['request_key' => $next, 'description' => 'Second fictional order'])->assertOk();
+        $this->assertSame(2, $this->countRows('payment_links'));
+    }
+
+    public static function commitOutcomes(): array
+    {
+        return [[false], [true]];
+    }
+
+    #[DataProvider('commitOutcomes')]
+    public function test_checkout_reservation_uncertainty_never_dispatches_on_duplicate(bool $committed): void
+    {
+        [, $merchant] = $this->ready();
+        $link = $this->createLink($merchant)->json();
+        $this->customer();
+        $this->get($this->customerUrl($link))->assertOk();
+        $store = new class($this->paymentPdo, $committed) extends PaymentStore
+        {
+            public int $commits = 0;
+
+            public function __construct(PDO $pdo, private readonly bool $committed)
+            {
+                parent::__construct($pdo);
+            }
+
+            protected function commit(): void
+            {
+                $this->commits++;
+                if ($this->committed) {
+                    parent::commit();
+                }
+                throw new RuntimeException('PRIVATE lost acknowledgement');
+            }
+        };
+        $this->useStore($store);
+        $this->start($link)->assertStatus(202)->assertJsonPath('status', 'unresolved');
+        $this->start($link)->assertStatus(202);
+        $this->assertSame(1, $store->commits);
+        $this->assertSame(0, $this->provider->creates);
+        $this->assertSame(0, $this->countRows('payment_intents'));
+        $this->assertSame($committed ? 1 : 0, $this->countRows('checkout_attempts'));
+        $this->useStore(new PaymentStore($this->paymentPdo));
+        if ($committed) {
+            $this->start($link)->assertOk()->assertJsonPath('status', 'unresolved');
+            $this->assertSame(0, $this->provider->creates);
+        } else {
+            $this->start($link)->assertOk()->assertJsonPath('status', 'pending');
+            $this->assertSame(1, $this->provider->creates);
+        }
+    }
+
+    #[DataProvider('commitOutcomes')]
+    public function test_checkout_accounting_reconciles_ambiguous_commit_without_duplicate_effects(bool $committed): void
+    {
+        [$owner, $merchant] = $this->ready();
+        $link = $this->createLink($merchant)->json();
+        $this->customer();
+        $this->get($this->customerUrl($link))->assertOk();
+        $result = $this->start($link)->assertOk()->json();
+        $this->receiveEvent($this->event($result['payment_reference']))->assertOk();
+        $this->signIn($owner->fresh());
+        $store = new class($this->paymentPdo, $committed) extends PaymentStore
+        {
+            private bool $posting = false;
+
+            public function __construct(PDO $pdo, private readonly bool $committed)
+            {
+                parent::__construct($pdo);
+            }
+
+            public function write(string $sql, array $parameters = []): int
+            {
+                $this->posting = $this->posting || str_starts_with($sql, 'INSERT INTO ledger_journals');
+
+                return parent::write($sql, $parameters);
+            }
+
+            protected function commit(): void
+            {
+                if (! $this->posting || $this->committed) {
+                    parent::commit();
+                }
+                if ($this->posting) {
+                    throw new RuntimeException('PRIVATE lost acknowledgement');
+                }
+            }
+        };
+        $this->useStore($store);
+        $path = '/attempts/'.$result['attempt_id'];
+        $this->postAction($merchant, $path.'/consume')->assertStatus(202)->assertDontSee('PRIVATE');
+        $this->postAction($merchant, $path.'/consume')->assertStatus(202);
+        $this->assertSame($committed ? 1 : 0, $this->countRows('ledger_journals'));
+        $this->useStore(new PaymentStore($this->paymentPdo));
+        $this->postAction($merchant, $path.'/reconcile')->assertOk()->assertJsonPath('status', $committed ? 'posted' : 'not_recorded');
+        $this->assertSame($committed ? 1 : 0, $this->countRows('ledger_journals'));
+        $receipt = $this->postAction($merchant, $path.'/consume')->assertOk()->json();
+        $this->postAction($merchant, $path.'/consume')->assertExactJson($receipt);
+        $this->assertSame(1, $this->countRows('ledger_journals'));
+        $this->assertSame(2, $this->countRows('ledger_postings'));
+        $this->getJson('/merchants/'.$merchant->id.'/__isolated-ledger')->assertOk()->assertJsonPath('withdrawable_tzs', 0);
     }
 
     public function test_identity_and_association_history_cannot_be_rewritten(): void

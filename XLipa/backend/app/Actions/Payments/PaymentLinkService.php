@@ -57,9 +57,9 @@ final class PaymentLinkService
     {
         return $this->manage($actor, $merchant, function (PaymentStore $store) use ($merchant): array {
             $links = array_map(fn (array $row): array => $this->safeLink($row), $store->rows('SELECT * FROM payment_links WHERE merchant_id=? ORDER BY created_at,id', [$merchant]));
-            $attempts = $store->rows("SELECT a.id,a.link_id,a.payment_reference,p.status,p.amount_tzs,p.currency,j.id AS journal_id FROM checkout_attempts a JOIN payment_links l ON l.id=a.link_id
+            $attempts = $store->rows('SELECT a.id,a.link_id,a.payment_reference,p.status,p.amount_tzs,p.currency,j.id AS journal_id FROM checkout_attempts a JOIN payment_links l ON l.id=a.link_id
                 LEFT JOIN payment_intents p ON p.reference=a.payment_reference LEFT JOIN ledger_journals j ON j.payment_reference=p.reference
-                WHERE l.merchant_id=? ORDER BY a.created_at,a.id", [$merchant]);
+                WHERE l.merchant_id=? ORDER BY a.created_at,a.id', [$merchant]);
 
             return ['links' => $links, 'attempts' => $attempts];
         });
