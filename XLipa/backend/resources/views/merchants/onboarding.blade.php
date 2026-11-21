@@ -6,6 +6,7 @@
 @endpush
 @section('content')
 <div class="onboarding-page">
+    <ol class="product-steps" aria-label="Merchant setup steps"><li><strong>01 · ACCOUNT</strong>Email verified</li><li><strong>02 · BUSINESS</strong>Review your business profile</li><li><strong>03 · VERIFICATION</strong>Check private verification status</li><li><strong>04 · APPLICATION</strong>{{ $summary->applicationStatus ?? 'Not submitted' }}</li></ol>
     <nav class="onboarding-navigation" aria-label="Onboarding navigation">
         <a href="{{ route('merchants.dashboard', ['merchant' => $merchant->id]) }}"><span aria-hidden="true">&larr;</span> Merchant overview</a>
         <a href="{{ route('account') }}">Your XLipa account</a>

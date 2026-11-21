@@ -64,7 +64,7 @@ class MerchantOnboardingPreparationTest extends TestCase
             libxml_use_internal_errors($previous);
         }
         $xpath = new DOMXPath($document);
-        foreach (['//fieldset[@disabled]', '//input[@id="completion-business-name" and @disabled and not(@name)]', '//label[@for="completion-business-name"]', '//button[@type="button" and @disabled and @aria-disabled="true"]', '//*[@id="completion-unavailable" and @role="status"]', '//main[@id="workspace-content" and @tabindex="-1"]', '//a[@href="#workspace-content"]', '//h1'] as $query) {
+        foreach (['//fieldset[@disabled]', '//input[@id="completion-business-name" and @disabled and not(@name)]', '//label[@for="completion-business-name"]', '//*[@data-completion-preview]//button[@type="button" and @disabled and @aria-disabled="true"]', '//*[@id="completion-unavailable" and @role="status"]', '//main[@id="workspace-content" and @tabindex="-1"]', '//a[@href="#workspace-content"]', '//h1'] as $query) {
             $this->assertSame(1, $xpath->query($query)->length, $query);
         }
         $this->assertSame(0, $xpath->query('//form|//script|//input[@type="hidden"]')->length);

@@ -1,14 +1,15 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Private merchant verification | XLipa</title><link rel="icon" href="{{ asset('assets/xlipa-favicon.svg') }}"><link rel="stylesheet" href="{{ asset('assets/xlipa-site.css') }}"><link rel="stylesheet" href="{{ asset('assets/xlipa-dashboard.css') }}"><link rel="stylesheet" href="{{ asset('assets/xlipa-verification.css') }}"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Private merchant verification | XLipa</title><link rel="icon" href="{{ asset('assets/xlipa-favicon.svg') }}"><link rel="stylesheet" href="{{ asset('assets/xlipa-site.css') }}"><link rel="stylesheet" href="{{ asset('assets/xlipa-dashboard.css') }}"><link rel="stylesheet" href="{{ asset('assets/xlipa-verification.css') }}"><link rel="stylesheet" href="{{ asset('assets/xlipa-product.css') }}">
+</head>
 <body class="merchant-dashboard verification-workspace">
 <a class="dash-skip" href="#verification-main">Skip to verification</a>
-<header class="verification-header"><a class="dash-brand" href="{{ route('merchants.dashboard',['merchant'=>$merchant->id]) }}"><img src="{{ asset('assets/xlipa-favicon.svg') }}" alt="" width="36" height="36"><span>XLipa.</span></a><a href="{{ route('merchants.dashboard',['merchant'=>$merchant->id]) }}">Back to dashboard</a></header>
+<div class="dash-shell"><aside class="dash-sidebar" aria-label="Merchant workspace"><a class="dash-brand" href="{{ route('home') }}"><img src="{{ asset('assets/xlipa-favicon.svg') }}" alt="" width="34" height="34"><span>XLipa.</span></a><div class="dash-workspace"><span class="dash-workspace-mark">M</span><strong>{{ $merchant->businessNameLabel() }}</strong></div>@include('merchants.navigation')</aside><div class="dash-main">
 <main id="verification-main" class="verification-main">
 <div class="dash-section-heading"><div><p class="dash-eyebrow">PRIVATE ONBOARDING</p><h1>Merchant verification.</h1><p>{{ $merchant->businessNameLabel() }}</p></div><span class="dash-badge">TZS only</span></div>
 @if(session('status'))<p class="verification-notice" role="status">{{ session('status') }}</p>@endif
 @if($errors->any())<p class="verification-notice" role="alert">Check the required fields and your password. Sensitive values have not been retained.</p>@endif
-@if(!$verification['available'])<section class="verification-notice" role="status"><h2>Capture and delivery are unavailable</h2><p>Operational authorization, protected keys, approved policies and database capabilities must be ready before private information can be entered. Do not enter identity information here yet.</p></section>
+@if(!$verification['available'])<section class="verification-notice" role="status"><h2>Capture and delivery are unavailable</h2><p>Private verification is operationally disabled. You can inspect your saved status, but cannot enter identity information or request live codes here.</p></section>
 @elseif(!$verification['canChange'])<section class="verification-notice" role="status"><h2>Verification changes are on hold</h2><p>Changes require an active merchant, a current draft application and no pending audit obligation. Your saved status is shown below.</p></section>@endif
 <div class="verification-grid">
 <section class="dash-panel" aria-labelledby="contact-heading"><p class="dash-eyebrow">EXACT APPLICATION CONTACT</p><h2 id="contact-heading">Phone verification</h2>
@@ -36,4 +37,4 @@
 <button class="dash-button" type="submit">Save private declaration</button></fieldset></form>
 </section></div>
 <footer class="dash-footer"><span>XLipa · Private merchant onboarding</span><span>Submission, approval and financial operations remain unavailable.</span></footer>
-</main></body></html>
+</main></div></div></body></html>

@@ -234,13 +234,13 @@ class MerchantDashboardTest extends TestCase
         $html = $this->signIn($merchant->creator)->get($this->dashboardUrl($merchant))->assertOk()->getContent();
         $document = $this->document($html);
         $buttons = $document->query('//nav[@aria-label="Merchant navigation"]//button');
-        $this->assertSame(9, $buttons->length);
+        $this->assertSame(15, $buttons->length);
         foreach ($buttons as $button) {
             $this->assertTrue($button->hasAttribute('disabled'));
             $this->assertSame('true', $button->getAttribute('aria-disabled'));
-            $this->assertStringContainsString('Unavailable', $button->textContent);
+            $this->assertMatchesRegularExpression('/Operationally disabled|Not yet implemented/', $button->textContent);
         }
-        $allowed = [route('home'), route('account'), route('merchants.dashboard', ['merchant' => $merchant->id]), route('merchants.onboarding', ['merchant' => $merchant->id]), route('pages.contact'), route('pages.developers'), '#dashboard-content'];
+        $allowed = [route('home'), route('account'), route('merchants.dashboard', ['merchant' => $merchant->id]), route('merchants.onboarding', ['merchant' => $merchant->id]), route('merchants.verification', ['merchant' => $merchant->id]), route('merchants.applications', ['merchant' => $merchant->id]), route('pages.contact'), route('pages.developers'), '#dashboard-content'];
         foreach ($document->query('//a[@href]') as $anchor) {
             $this->assertContains($anchor->getAttribute('href'), $allowed);
         }

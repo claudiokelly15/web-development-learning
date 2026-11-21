@@ -3,6 +3,7 @@
 @section('description', 'Payment and accounting evidence for this merchant only.')
 @section('content')
 @php($format = \App\ViewModels\MerchantFinancialPresentation::class)
+<ol class="product-steps" aria-label="Payment evidence stages"><li><strong>01 · INITIATION</strong>Request recorded</li><li><strong>02 · CONFIRMATION</strong>{{ $transaction['confirmed_at'] ? 'Mock evidence recorded' : 'Not confirmed' }}</li><li><strong>03 · ACCOUNTING</strong>{{ $transaction['journal_id'] ? 'Ledger posted' : 'Not posted' }}</li><li><strong>04 · SETTLEMENT</strong>Unproven · TZS 0 withdrawable</li></ol>
 <section class="dash-panel" aria-labelledby="transaction-title"><h2 id="transaction-title">{{ $format::status($transaction['status']) }}</h2><p class="wallet-value">{{ $format::tzs($transaction['amount_tzs']) }}</p><p>{{ $transaction['description'] ?? 'No payment link description' }}</p>
     <dl class="dash-status-list wallet-detail">
         <div><dt>Payment reference</dt><dd>{{ $transaction['payment_reference'] ?? 'No payment intent recorded' }}</dd></div>

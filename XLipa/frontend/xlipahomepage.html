@@ -11,7 +11,8 @@
     <link rel="shortcut icon" href="assets/xlipa-favicon.svg?v=2" />
     <link rel="stylesheet" href="assets/xlipa-site.css" />
     <link rel="stylesheet" href="assets/xlipa-responsive.css" />
-  </head>
+  <link rel="stylesheet" href="assets/xlipa-product.css">
+</head>
   <body>
     <header>
       <div class="wrap nav">
@@ -43,17 +44,15 @@
         </nav>
       </div>
     </header>
+<div class="product-public-note"><strong>Platform preview</strong> · Live payments and withdrawals are disabled. <a href="developers.html#availability">See feature availability</a>.</div>
 
     <main class="wrap">
       <section class="hero">
         <div class="copy">
           <div class="eyebrow">Simple payments. Brighter opportunities.</div>
-          <h1>Get Paid Anywhere, Anytime. Easy and Instant.</h1>
+          <h1>One workspace for your business payments.</h1>
           <p class="sub">
-            Collect payments with a single link shared on any social network, or
-            integrate XLipa directly into your website and apps. Customers
-            confirm with their secure mobile money PIN, and funds appear
-            instantly in your XLipa Balance, ready for withdrawal.
+            Explore payment links, checkout and a clear record of your business activity. XLipa is being prepared for businesses in Tanzania. Live collections and withdrawals are not available yet.
           </p>
           <div class="btns">
             <a href="xlipacreateaccount.html" class="btn primary">Create a free account</a>
@@ -61,7 +60,7 @@
           </div>
         </div>
 
-        <div class="phone-wrap">
+        <div class="phone-wrap" aria-label="Illustrative product mockup, not actual account activity"><span class="product-badge">Illustrative product mockup</span>
           <div class="phone">
             <div class="screen">
               <div class="island"><i></i></div>
@@ -133,7 +132,7 @@
 
       <section class="panel" id="payment-methods">
         <div class="left">
-          <h4>Supported mobile money options</h4>
+          <h4>Planned mobile money options</h4>
           <div class="cards">
             <div class="card">
               <span class="lg"><img class="provider-logo" src="assets/payment-logos/mpesa.png" alt="M-Pesa logo"></span><span>M-Pesa</span>
@@ -151,7 +150,7 @@
         </div>
         <div class="divider"></div>
         <div class="right">
-          <h4>Payments processed by</h4>
+          <h4>Planned provider integration</h4>
           <div class="selbox"><img class="selcom-logo" src="assets/payment-logos/selcom.png" alt="Selcom"></div>
         </div>
       </section>
@@ -167,7 +166,7 @@
               <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">↗</span><span class="step-number">01</span></div><h3>Create and share</h3><p>Set up a payment link for your product or service, then share it wherever you do business.</p></article>
               <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">⌕</span><span class="step-number">02</span></div><h3>Customer enters a number</h3><p>Your customer chooses a supported mobile money option and enters the phone number they want to pay from.</p></article>
               <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">✓</span><span class="step-number">03</span></div><h3>They approve securely</h3><p>The customer reviews the payment prompt on their phone and confirms it with their mobile money PIN.</p></article>
-              <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">◎</span><span class="step-number">04</span></div><h3>Track and withdraw</h3><p>Once confirmed, check the payment status and balance in your XLipa account, then use an available withdrawal option.</p></article>
+              <article class="step-card"><div class="step-top"><span class="step-icon" aria-hidden="true">◎</span><span class="step-number">04</span></div><h3>Track payment evidence</h3><p>Review payment status, references and accounting records. Confirmation is separate from settlement; withdrawals are currently disabled.</p></article>
             </div>
           </div>
         </section>
@@ -197,11 +196,11 @@
 
         <section class="guide-section soft" id="payment-handling" aria-labelledby="trust-title">
           <div class="wrap guide-grid">
-            <div class="guide-copy"><div class="guide-kicker">Payment handling</div><h2 id="trust-title">Who handles your money</h2><p>XLipa provides the technology to request and track payments; it is not a bank. When a customer approves a payment, Selcom processes and settles it. The customer confirms the transaction through their own mobile money service.</p><p>Each transaction is recorded in your XLipa account with a unique reference. Keep that reference if you need help checking a payment.</p></div>
+            <div class="guide-copy"><div class="guide-kicker">Payment handling</div><h2 id="trust-title">Who handles your money</h2><p>XLipa provides the technology to request and track payments; it is not a bank. Selcom integration is planned but currently disabled. No live payment or settlement service is offered in this preview.</p><p>Each transaction is recorded in your XLipa account with a unique reference. Keep that reference if you need help checking a payment.</p></div>
             <div class="money-details" aria-label="Payment processing and support details">
               <div class="money-row"><span class="money-icon" aria-hidden="true">✉</span><div><span>Email support</span><strong><a href="mailto:support@xlipa.net">support@xlipa.net</a></strong></div></div>
               <div class="money-row"><span class="money-icon" aria-hidden="true">◷</span><div><span>Support hours</span><strong>Monday to Friday, 8:00 to 18:00 EAT</strong></div></div>
-              <div class="money-row"><span class="money-icon" aria-hidden="true">◇</span><div><span>Payments processed and settled by</span><strong>Selcom</strong></div></div>
+              <div class="money-row"><span class="money-icon" aria-hidden="true">◇</span><div><span>Planned processing integration</span><strong>Selcom</strong></div></div>
             </div>
           </div>
         </section>
@@ -212,7 +211,7 @@
             <div class="faq-grid">
               <details class="faq-item"><summary>How long does account review take?</summary><p>Review time depends on the information you provide. Submit complete, accurate details and check your XLipa account for any follow-up request.</p></details>
               <details class="faq-item"><summary>What if the customer does not receive a payment prompt?</summary><p>Ask them to confirm the phone number and check their mobile network. Before retrying, check the payment status in your XLipa account to avoid sending a second request for a payment that has already gone through.</p></details>
-              <details class="faq-item"><summary>How do I withdraw my balance?</summary><p>Open the withdrawal options in your XLipa account, choose an available destination and review the amount and destination details before submitting your request.</p></details>
+              <details class="faq-item"><summary>How do I withdraw my balance?</summary><p>Withdrawals are not yet available. A mock payment confirmation does not prove settlement or create withdrawable funds.</p></details>
               <details class="faq-item"><summary>What information helps support check a payment?</summary><p>Share the transaction reference, amount and approximate time of payment. Never send your mobile money PIN when asking for help.</p></details>
             </div>
           </div>
@@ -235,7 +234,7 @@
             <a href="prohibited-businesses.html">Prohibited businesses</a>
           </nav>
         </div>
-        <p class="footer-legal">© 2026 XLipa. XLipa is a technology service, not a bank. Payments are processed and settled by Selcom.</p>
+        <p class="footer-legal">© 2026 XLipa. XLipa is a technology service, not a bank. Live payment processing and settlement are currently disabled.</p>
       </div>
     </footer>
   <script>

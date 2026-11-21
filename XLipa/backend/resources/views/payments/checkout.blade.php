@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('assets/xlipa-site.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/xlipa-checkout.css') }}">
     <script src="{{ asset('assets/xlipa-checkout.js') }}" defer></script>
+<link rel="stylesheet" href="{{ asset('assets/xlipa-product.css') }}">
 </head>
 <body class="payment-workspace">
 <a class="payment-skip" href="#checkout">Skip to checkout</a>
@@ -36,7 +37,7 @@
                 ];
                 [$title, $message] = $messages[$result['status']];
             @endphp
-            <div class="payment-status" role="status" aria-live="polite"><h2>{{ $title }}</h2><p>{{ $message }}</p></div>
+            <div class="payment-status" data-state="{{ $result['status'] }}" role="status" aria-live="polite"><h2>{{ $title }}</h2><p>{{ $message }}</p></div>
             @if($result['payment_reference'])<p class="payment-reference">Payment reference <span>{{ $result['payment_reference'] }}</span></p>@endif
             <a class="btn ghost" href="{{ route('isolated.checkout.status', ['token' => $link['public_token'], 'attempt' => $result['attempt_id']]) }}">Check current status</a>
         @endif

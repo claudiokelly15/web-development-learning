@@ -8,6 +8,7 @@
     <link rel="icon" href="{{ asset('assets/xlipa-favicon.svg') }}">
     <link rel="stylesheet" href="{{ asset('assets/xlipa-site.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/xlipa-dashboard.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/xlipa-product.css') }}">
 </head>
 <body class="merchant-dashboard">
 <a class="dash-skip" href="#dashboard-content">Skip to overview</a>
@@ -15,21 +16,8 @@
     <aside class="dash-sidebar" aria-label="Merchant workspace">
         <a class="dash-brand" href="{{ route('home') }}" aria-label="XLipa home"><img src="{{ asset('assets/xlipa-favicon.svg') }}" alt="" width="34" height="34"><span>XLipa<span class="dash-brand-dot">.</span></span></a>
         <div class="dash-workspace"><span class="dash-workspace-mark" aria-hidden="true">{{ mb_substr($overview->onboarding->businessName, 0, 1) }}</span><div><span class="dash-eyebrow">Merchant workspace</span><strong>{{ $overview->onboarding->businessName }}</strong></div></div>
-        <nav aria-label="Merchant navigation" class="dash-navigation">
-            <p class="dash-nav-label">WORKSPACE</p>
-            <ul>
-                <li><a href="{{ route('merchants.dashboard', ['merchant' => $merchantId]) }}" aria-current="page"><span aria-hidden="true" class="dash-nav-icon">◫</span>Overview<span class="dash-nav-arrow" aria-hidden="true">↗</span></a></li>
-                @if($overview->membershipRole === 'owner' && Route::has('isolated.wallet'))
-                    <li><a href="{{ route('isolated.wallet', ['merchant' => $merchantId]) }}">Isolated wallet</a></li>
-                    <li><a href="{{ route('isolated.transactions', ['merchant' => $merchantId]) }}">Isolated transaction history</a></li>
-                @endif
-                @foreach(['Payments', 'Payment Links', 'Checkout', 'QR Payments', 'Wallet', 'Settlements', 'Reports', 'Developers / API', 'Settings'] as $feature)
-                    <li><button type="button" disabled aria-disabled="true"><span aria-hidden="true" class="dash-nav-icon">○</span>{{ $feature }}<span class="dash-nav-unavailable">Unavailable</span></button></li>
-                @endforeach
-                <li><a href="{{ route('pages.contact') }}"><span aria-hidden="true" class="dash-nav-icon">?</span>Support<span class="dash-nav-arrow" aria-hidden="true">↗</span></a></li>
-            </ul>
-        </nav>
-        <div class="dash-sidebar-note"><span class="dash-eyebrow">Built for your business</span><p>A clear view of your account.<br>Financial tools are not available yet.</p></div>
+        @include('merchants.navigation')
+        <div class="dash-sidebar-note"><span class="dash-eyebrow">Built for your business</span><p>A clear view of your account.<br>Live financial operations are disabled. Isolated previews appear when provisioned.</p></div>
     </aside>
 
     <div class="dash-main">
@@ -41,21 +29,28 @@
         <main id="dashboard-content" class="dash-content" tabindex="-1">
             <div class="dash-page-heading"><div><p class="dash-eyebrow">YOUR MERCHANT ACCOUNT</p><h1>Overview<span>.</span></h1><p>Your business, at a glance.</p></div><span class="dash-currency">TZS only</span></div>
 
+            @if(isset($financialOverview))
+                @include('merchants.overview-finances')
+                <div class="product-compact-progress"><div><strong>{{ $overview->readinessTitle() }}</strong><div class="product-account-progress" aria-label="Account progress"><span>Email<strong>Verified</strong></span><span>Business name<strong>{{ $overview->onboarding->businessName }}</strong></span><span>Application<strong>{{ $overview->onboarding->applicationStatus ?? 'No current application' }}</strong></span><span>Review outcome<strong>{{ $overview->onboarding->applicationStatus ?? 'Not recorded' }}</strong></span><span>Live payments<strong>Operationally disabled</strong></span></div></div><a href="{{ route('merchants.onboarding', ['merchant' => $merchantId]) }}">View onboarding status &rarr;</a></div>
+            @else
             <section class="dash-hero" aria-labelledby="readiness-title">
                 <div><span class="dash-hero-label"><span aria-hidden="true">◉</span> ACCOUNT READINESS</span><h2 id="readiness-title">{{ $overview->readinessTitle() }}</h2><p>{{ $overview->readinessDescription() }}</p><a class="dash-button dash-button-light" href="{{ route('merchants.onboarding', ['merchant' => $merchantId]) }}">View onboarding status <span aria-hidden="true">↗</span></a></div>
                 <div class="dash-hero-aside" aria-hidden="true"><span class="dash-orbit"></span><span class="dash-orbit dash-orbit-inner"></span><span class="dash-orbit-label">YOUR NEXT<br>CHAPTER.</span></div>
             </section>
 
+            @endif
             @if($overview->restricted())
                 <div class="dash-restriction" role="status"><strong>Merchant {{ $overview->onboarding->operationalStatus }}</strong><p>This is a read-only overview. Contact support for help with merchant access.</p></div>
             @endif
 
+            @unless(isset($financialOverview))
             <div class="dash-facts" aria-label="Account access facts">
                 <section class="dash-fact"><span class="dash-fact-symbol" aria-hidden="true">✓</span><div><h2>Account access</h2><p>Email verified</p><span>Your signed-in account is active</span></div></section>
                 <section class="dash-fact"><span class="dash-fact-symbol" aria-hidden="true">↳</span><div><h2>Your merchant role</h2><p>{{ ucfirst($overview->membershipRole) }}</p><span>Active membership in this workspace</span></div></section>
                 <section class="dash-fact"><span class="dash-fact-symbol" aria-hidden="true">—</span><div><h2>Financial services</h2><p>Unavailable</p><span>No payments or balances to display</span></div></section>
             </div>
 
+            @endunless
             <div class="dash-detail-grid">
                 <section class="dash-panel" aria-labelledby="onboarding-title">
                     <div class="dash-panel-heading"><div><p class="dash-eyebrow">WHERE THINGS STAND</p><h2 id="onboarding-title">Merchant onboarding</h2></div><span class="dash-badge">Read-only</span></div>
@@ -94,7 +89,9 @@
                 </div>
             </section>
 
-            <section class="dash-financial-notice" aria-labelledby="financial-title"><span class="dash-financial-mark" aria-hidden="true">◇</span><div><h2 id="financial-title">A workspace first. Financial tools when they’re ready.</h2><p>Payments, links, checkout, QR payments, wallet, settlements and reports are unavailable. No payment activity, balance or transaction totals are shown here.</p></div></section>
+            @unless(isset($financialOverview))
+            <section class="dash-financial-notice" aria-labelledby="financial-title"><span class="dash-financial-mark" aria-hidden="true">◇</span><div><h2 id="financial-title">A workspace first. Financial tools when they’re ready.</h2><p>Live payments, links, checkout and wallet are operationally disabled. Isolated functionality is demonstrated separately. QR payments, settlements and reports are not yet implemented. No payment activity, balance or transaction totals are shown here.</p></div></section>
+            @endunless
             <footer class="dash-footer"><span>XLipa · Merchant workspace</span><span>Built for Tanzania. Supporting TZS.</span></footer>
         </main>
     </div>

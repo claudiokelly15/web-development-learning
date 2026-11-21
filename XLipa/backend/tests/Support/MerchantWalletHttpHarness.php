@@ -2,15 +2,20 @@
 
 namespace Tests\Support;
 
+use App\Actions\Payments\LedgerLifecycle;
+use App\Actions\Payments\MerchantAnalytics;
 use App\Actions\Payments\MerchantWallet;
 use App\Actions\Payments\PaymentOutcomeUnknown;
+use App\Actions\Payments\PaymentStore;
 use App\Http\Middleware\AuthenticationResponseHeaders;
 use App\Http\Middleware\EnsureActiveAuthentication;
 use App\Http\Middleware\EnsureAuthenticationReady;
 use App\Http\Middleware\ResolveMerchantContext;
+use App\Models\PlatformRoleAssignment;
 use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -21,7 +26,7 @@ final class MerchantWalletHttpHarness
 {
     public ?Throwable $lastFailure = null;
 
-    public function __construct(public MerchantWallet $wallet)
+    public function __construct(public MerchantWallet $wallet, public ?MerchantAnalytics $analytics = null, public ?Closure $analyticsClock = null, public ?LedgerLifecycle $funds = null, public ?PaymentStore $fundsStore = null)
     {
         app(MerchantOnboardingHttpHarness::class)->guard();
     }
@@ -30,12 +35,38 @@ final class MerchantWalletHttpHarness
     {
         app(MerchantOnboardingHttpHarness::class)->guard();
         app()->instance(self::class, $this);
+        if ($this->funds !== null && $this->fundsStore !== null) {
+            Route::middleware([self::class, MerchantOnboardingHttpHarness::class, 'web', AuthenticationResponseHeaders::class, 'auth', EnsureAuthenticationReady::class, EnsureActiveAuthentication::class, 'verified'])
+                ->get('/admin/__isolated-funds/{merchant}', function (Request $request): Response {
+                    abort_unless($request->query() === [] && $request->request->all() === [], 422);
+                    abort_unless(Gate::allows('viewChiefWorkspace', PlatformRoleAssignment::class), 403);
+                    $funds = $this->funds->chiefOverview($request->user(), $request->route('merchant'), $this->fundsStore);
+
+                    return response()->view('admin.funds', ['funds' => $funds]);
+                })->whereUlid('merchant')->name('isolated.admin.funds');
+        }
         Route::middleware([self::class, MerchantOnboardingHttpHarness::class, 'web', AuthenticationResponseHeaders::class, 'auth', EnsureAuthenticationReady::class, EnsureActiveAuthentication::class, 'verified', ResolveMerchantContext::class])
             ->prefix('/merchants/{merchant}/__isolated-finances')->whereUlid('merchant')->group(function (): void {
+                if ($this->funds !== null) {
+                    Route::get('/funds', fn (Request $request): Response => $this->respond($request, function () use ($request): array {
+                        abort_unless($request->query() === [], 422);
+
+                        return ['funds' => $this->funds->overview($request->user(), $request->route('merchant')->id)];
+                    }, 'merchants.funds'))->name('isolated.funds');
+                }
+                if ($this->analytics !== null && $this->analyticsClock !== null) {
+                    Route::get('/analytics', fn (Request $request): Response => $this->respond($request,
+                        fn (): array => ['analytics' => $this->analytics->report($request->user(), $request->route('merchant')->id, $request->query(), ($this->analyticsClock)())], 'merchants.analytics'))->name('isolated.analytics');
+                }
                 Route::get('/wallet', fn (Request $request): Response => $this->respond($request, function () use ($request): array {
                     abort_unless($request->query() === [], 422);
 
-                    return $this->wallet->overview($request->user(), $request->route('merchant')->id);
+                    $data = $this->wallet->overview($request->user(), $request->route('merchant')->id);
+                    if ($this->funds !== null) {
+                        $data['funds'] = $this->funds->overview($request->user(), $request->route('merchant')->id);
+                    }
+
+                    return $data;
                 }, 'merchants.wallet'))->name('isolated.wallet');
                 Route::get('/transactions', fn (Request $request): Response => $this->respond($request,
                     fn (): array => $this->wallet->history($request->user(), $request->route('merchant')->id, $request->query()), 'merchants.transactions'))->name('isolated.transactions');

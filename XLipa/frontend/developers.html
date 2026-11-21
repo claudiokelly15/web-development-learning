@@ -11,7 +11,8 @@
     <link rel="shortcut icon" href="assets/xlipa-favicon.svg?v=2" />
     <link rel="stylesheet" href="assets/xlipa-site.css" />
     <link rel="stylesheet" href="assets/xlipa-responsive.css" />
-  </head>
+  <link rel="stylesheet" href="assets/xlipa-product.css">
+</head>
   <body>
     <header>
       <div class="wrap nav">
@@ -43,6 +44,7 @@
         </nav>
       </div>
     </header>
+<div class="product-public-note"><strong>Platform preview</strong> · Live payments and withdrawals are disabled. <a href="developers.html#availability">See feature availability</a>.</div>
 
     <main class="wrap">
       <section class="guide-section soft" id="developers" aria-labelledby="ways-title">
@@ -50,11 +52,12 @@
           <div class="guide-heading"><div class="guide-kicker">Choose what fits your business</div><h1 id="ways-title">A simple link or a direct integration</h1><p>Start with a shareable link, or connect XLipa to a website or app as your payment needs grow.</p></div>
           <div class="guide-grid">
             <article class="guide-card"><span class="card-symbol" aria-hidden="true">↗</span><h3>Payment links</h3><p>Collect payments online or in person without building a checkout first. Create a link for a product or amount and share it through your usual customer channels.</p><div class="sample-link"><span>Payment request example</span><strong>Order 1048 · TZS 50,000</strong><span style="margin-top:6px">Waiting for customer confirmation</span></div></article>
-            <article class="guide-card"><span class="card-symbol" aria-hidden="true">&lt;/&gt;</span><h3>Website and app integration</h3><p>For teams building their own checkout, XLipa’s developer resources explain how to connect payment requests and receive transaction updates.</p><ul class="api-points"><li>Connect payments to your existing customer journey.</li><li>Use transaction status updates to keep orders in sync.</li><li>Review the XLipa developer documentation before integrating.</li></ul></article>
+            <article class="guide-card"><span class="card-symbol" aria-hidden="true">&lt;/&gt;</span><h3>Website and app integration</h3><p>For teams building their own checkout, The developer resources describe the intended integration journey. Operational endpoints and transaction-update delivery are not yet available.</p><ul class="api-points"><li>Connect payments to your existing customer journey.</li><li>Use transaction status updates to keep orders in sync.</li><li>Review the XLipa developer documentation before integrating.</li></ul></article>
           </div>
         </div>
       </section>
-    </main>
+    <section id="availability" class="product-availability" aria-labelledby="developer-availability"><h2 id="developer-availability">Developer tools and availability</h2><p>This page is product guidance. Production API credentials, payment endpoints and webhook delivery are not available. Do not send production secrets or customer payment information.</p><ul><li><strong>Payment Links and mock checkout:</strong> isolated functionality demonstrated with fictional fixtures; live use operationally disabled.</li><li><strong>API Keys:</strong> not yet implemented. No keys can be generated.</li><li><strong>Webhooks:</strong> production delivery is not yet implemented; internal mock-provider event tests are not a public webhook API.</li><li><strong>Integration documentation:</strong> product overview only. A supported production endpoint reference is not yet published.</li></ul><div class="product-subnav"><a href="contact.html">Integration support</a><a href="xlipahomepage.html#how-it-works">How it works</a></div></section>
+</main>
     <footer>
       <div class="wrap footer-inner">
         <div class="footer-main">
@@ -71,7 +74,7 @@
             <a href="prohibited-businesses.html">Prohibited businesses</a>
           </nav>
         </div>
-        <p class="footer-legal">© 2026 XLipa. XLipa is a technology service, not a bank. Payments are processed and settled by Selcom.</p>
+        <p class="footer-legal">© 2026 XLipa. XLipa is a technology service, not a bank. Live payment processing and settlement are currently disabled.</p>
       </div>
     </footer>
   <script>

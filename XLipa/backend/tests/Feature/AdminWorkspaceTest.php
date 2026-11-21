@@ -267,11 +267,11 @@ class AdminWorkspaceTest extends TestCase
         $html = $this->signIn($user)->get(route($this->ownRoute($role)))->assertOk()->getContent();
         $document = $this->document($html);
         $buttons = $document->query('//nav[@aria-label="Administrative navigation"]//button');
-        $this->assertSame($role === 'chief_admin' ? 14 : 3, $buttons->length);
+        $this->assertSame($role === 'chief_admin' ? 14 : 2, $buttons->length);
         foreach ($buttons as $button) {
             $this->assertTrue($button->hasAttribute('disabled'));
             $this->assertSame('true', $button->getAttribute('aria-disabled'));
-            $this->assertStringContainsString('Unavailable', $button->textContent);
+            $this->assertStringContainsString($role === 'chief_admin' ? 'Not yet implemented' : 'Not permitted', $button->textContent);
         }
         $allowed = [route('home'), route('account'), route($this->ownRoute($role)), route('admin.access'), route('pages.contact'), '#admin-content'];
         if ($role === 'chief_admin') {

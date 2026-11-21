@@ -2,8 +2,12 @@
 
 namespace App\Actions\Payments;
 
+use App\Actions\Merchants\SubmissionTransaction;
+use App\Models\PlatformRoleAssignment;
 use App\Models\User;
 use Closure;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 /** Fictional pending accounting only. Fees, settlement, withdrawals and corrections have no admission. */
@@ -101,6 +105,32 @@ final class MockPaymentLedger
     public function financialRead(User $actor, string $merchant, Closure $work): array
     {
         return $this->run($actor, $merchant, 'read', fn (PaymentStore $store): array => $work($store, $this->summary($store, $merchant)));
+    }
+
+    /** Independent, explicitly granted Chief read boundary. Never grants merchant or payout authority. */
+    public function administrativeRead(User $actor, string $merchant, PaymentStore $store, FundsAdmission $admission, Closure $work): array
+    {
+        $guard = function () use ($actor, $merchant, $admission): void {
+            abort_unless(PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing') && auth()->id() === $actor->id && $admission->authorized($actor->id, $merchant, 'admin_read'), 503);
+            $current = User::query()->findOrFail($actor->id);
+            abort_unless($current->getRawOriginal('account_status') === 'active' && $current->email_verified_at !== null && $current->auth_version === $actor->auth_version && session('auth_version') === $current->auth_version && $current->email_binding_version === $actor->email_binding_version, 403);
+            Gate::forUser($current)->authorize('viewChiefWorkspace', PlatformRoleAssignment::class);
+            abort_unless(DB::table('merchants')->where('id', $merchant)->where('created_by_user_id', '!=', $actor->id)->exists()
+                && ! DB::table('merchant_memberships')->where('merchant_id', $merchant)->where('user_id', $actor->id)->exists()
+                && ! DB::table('merchant_applications')->where('merchant_id', $merchant)->where('submitted_by_user_id', $actor->id)->exists(), 404);
+        };
+        $guard();
+
+        return app(SubmissionTransaction::class)->run(function () use ($store, $merchant, $work, $guard): array {
+            $guard();
+
+            return $store->transaction(function () use ($store, $merchant, $work, $guard): array {
+                $result = $work($store, $this->summary($store, $merchant));
+                $guard();
+
+                return $result;
+            });
+        });
     }
 
     /** Internal additive accounting boundary; callers must also enforce independent lifecycle admission. */

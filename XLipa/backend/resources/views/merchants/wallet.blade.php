@@ -3,6 +3,10 @@
 @section('description', 'Evidence from your mock payments and sealed financial ledger.')
 @section('content')
 @php($format = \App\ViewModels\MerchantFinancialPresentation::class)
+@if(isset($funds))
+<section class="product-kpi"><h2>Confirmed fictional payments</h2><strong>{{ $format::tzs($position['confirmed_fictional_payment_tzs']) }}</strong><p>Confirmation value is not settlement or available funds.</p></section>
+@include('merchants.funds-tables')
+@else
 <section class="wallet-grid" aria-label="Fictional financial position">
     @foreach([
         ['Confirmed fictional payments', 'confirmed_fictional_payment_tzs', 'Authenticated mock confirmations, including value not yet accounted.'],
@@ -15,6 +19,7 @@
     @endforeach
     <article class="dash-panel wallet-metric"><h2>Settlement status</h2><p class="wallet-value wallet-unproven">Unproven</p><p class="dash-panel-note">No settlement evidence or real cash availability is established.</p></article>
 </section>
+@endif
 <section class="dash-panel wallet-section" aria-labelledby="payment-states"><h2 id="payment-states">Payment request states</h2><p class="dash-panel-note">Requested amounts describe payment activity. They are not additional balances or available funds.</p>
     <dl class="dash-status-list">
         @foreach(['pending', 'unknown', 'failed', 'confirmed'] as $state)

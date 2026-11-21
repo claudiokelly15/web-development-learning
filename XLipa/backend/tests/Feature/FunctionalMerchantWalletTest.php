@@ -153,7 +153,7 @@ class FunctionalMerchantWalletTest extends TestCase
         $this->read($this->base($merchant).'/wallet', false)->assertSee('TZS 12,500')->assertSee('TZS 0')->assertSee('Unproven')->assertSee('xlipa-dashboard.css')->assertSee('xlipa-wallet.css');
         $this->read($this->base($merchant).'/transactions', false)->assertSee($result['payment_reference'])->assertSee($receipt['id'])->assertSee('Fictional mock provider');
         $this->read($this->base($merchant).'/transactions/'.$record, false)->assertSee('Ledger posted')->assertSee('do not prove settlement', false);
-        $this->get(route('merchants.dashboard', ['merchant' => $merchant->id]))->assertOk()->assertSee('Isolated wallet');
+        $this->get(route('merchants.dashboard', ['merchant' => $merchant->id]))->assertOk()->assertSee(route('isolated.wallet', ['merchant' => $merchant->id]), false)->assertSee('Isolated functionality');
         $this->assertSame($fingerprint, $this->financialFingerprint());
         $this->assertSame($merchantBefore, $merchant->fresh()->getAttributes());
         $this->assertSame(1, $this->provider->creates);
