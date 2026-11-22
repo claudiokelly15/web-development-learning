@@ -14,6 +14,22 @@ class PaymentStore
 
     private bool $active = false;
 
+    private ?Closure $transactionGuard = null;
+
+    /** Additional capability must remain valid inside every reserved P9 mutation. */
+    public function guarded(Closure $guard, Closure $operation): mixed
+    {
+        if ($this->transactionGuard !== null || $this->active) {
+            throw new LogicException('Nested payment capability denied.');
+        }
+        $this->transactionGuard = $guard;
+        try {
+            return $operation();
+        } finally {
+            $this->transactionGuard = null;
+        }
+    }
+
     public function __construct(private readonly PDO $pdo)
     {
         if ($pdo->getAttribute(PDO::ATTR_DRIVER_NAME) !== 'sqlite') {
@@ -66,7 +82,13 @@ class PaymentStore
         $this->active = true;
         $committing = false;
         try {
+            if ($this->transactionGuard !== null) {
+                ($this->transactionGuard)();
+            }
             $result = $operation();
+            if ($this->transactionGuard !== null) {
+                ($this->transactionGuard)();
+            }
             $committing = true;
             $this->commit();
 

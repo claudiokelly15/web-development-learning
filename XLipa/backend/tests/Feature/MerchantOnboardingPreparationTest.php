@@ -132,9 +132,13 @@ class MerchantOnboardingPreparationTest extends TestCase
     {
         $merchant = Merchant::factory()->create(['business_name' => '<script>alert(1)</script>', 'business_email' => 'PRIVATE@fixture.test']);
         $merchant->applications()->update(['public_feedback' => '<svg onload=alert(2)>', 'internal_review_notes' => 'PRIVATE NOTES']);
-        $this->signIn($merchant->creator)->get($this->url($merchant))->assertOk()
+        $response = $this->signIn($merchant->creator)->get($this->url($merchant))->assertOk()
             ->assertSee('&lt;script&gt;', false)->assertSee('&lt;svg', false)->assertDontSee('<script>', false)
-            ->assertDontSee('<svg', false)->assertDontSee('PRIVATE NOTES')->assertDontSee('PRIVATE@fixture.test');
+            ->assertDontSee('<svg onload', false)->assertDontSee('PRIVATE NOTES')->assertDontSee('PRIVATE@fixture.test');
+        $document = new DOMDocument;
+        @$document->loadHTML($response->getContent());
+        $xpath = new DOMXPath($document);
+        $this->assertSame(0, $xpath->query('//script|//svg[not(@class="premium-icon")]|//@*[starts-with(name(),"on")]')->length);
     }
 
     public function test_no_completion_write_route_and_write_methods_are_rejected(): void

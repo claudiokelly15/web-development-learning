@@ -23,19 +23,16 @@
 
     <div class="dash-main">
         <header class="dash-topbar">
+            @if(!$overview->accessPage)<div class="premium-header-title"><h1>{{ $overview->chief() ? 'Admin Dashboard' : 'Staff Dashboard' }}</h1><p>{{ $overview->chief() ? 'Authorized review workload and platform access' : 'Your account, permissions and available tools' }}</p></div>@else
             <div class="dash-breadcrumb"><span>{{ $overview->roleLabel() }}</span><span aria-hidden="true">/</span><strong>{{ $overview->accessPage ? 'Access scope' : 'Overview' }}</strong></div>
+            @endif
             <div class="dash-topbar-actions"><a href="{{ route('account') }}" class="dash-switch">Your account <span aria-hidden="true">↗</span></a><span class="dash-avatar" aria-hidden="true">{{ mb_substr($overview->accountName, 0, 1) }}</span></div>
         </header>
         <main class="dash-content" id="admin-content" tabindex="-1">
-            <div class="dash-page-heading"><div><p class="dash-eyebrow">{{ $overview->chief() ? 'CHIEF ADMIN WORKSPACE' : 'STAFF ADMIN WORKSPACE' }}</p><h1>{{ $overview->accessPage ? 'Access scope' : 'Overview' }}<span>.</span></h1><p>{{ $overview->accessPage ? 'Understand the access attached to your account.' : 'A clear view of your administrative workspace.' }}</p></div><span class="dash-currency">TZS only</span></div>
+            @if($overview->accessPage)<div class="dash-page-heading"><div><p class="dash-eyebrow">{{ $overview->chief() ? 'CHIEF ADMIN WORKSPACE' : 'STAFF ADMIN WORKSPACE' }}</p><h1>Access scope</h1><p>Understand the access attached to your account.</p></div><span class="dash-currency">TZS only</span></div>@endif
 
-            @if(isset($reviewScope) && $overview->chief() && !$overview->accessPage)
-                <div class="product-alert"><strong>Your authorized review scope</strong><p>Submitted applications only. Your own and membership-linked merchants are excluded. These are review workload counts, not platform-wide merchant or revenue totals.</p></div>
-                <div class="product-kpis">
-                @foreach($reviewScope as $label => $total)<section class="product-kpi"><h2>{{ $label }}</h2><strong>{{ $total }}</strong><small>Applications visible to this reviewer</small></section>@endforeach
-                </div>
-                <div class="product-toolbar"><a href="{{ route('admin.applications') }}">Review applications &rarr;</a><a href="{{ route('admin.access') }}">Roles and permissions</a></div>
-            @endif
+            @include('admin.premium-overview')
+            @if(!$overview->accessPage)<details class="premium-account-details"><summary>Account, capabilities and operational boundaries</summary>@endif
             @if(!$overview->accessPage)
                 <section class="dash-hero" aria-labelledby="workspace-title">
                     <div><span class="dash-hero-label"><span aria-hidden="true">◉</span> {{ $overview->chief() ? 'PLATFORM OVERSIGHT' : 'SCOPED ADMINISTRATION' }}</span><h2 id="workspace-title">{{ $overview->chief() ? 'Application review and platform access.' : 'A focused workspace for your role.' }}</h2><p>{{ $overview->chief() ? 'Review submitted applications, inspect decision history and understand your platform permissions. Review writes are operationally disabled. Financial reporting, staff management and other planned tools are not yet implemented.' : 'Your access covers this dashboard, your own account and your permission summary. No assigned-task or case-management interface is available. Chief application review and platform financial records are outside your role.' }}</p><a class="dash-button dash-button-light" href="{{ route('admin.access') }}">View your access scope <span aria-hidden="true">↗</span></a></div>
@@ -69,13 +66,6 @@
                 </section>
             </div>
 
-            @if(isset($reviewScope) && $overview->chief() && !$overview->accessPage)
-                <div class="product-alert"><strong>Your authorized review scope</strong><p>Submitted applications only. Your own and membership-linked merchants are excluded. These are review workload counts, not platform-wide merchant or revenue totals.</p></div>
-                <div class="product-kpis">
-                @foreach($reviewScope as $label => $total)<section class="product-kpi"><h2>{{ $label }}</h2><strong>{{ $total }}</strong><small>Applications visible to this reviewer</small></section>@endforeach
-                </div>
-                <div class="product-toolbar"><a href="{{ route('admin.applications') }}">Review applications &rarr;</a><a href="{{ route('admin.access') }}">Roles and permissions</a></div>
-            @endif
             @if(!$overview->accessPage)
                 <section class="dash-resources" aria-labelledby="availability-title">
                     <div class="dash-section-heading"><div><p class="dash-eyebrow">OPERATIONS AVAILABILITY</p><h2 id="availability-title">What’s available today</h2></div><p>Only approved, implemented capabilities.</p></div>
@@ -88,6 +78,7 @@
             @endif
 
             <section class="dash-financial-notice" aria-labelledby="boundary-title"><span class="dash-financial-mark" aria-hidden="true">◇</span><div><h2 id="boundary-title">Administrative access stays separate from financial authority.</h2><p>This workspace cannot approve merchants, process identity information, move funds or provision administrative accounts. Contact support for account assistance.</p><a class="admin-support-link" href="{{ route('pages.contact') }}">View support contact information <span aria-hidden="true">↗</span></a></div></section>
+            @if(!$overview->accessPage)</details>@endif
             <footer class="dash-footer"><span>XLipa · {{ $overview->roleLabel() }} workspace</span><span>Built for Tanzania. Supporting TZS.</span></footer>
         </main>
     </div>

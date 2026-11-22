@@ -224,7 +224,7 @@ class MerchantDashboardTest extends TestCase
         $response = $this->signIn($user)->get($this->dashboardUrl($merchant));
         $response->assertOk()->assertSee('&lt;img src=x onerror=alert(1)&gt;', false)->assertSee('&lt;script&gt;', false)->assertSee('&lt;svg onload=alert(2)&gt;', false);
         $document = $this->document($response->getContent());
-        $this->assertSame(0, $document->query('//script|//svg|//*[@onerror or @onload]')->length);
+        $this->assertSame(0, $document->query('//script|//svg[not(@class="premium-icon")]|//@*[starts-with(name(),"on")]')->length);
         $this->assertSame(1, $document->query('//h1')->length);
     }
 

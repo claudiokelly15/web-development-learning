@@ -90,6 +90,10 @@ final class PaymentLinkService
                 return [$rows[0], false];
             }
             $this->active($link);
+            if ($this->store->rows("SELECT name FROM sqlite_master WHERE type='table' AND name='checkout_widgets'") !== []
+                && $this->store->rows("SELECT id FROM checkout_widgets WHERE link_id=? AND mode='dynamic'", [$link['id']]) !== []) {
+                abort_unless($this->store->rows('SELECT id FROM checkout_attempts WHERE link_id=?', [$link['id']]) === [], 410);
+            }
             $id = (string) Str::uuid();
             $this->store->write('INSERT INTO checkout_attempts(id,link_id,customer_hash,nonce_hash,created_at) VALUES(?,?,?,?,?)', [$id, $link['id'], $customer, hash('sha256', $nonce), $this->now()]);
 

@@ -21,6 +21,12 @@ final class PaymentEngine
 
     public function __construct(private readonly PaymentStore $store, private readonly PaymentProvider $provider, private readonly PaymentAdmission $admission) {}
 
+    /** P9 capabilities must guard the exact writer used by payment/link transactions. */
+    public function withCapabilityGuard(Closure $guard, Closure $work): mixed
+    {
+        return $this->store->guarded($guard, $work);
+    }
+
     public function create(User $actor, string $merchant, mixed $amount, string $currency, string $idempotency, ?string $order = null): array
     {
         return $this->createIntent($actor, $merchant, $amount, $currency, $idempotency, $order);

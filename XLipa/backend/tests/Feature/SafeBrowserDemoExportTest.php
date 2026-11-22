@@ -5,9 +5,12 @@ namespace Tests\Feature;
 use App\Actions\Payments\AnalyticsEvidence;
 use App\Actions\Payments\FictionalFundsEvidence;
 use App\Actions\Payments\FictionalPayoutProvider;
+use App\Actions\Payments\FictionalWebhookTransport;
 use App\Actions\Payments\LedgerLifecycle;
 use App\Actions\Payments\MerchantAnalytics;
+use App\Actions\Payments\MerchantDeveloperTools;
 use App\Actions\Payments\MerchantWallet;
+use App\Actions\Payments\MerchantWebhooks;
 use App\Actions\Payments\MerchantWithdrawals;
 use App\Actions\Payments\MockPaymentLedger;
 use App\Actions\Payments\PaymentLinkService;
@@ -20,12 +23,14 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Tests\Support\AnalyticsStoreFixture;
+use Tests\Support\DeveloperStoreFixture;
 use Tests\Support\FakeFundsAdmission;
 use Tests\Support\FakeLedgerAdmission;
 use Tests\Support\FakePaymentLinkAdmission;
 use Tests\Support\LedgerHttpHarness;
 use Tests\Support\LedgerStoreFixture;
 use Tests\Support\LifecycleStoreFixture;
+use Tests\Support\MerchantDeveloperHttpHarness;
 use Tests\Support\MerchantWalletHttpHarness;
 use Tests\Support\MockPaymentJourney;
 use Tests\Support\PaymentLinkHttpHarness;
@@ -64,6 +69,10 @@ class SafeBrowserDemoExportTest extends TestCase
 
     private FakeFundsAdmission $fundsAdmission;
 
+    private MerchantDeveloperTools $developerTools;
+
+    private MerchantWebhooks $merchantWebhooks;
+
     private function journey(): array
     {
         [$owner, $merchant] = $this->baseOnboardingJourney();
@@ -84,6 +93,7 @@ class SafeBrowserDemoExportTest extends TestCase
         PaymentLinkStoreFixture::install($this->paymentPdo);
         AnalyticsStoreFixture::install($this->paymentPdo);
         LifecycleStoreFixture::install($this->paymentPdo);
+        DeveloperStoreFixture::install($this->paymentPdo);
         $this->paymentAdmission->allow = true;
         $this->ledgerAdmission = new FakeLedgerAdmission;
         $this->ledgerAdmission->actor = $owner->id;
@@ -111,6 +121,9 @@ class SafeBrowserDemoExportTest extends TestCase
         $this->withdrawals = new MerchantWithdrawals($this->funds, $this->fundsAdmission, $this->fundsEvidence, $this->payoutProvider);
         $this->financial = new MerchantWalletHttpHarness(new MerchantWallet($ledger), $this->analytics, fn (): int => $this->paymentAdmission->time, $this->funds, $store);
         $this->financial->register();
+        $this->developerTools = new MerchantDeveloperTools($this->payments->engine, $store, $this->checkout->links, fn (): int => $this->paymentAdmission->time);
+        $this->merchantWebhooks = new MerchantWebhooks($this->developerTools, $store, fn (string $host): array => ['93.184.216.34'], str_repeat('W', 32), new FictionalWebhookTransport);
+        (new MerchantDeveloperHttpHarness($this->developerTools, $this->merchantWebhooks, $store))->register();
         app('router')->getRoutes()->refreshNameLookups();
 
         return [$owner->fresh(), $merchant->fresh()];
@@ -224,6 +237,22 @@ class SafeBrowserDemoExportTest extends TestCase
         $funds = $this->funds->overview($owner, $merchant->id);
         $this->assertSame(24000, $analytics['value_tzs']);
         $this->assertSame(8000, $funds['position']['simulated_available_tzs']);
+        $testCredential = $this->developerTools->issue($owner, $merchant->id, ['links:read', 'links:write', 'payments:read'], $this->paymentAdmission->time + 86400000);
+        $this->developerTools->issue($owner, $merchant->id, ['links:read'], $this->paymentAdmission->time + 86400000, $testCredential['id']);
+        $qrLink = $this->checkout->links->create($owner, $merchant->id, 12500, 'TZS', 'Fictional QR checkout', 'p9-demo-qr-link-0001', $this->paymentAdmission->time + 86400000);
+        $this->developerTools->widget($owner, $merchant->id, $qrLink['id'], 'qr', 'dynamic');
+        $this->developerTools->widget($owner, $merchant->id, $link['id'], 'qr', 'reusable');
+        $this->developerTools->widget($owner, $merchant->id, $link['id'], 'button', 'reusable');
+        $testEndpoint = $this->merchantWebhooks->register($owner, $merchant->id, 'https://merchant.example/hooks');
+        $delivery = $this->merchantWebhooks->enqueue($owner, $merchant->id);
+        $this->assertCount(4, $delivery);
+        $this->assertSame('delivered', $this->merchantWebhooks->deliver($owner, $merchant->id, $delivery[0]['id'])['status']);
+        $this->assertSame(24000, $this->analytics->report($owner, $merchant->id, [], $this->paymentAdmission->time)['value_tzs']);
+        $this->customerPages['qr-associated-checkout'] = ['url' => '/__isolated-checkout/'.$qrLink['public_token'], 'file' => 'qr-associated-checkout.html'];
+        auth()->logout();
+        session()->invalidate();
+        file_put_contents($directory.'/qr-associated-checkout.html', $this->get('/__isolated-checkout/'.$qrLink['public_token'])->assertOk()->getContent());
+        $this->signIn($owner);
         View::share('financialSummaryPreview', true);
         View::composer('merchants.dashboard', function ($view) use ($history, $overview, $analytics, $funds): void {
             $view->with(['financialHistory' => $history, 'financialOverview' => $overview, 'financialClock' => $this->paymentAdmission->time, 'analytics' => $analytics, 'funds' => $funds]);
@@ -236,6 +265,11 @@ class SafeBrowserDemoExportTest extends TestCase
                     ->assertSee('TZS 11,500')->assertSee('TZS 8,000')->assertSee('Net of independently proven simulated settlement')
                     ->assertSee('Traffic Source Attribution')->assertSee('Payment Method Analytics')
                     ->assertSee('M-Pesa (synthetic)')->assertSee('Confirmed Payment Value (TZS)')->assertSee('Unique Paying Customers');
+                $document = new \DOMDocument;
+                @$document->loadHTML($response->getContent());
+                $xpath = new \DOMXPath($document);
+                $this->assertSame(3, $xpath->query('//*[@data-primary-kpi]')->length);
+                $this->assertSame(1, $xpath->query('//*[@aria-label="Available balance"]')->length);
             }
             $pages[$name] = ['url' => $url, 'file' => $name.'.html'];
             file_put_contents($directory.'/'.$name.'.html', $response->getContent());
@@ -246,6 +280,12 @@ class SafeBrowserDemoExportTest extends TestCase
             'transactions' => $base.'/__isolated-finances/transactions',
             'merchant-analytics' => $base.'/__isolated-finances/analytics',
             'settlement-withdrawals' => $base.'/__isolated-finances/funds',
+            'merchant-api' => $base.'/__isolated-developers/api',
+            'api-credentials' => $base.'/__isolated-developers/credentials',
+            'qr-payments' => $base.'/__isolated-developers/qr',
+            'pay-buttons' => $base.'/__isolated-developers/buttons',
+            'merchant-webhooks' => $base.'/__isolated-developers/webhooks',
+            'integration-docs' => $base.'/__isolated-developers/docs',
             'transaction-detail' => $base.'/__isolated-finances/transactions/'.$history['transactions'][0]['record_id'],
             'merchant-settings' => '/account'] as $name => $url) {
             $save($name, $url);
@@ -261,11 +301,13 @@ class SafeBrowserDemoExportTest extends TestCase
         $this->fundsAdmission->chief = $chief->id;
         View::share('fundsOversightMerchant', $merchant->id);
         $save('chief-financial-oversight', '/admin/__isolated-funds/'.$merchant->id);
+        $save('chief-api-governance', '/admin/__isolated-api-governance/'.$merchant->id);
         $reviewScope = [];
         foreach (['Pending applications' => 'pending_review', 'Approved applications' => 'approved', 'Rejected applications' => 'rejected'] as $label => $status) {
             $reviewScope[$label] = $this->get('/admin/applications?status='.$status)->assertOk()->viewData('applications')->total();
         }
-        View::composer('admin.workspace', fn ($view) => $view->with('reviewScope', $reviewScope));
+        $reviewApplications = $this->get('/admin/applications')->assertOk()->viewData('applications')->items();
+        View::composer('admin.workspace', fn ($view) => $view->with(['reviewScope' => $reviewScope, 'reviewApplications' => $reviewApplications]));
         $save('chief-dashboard', '/admin/chief');
         $save('application-review', '/admin/applications');
         $save('decision-history', '/admin/applications/'.$merchant->applications()->firstOrFail()->id);
@@ -278,6 +320,7 @@ class SafeBrowserDemoExportTest extends TestCase
         $this->get('/admin/applications')->assertForbidden();
         $this->get('/admin/chief')->assertForbidden();
         $this->get('/admin/__isolated-funds/'.$merchant->id)->assertForbidden();
+        $this->get('/admin/__isolated-api-governance/'.$merchant->id)->assertForbidden();
         auth()->logout();
         session()->invalidate();
         foreach (['public-home' => '/', 'about' => '/about.html', 'contact' => '/contact.html', 'developers' => '/developers.html', 'terms' => '/terms.html', 'privacy' => '/privacy.html', 'disclaimer' => '/disclaimer.html', 'prohibited-businesses' => '/prohibited-businesses.html', 'sign-in' => '/xlipasignin.html', 'registration' => '/xlipacreateaccount.html', 'forgot-password' => '/forgot-password', 'reset-password' => '/reset-password/fictional-token'] as $name => $url) {
@@ -287,6 +330,11 @@ class SafeBrowserDemoExportTest extends TestCase
         $this->actingAs($unverified)->withSession(['auth_version' => $unverified->auth_version]);
         $save('email-verification', '/email/verify');
         file_put_contents($directory.'/pages.json', json_encode($pages, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT));
+        foreach ($pages as $page) {
+            $html = file_get_contents($directory.'/'.$page['file']);
+            $this->assertStringNotContainsString($testCredential['token'], $html);
+            $this->assertStringNotContainsString($testEndpoint['secret'], $html);
+        }
         $this->assertSame(':memory:', DB::connection()->getDatabaseName());
     }
 }

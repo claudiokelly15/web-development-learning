@@ -22,16 +22,18 @@
 
     <div class="dash-main">
         <header class="dash-topbar">
+            @if(isset($financialOverview))<div class="premium-header-title"><h1>Merchant Dashboard</h1><p>Welcome back, {{ $overview->onboarding->businessName }}.</p></div>@else
             <div class="dash-breadcrumb"><span>Workspace</span><span aria-hidden="true">/</span><strong>Overview</strong></div>
-            <div class="dash-topbar-actions"><a href="{{ route('account') }}" class="dash-switch">Switch merchant <span aria-hidden="true">↗</span></a><span class="dash-avatar" aria-hidden="true">{{ mb_substr($overview->accountName, 0, 1) }}</span></div>
+            @endif
+            <div class="dash-topbar-actions">@if(isset($financialClock))<span class="premium-date">{{ \Carbon\CarbonImmutable::createFromTimestampMs($financialClock,'Africa/Nairobi')->format('d M Y') }} · EAT</span>@endif<a href="{{ route('account') }}" class="dash-switch">Switch merchant <span aria-hidden="true">↗</span></a><span class="dash-avatar" aria-hidden="true">{{ mb_substr($overview->accountName, 0, 1) }}</span></div>
         </header>
 
         <main id="dashboard-content" class="dash-content" tabindex="-1">
-            <div class="dash-page-heading"><div><p class="dash-eyebrow">YOUR MERCHANT ACCOUNT</p><h1>Overview<span>.</span></h1><p>Your business, at a glance.</p></div><span class="dash-currency">TZS only</span></div>
+            @unless(isset($financialOverview))<div class="dash-page-heading"><div><p class="dash-eyebrow">YOUR MERCHANT ACCOUNT</p><h1>Merchant Dashboard</h1><p>Welcome back, {{ $overview->onboarding->businessName }}. Your payments and business overview.</p></div><span class="dash-currency">TZS only</span></div>@endunless
 
             @if(isset($financialOverview))
                 @include('merchants.overview-finances')
-                <div class="product-compact-progress"><div><strong>{{ $overview->readinessTitle() }}</strong><div class="product-account-progress" aria-label="Account progress"><span>Email<strong>Verified</strong></span><span>Business name<strong>{{ $overview->onboarding->businessName }}</strong></span><span>Application<strong>{{ $overview->onboarding->applicationStatus ?? 'No current application' }}</strong></span><span>Review outcome<strong>{{ $overview->onboarding->applicationStatus ?? 'Not recorded' }}</strong></span><span>Live payments<strong>Operationally disabled</strong></span></div></div><a href="{{ route('merchants.onboarding', ['merchant' => $merchantId]) }}">View onboarding status &rarr;</a></div>
+
             @else
             <section class="dash-hero" aria-labelledby="readiness-title">
                 <div><span class="dash-hero-label"><span aria-hidden="true">◉</span> ACCOUNT READINESS</span><h2 id="readiness-title">{{ $overview->readinessTitle() }}</h2><p>{{ $overview->readinessDescription() }}</p><a class="dash-button dash-button-light" href="{{ route('merchants.onboarding', ['merchant' => $merchantId]) }}">View onboarding status <span aria-hidden="true">↗</span></a></div>
@@ -51,6 +53,7 @@
             </div>
 
             @endunless
+            @if(isset($financialOverview))<details class="premium-account-details"><summary>Business readiness and account details</summary><div class="product-compact-progress"><div><strong>{{ $overview->readinessTitle() }}</strong><div class="product-account-progress" aria-label="Account progress"><span>Email<strong>Verified</strong></span><span>Business name<strong>{{ $overview->onboarding->businessName }}</strong></span><span>Application<strong>{{ $overview->onboarding->applicationStatus ?? 'No current application' }}</strong></span><span>Review outcome<strong>{{ $overview->onboarding->applicationStatus ?? 'Not recorded' }}</strong></span><span>Live payments<strong>Operationally disabled</strong></span></div></div><a href="{{ route('merchants.onboarding', ['merchant' => $merchantId]) }}">View onboarding status &rarr;</a></div>@endif
             <div class="dash-detail-grid">
                 <section class="dash-panel" aria-labelledby="onboarding-title">
                     <div class="dash-panel-heading"><div><p class="dash-eyebrow">WHERE THINGS STAND</p><h2 id="onboarding-title">Merchant onboarding</h2></div><span class="dash-badge">Read-only</span></div>
@@ -89,6 +92,7 @@
                 </div>
             </section>
 
+            @if(isset($financialOverview))</details>@endif
             @unless(isset($financialOverview))
             <section class="dash-financial-notice" aria-labelledby="financial-title"><span class="dash-financial-mark" aria-hidden="true">◇</span><div><h2 id="financial-title">A workspace first. Financial tools when they’re ready.</h2><p>Live payments, links, checkout and wallet are operationally disabled. Isolated functionality is demonstrated separately. QR payments, settlements and reports are not yet implemented. No payment activity, balance or transaction totals are shown here.</p></div></section>
             @endunless

@@ -3,94 +3,99 @@
     $position = $financialOverview['position'];
     $states = $financialOverview['payment_states'];
     $rows = $financialHistory['transactions'];
-    $count = array_sum(array_column($states, 'count'));
     $clock = \Carbon\CarbonImmutable::createFromTimestampMs($financialClock, 'Africa/Nairobi');
-    $windows = ['Today' => $clock->startOfDay(), 'Yesterday' => $clock->subDay()->startOfDay(), 'This week' => $clock->startOfWeek(), 'This month' => $clock->startOfMonth(), 'Last 30 days' => $clock->subDays(29)->startOfDay()];
+    $today = $analytics['trends'][$clock->format('Y-m-d')] ?? ['count'=>0,'value_tzs'=>0];
+    $confirmedRows = array_filter($rows, fn ($row) => $row['status']==='confirmed' && $row['confirmed_at'] >= $clock->startOfDay()->getTimestampMs() && $row['confirmed_at'] < $clock->addDay()->startOfDay()->getTimestampMs());
+    if (!isset($analytics)) { $today = ['count'=>count($confirmedRows), 'value_tzs'=>array_sum(array_column($confirmedRows,'amount_tzs'))]; }
+    $chartStart = isset($analytics) ? \Carbon\CarbonImmutable::createFromTimestampMs($analytics['from_ms'], 'Africa/Nairobi') : $clock->startOfDay();
     $daily = [];
-    for ($day = 29; $day >= 0; $day--) {
-        $date = $clock->subDays($day)->format('Y-m-d');
-        $daily[$date] = ['label' => $clock->subDays($day)->format('D'), 'amount' => 0];
+    for ($date = $chartStart; $date <= $clock->startOfDay(); $date=$date->addDay()) {
+        $key=$date->format('Y-m-d');
+        $daily[$key] = isset($analytics) ? ($analytics['trends'][$key]['value_tzs'] ?? 0) : array_sum(array_column(array_filter($confirmedRows, fn ($row)=>\Carbon\CarbonImmutable::createFromTimestampMs($row['confirmed_at'],'Africa/Nairobi')->format('Y-m-d')===$key),'amount_tzs'));
     }
-    foreach ($rows as $row) {
-        $date = \Carbon\CarbonImmutable::createFromTimestampMs($row['created_at'], 'Africa/Nairobi')->format('Y-m-d');
-        if ($row['status'] === 'confirmed' && isset($daily[$date])) {
-            $daily[$date]['amount'] += $row['amount_tzs'];
-        }
-    }
-    $maximum = max(1, ...array_column($daily, 'amount'));
-    $points = [];
-    foreach (array_values($daily) as $index => $day) {
-        $points[] = (20 + $index * 860 / 29).','.(160 - 130 * $day['amount'] / $maximum);
-    }
-    $todayConfirmed = count(array_filter($rows, fn ($row) => $row['status'] === 'confirmed' && $row['confirmed_at'] >= $clock->startOfDay()->getTimestampMs() && $row['confirmed_at'] < $clock->addDay()->startOfDay()->getTimestampMs()));
+    $maximum=max(1,...array_values($daily));
+    $points=[];
+    foreach(array_values($daily) as $index=>$amount) { $points[]=(55+$index*815/max(1,count($daily)-1)).','.(155-125*$amount/$maximum); }
+    $recordDimensions=[];
+    foreach($analytics['cross'] ?? [] as $bucket) { foreach($bucket['transactions'] as $record) { $recordDimensions[$record]=['source'=>$analytics['sources'][$bucket['source']]['label'],'method'=>$analytics['methods'][$bucket['method']]['label']]; } }
+    $sourceBuckets = $analytics['sources'] ?? [];
+    $methodBuckets = $analytics['methods'] ?? [];
+    uasort($sourceBuckets,fn($a,$b)=>$b['value_tzs']<=>$a['value_tzs']);
+    uasort($methodBuckets,fn($a,$b)=>$b['value_tzs']<=>$a['value_tzs']);
+    $bestSource=reset($sourceBuckets);
+    $bestMethod=reset($methodBuckets);
 @endphp
-<div class="product-alert" role="note"><strong>Isolated functionality · fictional payment evidence</strong><p>These figures come from recorded mock payments and the ledger. Live payment services are operationally disabled. Operational settlement is unproven; independently authenticated simulated settlement is shown separately when available. Demo reporting date: {{ $clock->format('d M Y') }} (EAT).</p></div>
-<div class="product-toolbar" aria-label="Payment quick actions">
-    <a href="{{ route('isolated.links.index', ['merchant' => $merchantId]) }}">Create Payment Link <span aria-hidden="true">↗</span></a>
-    <a href="{{ route('isolated.transactions', ['merchant' => $merchantId]) }}">View Payments</a>
-    <a href="{{ route('isolated.wallet', ['merchant' => $merchantId]) }}">Wallet</a>
-    <a href="{{ route('isolated.transactions', ['merchant' => $merchantId]) }}">Transactions</a>
-    <a href="{{ route('pages.developers') }}">Developer Tools</a>
-    @if(Route::has('isolated.funds'))<a href="{{ route('isolated.funds',['merchant'=>$merchantId]) }}">Settlement and withdrawals</a>@else<button class="product-quick-disabled" type="button" disabled>Withdrawals · Operationally disabled</button>@endif
-</div>
-<div class="product-kpis" aria-label="Recorded financial overview">
-    @foreach([
-        ['Confirmed payments today', (string) $todayConfirmed, 'Authenticated confirmations today · EAT'],
-        ['Pending payments', (string) ($states['pending']['count'] ?? 0), 'Awaiting provider confirmation'],
-        ['Failed payments', (string) ($states['failed']['count'] ?? 0), 'Recorded fictional provider failures'],
-        ['Confirmed payment value', $format::tzs($position['confirmed_fictional_payment_tzs']), 'Not a settlement or an available balance'],
-        ['Ledger pending obligations', $format::tzs(isset($funds) ? $funds['position']['pending_obligation_tzs'] : $position['pending_merchant_obligation_tzs']), isset($funds) ? 'Net of independently proven simulated settlement' : 'Same underlying payments; do not add to value'],
-        ['Available to withdraw', $format::tzs($position['withdrawable_tzs']), 'No verified settlement or real funds'],
-    ] as [$label, $value, $help])
-        <section class="product-kpi {{ $loop->last ? 'is-primary' : '' }}"><h2>{{ $label }}</h2><strong>{{ $value }}</strong><small>{{ $help }}</small></section>
-    @endforeach
-</div>
-@if(isset($funds))
-<div class="product-kpis" aria-label="P8 simulated funds position">
-    @foreach(['settled_simulated_tzs'=>'Independently settled simulated funds','reserved_tzs'=>'Reserved simulated withdrawals','simulated_available_tzs'=>'Simulated available balance'] as $field=>$label)
-    <section class="product-kpi"><h2>{{ $label }}</h2><strong>{{ $format::tzs($funds['position'][$field]) }}</strong><small>Fictional evidence only · no operational funds</small></section>
-    @endforeach
-</div>
-@endif
-<details class="product-date-windows"><summary>Payment summaries by date · EAT</summary><dl>
-    @foreach($windows as $label => $start)
-        @php
-            $end = $label === 'Yesterday' ? $clock->startOfDay() : $clock->addDay()->startOfDay();
-            $selected = array_filter($rows, fn ($row) => $row['created_at'] >= $start->getTimestampMs() && $row['created_at'] < $end->getTimestampMs());
-            $value = array_sum(array_column(array_filter($selected, fn ($row) => $row['status'] === 'confirmed'), 'amount_tzs'));
-        @endphp
-        <div><dt>{{ $label }}</dt><dd>{{ $format::tzs($value) }}<small>{{ count($selected) }} recorded requests · confirmed value only</small></dd></div>
-    @endforeach
-</dl></details>
-<div class="product-analytics" id="analytics">
-    <section class="dash-panel"><div class="dash-panel-heading"><div><p class="dash-eyebrow">LAST 30 DAYS · EAT</p><h2>Confirmed payment trend</h2></div><span class="product-badge">Fictional data</span></div>
-        <p class="product-muted">Maximum daily value: {{ $format::tzs(max(array_column($daily, 'amount'))) }}</p>
-        <svg class="product-trend" viewBox="0 0 900 200" preserveAspectRatio="none" role="img" aria-labelledby="trend-title trend-description"><title id="trend-title">Confirmed fictional payment value in TZS over 30 days</title><desc id="trend-description">{{ implode('; ', array_map(fn ($date, $day) => $date.': '.$day['amount'], array_keys($daily), $daily)) }}</desc>
-            <path d="M20 30H880M20 95H880M20 160H880" fill="none" stroke="#e2eaf5"/>
-            <polygon points="20,160 {{ implode(' ', $points) }} 880,160" fill="#edf4ff"/>
-            <polyline points="{{ implode(' ', $points) }}" fill="none" stroke="#2473cf" stroke-width="3" stroke-linejoin="round"/>
-            <text x="20" y="20">{{ $format::tzs($maximum) }}</text><text x="20" y="185">{{ $clock->subDays(29)->format('d M') }}</text><text x="440" y="185" text-anchor="middle">{{ $clock->subDays(14)->format('d M') }}</text><text x="880" y="185" text-anchor="end">{{ $clock->format('d M') }}</text>
-        </svg><div class="product-chart-axis" aria-hidden="true"><span>{{ $clock->subDays(29)->format('d M') }}</span><span>{{ $clock->subDays(14)->format('d M') }}</span><span>{{ $clock->format('d M') }}</span></div><p class="product-muted">Zero periods reflect no confirmed fixture records. Recorded initiation dates; confirmation does not prove settlement.</p>
-    </section>
-    <section class="dash-panel"><p class="dash-eyebrow">PAYMENT OUTCOMES</p><h2>Status distribution</h2><div class="product-distribution">
-        @foreach(['confirmed' => 'Confirmed', 'pending' => 'Pending', 'failed' => 'Failed', 'unknown' => 'Unresolved'] as $state => $label)
-            @php($stateCount = $states[$state]['count'] ?? 0)
-            <div class="product-distribution-row"><span>{{ $label }}</span><span class="product-meter"><i style="--bar:{{ $count ? (int) round(100 * $stateCount / $count) : 0 }}%"></i></span><strong>{{ $stateCount }}</strong></div>
+<div class="premium-overview" data-premium-overview>
+    <div class="premium-kpis" aria-label="Primary payment metrics">
+        @foreach([['Confirmed TZS today',$format::tzs($today['value_tzs']),'Confirmed value · EAT','money'],['Paid today',(string)$today['count'],'Confirmed · EAT','check'],['Pending payments',(string)($states['pending']['count'] ?? 0),'Awaiting confirmation','pending']] as [$label,$value,$help,$icon])
+        <section class="premium-kpi" data-primary-kpi><span class="premium-metric-icon is-{{ $icon }}">@include('components.premium-icon',['name'=>$icon])</span><div><h2 @if($icon==='check') aria-label="Confirmed payments today" @endif>{{ $label }}</h2><strong>{{ $value }}</strong><small>{{ $help }}</small></div></section>
         @endforeach
-        </div><p class="product-muted">{{ $financialOverview['unresolved_checkout_reservations'] }} unresolved checkout reservations. No mobile-money network attribution is inferred.</p>
+    </div>
+    <div class="premium-balance-actions">
+        <section class="premium-balance" aria-label="Available balance"><span class="premium-balance-icon">@include('components.premium-icon',['name'=>'wallet'])</span><div><h2>Available to withdraw</h2><strong>{{ $format::tzs($position['withdrawable_tzs']) }}</strong><small>Operational balance · withdrawals disabled</small></div><div class="premium-simulation">@if(isset($funds))<span>Simulated available <b>{{ $format::tzs($funds['position']['simulated_available_tzs']) }}</b></span><span>Reserved <b>{{ $format::tzs($funds['position']['reserved_tzs']) }}</b></span>@else<span>Settlement unproven</span>@endif</div><button type="button" disabled class="premium-withdraw">Withdraw</button></section>
+        <section class="premium-quick"><h2>Quick Actions</h2><div>
+            @foreach([['Payment Links','isolated.links.index','link'],['All Payments','isolated.transactions','payments'],['Withdrawals','isolated.funds','bank'],['Developers','isolated.developers.api','code']] as [$label,$destination,$icon])
+            @if(Route::has($destination))<a href="{{ route($destination,['merchant'=>$merchantId]) }}">@include('components.premium-icon',['name'=>$icon])<span>{{ $label }}</span></a>@else<button type="button" disabled>@include('components.premium-icon',['name'=>$icon])<span>{{ $label }}</span></button>@endif
+            @endforeach
+        </div></section>
+    </div>
+    <p class="premium-safety" role="note"><strong>Fictional evidence only.</strong> Live payments and withdrawals remain disabled. Confirmation is not settlement. Reporting date: {{ $clock->format('d M Y') }} · EAT.</p>
+    <section class="premium-panel premium-performance" aria-labelledby="performance-title">
+        <div class="premium-panel-heading"><div><h2 id="performance-title">@include('components.premium-icon',['name'=>'chart']) Daily Payment Performance</h2><p>Confirmed payment value (TZS) · confirmation time · EAT</p></div><div class="premium-periods" aria-label="Performance reporting periods">
+            @if(Route::has('isolated.analytics'))
+            @foreach(['today'=>'Today','seven'=>'7 Days','thirty'=>'30 Days','month'=>'This Month'] as $range=>$label)
+            @php($query = in_array($range,['seven','thirty']) ? ['range'=>'custom','from'=>$clock->subDays($range==='seven'?6:29)->format('Y-m-d'),'to'=>$clock->format('Y-m-d')] : ['range'=>$range])
+            <a class="{{ $range==='month'?'is-active':'' }}" href="{{ route('isolated.analytics',['merchant'=>$merchantId,...$query]) }}">{{ $label }}</a>
+            @endforeach
+            <a href="{{ route('isolated.analytics',['merchant'=>$merchantId]) }}#custom-range">Custom Date</a>
+            @endif
+        </div></div>
+        <div class="premium-chart-total"><strong>{{ $format::tzs(array_sum($daily)) }}</strong><span>This reporting period · no assumed growth</span></div>
+        <svg class="premium-chart" viewBox="0 0 900 185" role="img" aria-labelledby="trend-title trend-description" preserveAspectRatio="none"><title id="trend-title">Daily confirmed payment value</title><desc id="trend-description">{{ implode('; ',array_map(fn($date,$amount)=>$date.': '.$amount,array_keys($daily),$daily)) }}</desc>
+        <defs><linearGradient id="premium-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#12b85b" stop-opacity=".3"/><stop offset="100%" stop-color="#12b85b" stop-opacity=".02"/></linearGradient></defs>
+        @foreach([0,1,2,3] as $line)<path d="M55 {{ 30+$line*125/3 }}H870" stroke="#e4eaf3"/><text x="45" y="{{ 34+$line*125/3 }}" text-anchor="end">{{ number_format((int)round($maximum*(3-$line)/3)) }}</text>@endforeach
+        <polygon points="55,155 {{ implode(' ',$points) }} 870,155" fill="url(#premium-area)"/>
+        <polyline points="{{ implode(' ',$points) }}" fill="none" stroke="#0caf51" stroke-width="3" stroke-linejoin="round"/>
+        @foreach($points as $point)@php([$cx,$cy]=explode(',',$point))<circle cx="{{ $cx }}" cy="{{ $cy }}" r="3" fill="white" stroke="#0caf51" stroke-width="2"/>@endforeach
+        <text x="55" y="178">{{ $chartStart->format('d M') }}</text><text x="870" y="178" text-anchor="end">{{ $clock->format('d M') }}</text>
+        </svg><div class="premium-chart-mobile-axis" aria-hidden="true"><span>{{ $chartStart->format('d M') }}</span><span>0–{{ $format::tzs($maximum) }}</span><span>{{ $clock->format('d M') }}</span></div>
+        <p class="premium-chart-help">This month is shown. Period controls open the full authorized report. Zero dates contain no confirmed records in this report.</p>
     </section>
-</div>
-@if(isset($analytics))
-@include('merchants.analytics-tables')
+    <div class="premium-analytics" id="analytics">
+        @foreach(['sources'=>['traffic-source','Traffic Sources',$sourceBuckets,'people'],'methods'=>['payment-method','Payment Methods',$methodBuckets,'card']] as $dimension=>[$slug,$heading,$buckets,$icon])
+        <section class="premium-panel premium-summary" aria-labelledby="{{ $slug }}-title"><div class="premium-panel-heading"><h2 id="{{ $slug }}-title">@include('components.premium-icon',['name'=>$icon]) {{ $heading }}</h2><span>Total: <b>{{ $format::tzs($analytics['value_tzs'] ?? 0) }}</b></span></div>
+        <div class="premium-breakdown">
+        @forelse(array_filter($buckets,fn($bucket)=>$bucket['count']>0) as $key=>$bucket)
+            <div class="premium-breakdown-row"><span class="premium-source-mark" data-source="{{ $key }}">@if(isset(['synthetic_mpesa'=>'mpesa.png','synthetic_mixx'=>'mixx-by-yas.png','synthetic_airtel'=>'airtel.png','synthetic_halo'=>'halopesa.png'][$key]))<img src="{{ asset('assets/payment-logos/'.['synthetic_mpesa'=>'mpesa.png','synthetic_mixx'=>'mixx-by-yas.png','synthetic_airtel'=>'airtel.png','synthetic_halo'=>'halopesa.png'][$key]) }}" width="20" height="20" alt="">@else
+@if(in_array($key,['facebook','tiktok','instagram','whatsapp','google','youtube'],true))
+<img src="{{ asset('assets/social-'.$key.'.svg') }}" width="22" height="22" alt="">
 @else
-<div class="product-analytics" aria-label="Merchant analytics availability">
-    <section class="product-empty" aria-labelledby="traffic-source-title"><h2 id="traffic-source-title">Traffic Source Attribution</h2><p>Where customers came from. No attribution evidence is available in this workspace; no source counts or conversion values are assumed.</p><p>Supported source categories: Facebook, TikTok, Instagram, WhatsApp, Google, YouTube, Direct, Referral/Other and Unknown.</p></section>
-    <section class="product-empty" aria-labelledby="payment-method-title"><h2 id="payment-method-title">Payment Method Analytics</h2><p>How customers paid. Network-level evidence is not available. These records identify only the fictional mock provider; no payment-method totals are inferred.</p><p>Supported isolated breakdown: M-Pesa, Mixx by Yas, Airtel Money, HaloPesa and supported banking/payment methods. Live payment services remain operationally disabled.</p></section>
-</div>
+@include('components.premium-icon',['name'=>$dimension==='sources'?'link':'card'])
 @endif
-<section class="dash-panel"><div class="dash-panel-heading"><div><p class="dash-eyebrow">YOUR RECORDED ACTIVITY</p><h2>Latest payments</h2></div><a href="{{ route('isolated.transactions', ['merchant' => $merchantId]) }}">View all</a></div>
-    <div class="product-data-scroll" role="region" aria-label="Latest payments" tabindex="0"><table class="product-table"><caption>Whole TZS · fictional mock provider · times in EAT</caption><thead><tr><th scope="col">Reference / link</th><th scope="col">Amount</th><th scope="col">Status</th><th scope="col">Date</th><th scope="col">Provider</th></tr></thead><tbody>
-    @forelse(array_slice($rows, 0, 5) as $transaction)<tr><td><a href="{{ route('isolated.transactions.show', ['merchant' => $merchantId, 'record' => $transaction['record_id']]) }}">{{ $transaction['payment_reference'] ?? 'Unresolved request' }}</a><small>{{ $transaction['description'] }}</small><small>Link {{ $transaction['payment_link_id'] ?? 'Not associated' }}</small></td><td>{{ $format::tzs($transaction['amount_tzs']) }}</td><td><span class="product-badge" data-state="{{ $transaction['status'] }}">{{ $format::status($transaction['status']) }}</span></td><td>{{ $format::time($transaction['created_at']) }}</td><td>{{ $transaction['provider'] === 'fictional_mock' ? 'Fictional mock provider' : 'No provider evidence' }}</td></tr>
-    @empty<tr><td colspan="5">No payment activity is recorded.</td></tr>@endforelse
-    </tbody></table></div>
-</section>
+@endif</span><span>{{ $bucket['label'] }}<small>{{ $bucket['count'] }} payments</small></span><b>{{ $format::tzs($bucket['value_tzs']) }}</b><span class="premium-bar"><i style="--share:{{ $bucket['basis_points']/100 }}%"></i></span><span>{{ number_format($bucket['basis_points']/100,1) }}%</span></div>
+        @empty<p class="product-muted">No confirmed {{ $dimension==='sources'?'source':'method' }} evidence. Missing attribution remains Unknown.</p>@endforelse
+        </div>
+        @if(Route::has('isolated.analytics'))<a class="premium-detail-link" href="{{ route('isolated.analytics',['merchant'=>$merchantId]) }}#{{ $slug }}-title">View full {{ $dimension==='sources'?'traffic source':'payment method' }} report</a>@endif
+        </section>
+        @endforeach
+        <section class="premium-panel premium-insights"><div class="premium-panel-heading"><h2>@include('components.premium-icon',['name'=>'chart']) Payment Insights</h2></div><dl>
+            <div><dt>Total confirmed value</dt><dd>{{ $format::tzs($analytics['value_tzs'] ?? $position['confirmed_fictional_payment_tzs']) }}</dd></div>
+            <div><dt>Successful payments</dt><dd>{{ $analytics['count'] ?? ($states['confirmed']['count'] ?? 0) }}</dd></div>
+            <div><dt>Top traffic source</dt><dd>{{ $bestSource && $bestSource['count'] ? $bestSource['label'] : 'Unavailable' }}</dd></div>
+            <div><dt>Top payment method</dt><dd>{{ $bestMethod && $bestMethod['count'] ? $bestMethod['label'] : 'Unknown' }}</dd></div>
+        </dl><p class="premium-chart-help">Unique Paying Customers: unavailable. No reliable payer identity is collected. Shares include Unknown.</p></section>
+    </div>
+    <section class="premium-panel premium-latest"><div class="premium-panel-heading"><h2>@include('components.premium-icon',['name'=>'payments']) Latest Payments</h2><a href="{{ route('isolated.transactions',['merchant'=>$merchantId]) }}">View all payments</a></div>
+    <div class="product-data-scroll premium-payments-desktop" role="region" aria-label="Latest payments" tabindex="0"><table class="product-table"><caption>Whole TZS · fictional evidence · EAT</caption><thead><tr><th>Reference</th><th>Amount (TZS)</th><th>Method</th><th>Source</th><th>Status</th><th>Date &amp; Time</th></tr></thead><tbody>
+    @forelse(array_slice($rows,0,5) as $transaction)
+    @php($dimensions=$recordDimensions[$transaction['record_id']] ?? ['method'=>'Unknown','source'=>'Unknown'])
+    <tr><td><a href="{{ route('isolated.transactions.show',['merchant'=>$merchantId,'record'=>$transaction['record_id']]) }}">{{ $transaction['payment_reference'] ? substr($transaction['payment_reference'],0,12) : 'Unresolved request' }}</a><small>{{ $transaction['description'] }}</small></td><td><b>{{ number_format($transaction['amount_tzs']) }}</b></td><td>{{ $dimensions['method'] }}</td><td>{{ $dimensions['source'] }}</td><td><span class="product-badge" data-state="{{ $transaction['status'] }}">{{ $format::status($transaction['status']) }}</span></td><td>{{ $format::time($transaction['created_at']) }}</td></tr>
+    @empty<tr><td colspan="6">No recorded payments.</td></tr>@endforelse
+    </tbody></table></div><ul class="premium-mobile-payments" aria-label="Latest payments">
+ @forelse(array_slice($rows,0,5) as $transaction)
+ @php($dimensions=$recordDimensions[$transaction['record_id']] ?? ['method'=>'Unknown','source'=>'Unknown'])
+ <li><div class="premium-payment-heading"><a href="{{ route('isolated.transactions.show',['merchant'=>$merchantId,'record'=>$transaction['record_id']]) }}">{{ $transaction['payment_reference'] ? substr($transaction['payment_reference'],0,12) : 'Unresolved request' }}<span class="dash-sr-only"> · View transaction details</span></a><strong>{{ $format::tzs($transaction['amount_tzs']) }}</strong></div><div class="premium-payment-meta"><span>{{ $dimensions['method'] }}</span><span class="product-badge" data-state="{{ $transaction['status'] }}">{{ $format::status($transaction['status']) }}</span></div><small>{{ $format::time($transaction['created_at']) }} · {{ $dimensions['source'] }}</small><details><summary>Payment information</summary><p>{{ $transaction['description'] }}</p><a href="{{ route('isolated.transactions.show',['merchant'=>$merchantId,'record'=>$transaction['record_id']]) }}">Full transaction details</a></details></li>
+ @empty<li>No recorded payments.</li>@endforelse
+ </ul></section>
+    <details class="premium-evidence product-date-windows"><summary>Financial evidence, date summaries and reporting limitations</summary><div class="premium-evidence-body"><p>Confirmed payment value: {{ $format::tzs($position['confirmed_fictional_payment_tzs']) }}. Ledger pending obligations: {{ $format::tzs(isset($funds)?$funds['position']['pending_obligation_tzs']:$position['pending_merchant_obligation_tzs']) }}. Net of independently proven simulated settlement when available. LAST 30 DAYS summaries remain available in Analytics using Custom Date.</p>@if(isset($funds))<p>Independently settled simulated funds: {{ $format::tzs($funds['position']['settled_simulated_tzs']) }}. Reserved simulated withdrawals: {{ $format::tzs($funds['position']['reserved_tzs']) }}. These are fictional, not operational funds.</p>@endif<p>Traffic Source Attribution records first-touch claims; social platforms do not verify these claims. Payment Method Analytics uses authenticated synthetic evidence. Confirmed Payment Value (TZS) is not settlement. Failed payments: {{ $states['failed']['count'] ?? 0 }}. Unresolved payments: {{ $states['unknown']['count'] ?? 0 }}. Unresolved checkout reservations: {{ $financialOverview['unresolved_checkout_reservations'] }}.</p></div></details>
+</div>

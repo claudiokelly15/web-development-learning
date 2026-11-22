@@ -276,7 +276,7 @@ class AdminWorkspaceTest extends TestCase
         $allowed = [route('home'), route('account'), route($this->ownRoute($role)), route('admin.access'), route('pages.contact'), '#admin-content'];
         if ($role === 'chief_admin') {
             $allowed[] = route('admin.applications');
-            $this->assertSame(1, $document->query('//a[@href="'.route('admin.applications').'"]')->length);
+            $this->assertSame(1, $document->query('//nav[@aria-label="Administrative navigation"]//a[@href="'.route('admin.applications').'"]')->length);
         } else {
             $this->assertSame(0, $document->query('//a[@href="'.route('admin.applications').'"]')->length);
         }
@@ -301,7 +301,7 @@ class AdminWorkspaceTest extends TestCase
         $user = $this->actor('chief_admin');
         $user->forceFill(['name' => '<img src=x onerror=alert(1)>', 'email' => '<svg onload=alert(2)>@fixture.test'])->save();
         $html = $this->signIn($user)->get(route('admin.chief'))->assertOk()->assertSee('&lt;img src=x onerror=alert(1)&gt;', false)->assertSee('&lt;svg onload=alert(2)&gt;', false)->getContent();
-        $this->assertSame(0, $this->document($html)->query('//script|//svg|//*[@onload or @onerror]')->length);
+        $this->assertSame(0, $this->document($html)->query('//script|//svg[not(@class="premium-icon")]|//@*[starts-with(name(),"on")]')->length);
     }
 
     #[DataProvider('roles')]
