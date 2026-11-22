@@ -1,0 +1,7 @@
+@extends('auth.layout')
+@section('workspace', 'true')
+@section('title', 'Chief application reporting')
+@push('styles')<link rel="stylesheet" href="{{ asset('assets/xlipa-checkout.css') }}">@endpush
+@section('content')
+<div class="payment-workspace"><section class="payment-card"><h1>Chief application reporting</h1><p>Authorized non-conflicted applications only. No platform revenue, provider settlement, system health or regulatory claims.</p><nav class="developer-tool-nav" aria-label="Chief report exports"><a href="{{ route('admin.chief') }}">Chief dashboard</a><a href="{{ route('admin.reports',['format'=>'csv']) }}">CSV export</a><a href="{{ route('admin.reports',['format'=>'pdf']) }}">PDF export</a></nav><h2>Application counts</h2>@forelse($counts as $count)<p>{{ $count->status }}: <strong>{{ $count->count }}</strong></p>@empty<p>No applications within your scope.</p>@endforelse<h2>Latest review activity</h2><p>Latest 100 redacted submission/review audit events. Source timestamps are shown without inventing missing precision.</p>@forelse($activity as $event)<p>{{ $event->application_id }} · {{ $event->event_type }} · {{ $event->occurred_at }}</p>@empty<p>No recorded activity within your scope.</p>@endforelse<p>Financial oversight remains separately admitted. Notification delivery is unavailable in this ordinary report until a scoped financial outbox is provisioned.</p></section></div>
+@endsection

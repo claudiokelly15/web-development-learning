@@ -1,6 +1,6 @@
 ﻿# XLipa premium UI/UX refinement — owner corrections, 2026-11-22
 
-**Targeted implementation and automated QA: PASS. Overall visual acceptance: PARTIAL, pending owner review.** Fresh affected-page screenshots were inspected. No redesign restart, commit, push, deployment, operational activation or P10 work occurred.
+**Premium UI/UX: OWNER-APPROVED on 22 November 2026. Targeted implementation and automated QA: PASS.** The owner explicitly accepted the final screenshots and existing Chief refinements during the recovery continuation. Documented non-blocking limitations remain. Earlier sections retain the historical review state. No redesign restart, commit, push, deployment, operational activation or P10 implementation occurred in this continuation.
 
 ## A–C. Starting state, recovery and files
 
@@ -117,3 +117,40 @@ All operational NO-GO restrictions preserved. Withdrawable remains TZS 0, fictio
 Remaining differences are primarily intentional evidence/readability choices: sparse fixture trend, explicit synthetic/operational labels, stacked mobile analytics, reflowed tablet analytics and application-only Chief metrics. Mobile report periods use an accessible horizontal control strip. Unsupported administrative destinations remain visible as disabled entries and require sidebar scrolling. Existing provider PNG provenance was not independently re-established. Desktop Chrome emulation does not certify real-device or assistive-technology behavior.
 
 No further implementation was started after verification. Stop for owner review of the refreshed demo and final evidence directory above. The existing Desktop ZIP predates these corrections and has not been silently replaced.
+
+## S. Owner-authorized recovery and real application audit, 22 November 2026
+
+Recovery found branch `main`, clean index and working tree, HEAD `623ae7e15c4467f4fbdc8d9452b07e2d242df9f2`. Unlike the earlier session described above, P9 and premium changes are now already committed in the recovered baseline. This continuation did not create that commit. Its subject is `P10`, but its actual 37-file change contains P9 developer integration and premium presentation work, not a Notifications, Reports & Analytics milestone. Commit naming is not completion evidence. No P10 specification or implementation was located in project reports, application actions, routes or test harnesses.
+
+Read `backend/AGENTS.md`; no other project AGENTS.md or backend `.ai/rules` was found. All existing code was retained. The current navigation is newer than section Q–R: supported Chief links are shown first; unsupported entries are grouped in a native, initially collapsed **Future administrative tools** disclosure. Chief financial oversight/API governance destinations remain conditional on the isolated route and merchant context. Staff restrictions remain explicit. No further dashboard redesign is justified without the outstanding owner correction details. The owner has been asked to identify those details and the previously approved P10 scope.
+
+### Actual integration classification
+
+“Production-intended” below describes application source, not production certification. Isolated PHP tests execute Laravel using synthetic configuration; they do not authorize ordinary route activation or establish live custody/readiness.
+
+| Capability | Application source | Ordinary authenticated Laravel integration | Isolated / Safe Browser Demo status | Activation blockers |
+| --- | --- | --- | --- | --- |
+| Accounts, authentication, verified account and dashboard access | Controllers, middleware, policies and views present | Routes present in `backend/routes/web.php`; readiness and active-authentication guards retained | Existing isolated functional coverage; exported screens are static | Operational environment and authentication readiness remain separately gated |
+| Business-name completion / onboarding | Domain services and dashboard/onboarding views present | Onboarding GET present; successful completion uses scoped test harness | Successful functional journey is isolated | Default `DeniedBusinessNameCompletionAdmission` binding; approved operational admission required |
+| Verification and application submission (P2) | Verification controllers/services and submission implementation present | Verification endpoints and application list/submit routes present; ordinary submission calls `MerchantApplicationSubmission`, which fails closed | Successful submission is demonstrated through isolated service/harness, not ordinary POST success | Live proof/evidence readiness and default denied submission admission; do not bypass |
+| Chief/Staff workspace, application review reads | Controllers, policies and premium navigation present | `/admin`, `/admin/chief`, `/admin/staff`, `/admin/access`, application list/detail GETs present | Role and read-only behavior covered by isolated tests; demo copies are static | Operational authentication/readiness still required |
+| Chief decisions (P3) | Decision domain service present | No ordinary decision mutation route | Successful decisions use isolated HTTP harness; preview does not permit mutation | Independently admitted authority, custody and policy required |
+| Payment engine / ledger (P4–P5) | Application actions and explicit payment store present | No ordinary financial route/provider binding | Synthetic CLI/test execution and static exported evidence | Financial admission, operational provisioning and provider readiness; real payments prohibited |
+| Payment links / checkout / wallet (P6–P7) | Application services and views present | Functional endpoints registered only by test harnesses | Isolated journeys pass in prior reports; demo forms disabled | Ordinary route/service integration and approved operational admission absent |
+| Settlement, withdrawal, reconciliation and Merchant Analytics (P8) | Domain actions, analytics and views present | No ordinary funds/analytics route binding | Synthetic facts and fictional provider; static previews available | Live custody, reconciliation, provider and worker readiness; withdrawals prohibited |
+| Merchant API, credentials, QR, Pay Buttons, webhook outbox and Chief API governance (P9) | Application actions and views present | P9 endpoints registered only by explicit isolated harness | Functional isolated coverage; demo provides static snapshots only | No operational API binding or external transport; key custody, HTTPS/egress/worker provisioning unapproved |
+| P10 Notifications, Reports & Analytics | No distinct milestone implementation located | No P10 route integration located | Existing P8 analytics and authentication email notification are not proof of P10 completion | Previously approved scope missing; owner clarification pending |
+
+### Completion estimate and next phase
+
+Retain **55% overall as a provisional engineering estimate**, not a measured acceptance score. P0–P9 source and isolated evidence are substantial, but ordinary successful submission/decisions, financial/developer route integration, P10 scope, custody, provider/worker operations and production acceptance remain incomplete. Premium UI refinement does not independently raise whole-project completion. There is no agreed weighted denominator supporting a more precise or higher percentage.
+
+Owner clarification expressly confirms all required Chief visual refinements are complete and the final Premium UI/UX screenshots are **OWNER-APPROVED**. Upcoming Features grouping is non-blocking; do not repeat completed UI work. The current disclosure already groups unsupported tools. No further UI prerequisite remains.
+
+P10 is explicitly authorized, but its official implementation specification and defined reporting milestone are still absent from the recovered sources and visible instructions. The owner has been asked to paste the specification or identify its path; this is a missing-scope request, not a request to reauthorize P10. P10 is **not implemented or declared complete**. Next work is the official P10 scope once recovered. R1–R7 has not started. No operational database/environment was loaded, no gate removed, and no payment, withdrawal, external webhook, commit, push or deployment was enabled by this continuation.
+
+### Fresh verification evidence
+
+Fresh run results are recorded below when their processes finish. Prior counts in sections M–P remain historical, not fresh results. Evidence logs: `.recovery/resume-current-p0.log`, `.recovery/resume-current-focused.log`, `.recovery/resume-current-export.log`, `.recovery/resume-current-browser.log`.
+
+Only this report is intentionally modified in this continuation. Ignored evidence and disposable demo state/exports may be added; all pre-existing exports are preserved. The initial browser attempt found no listener on port 18761 (`ECONNREFUSED`), so that attempt is not a browser PASS. The absent recorded PID was checked before its state was archived to `.recovery/resume-current-prior-demo-state.json` and the existing isolated demo lifecycle was invoked. No unrelated process was stopped.

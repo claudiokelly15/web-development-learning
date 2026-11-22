@@ -9,7 +9,7 @@ use DateTimeZone;
 /** First recorded payment-touch attribution, never platform-verified identity or settlement. */
 final class MerchantAnalytics
 {
-    public const SOURCES = ['facebook' => 'Facebook', 'tiktok' => 'TikTok', 'instagram' => 'Instagram', 'whatsapp' => 'WhatsApp', 'google' => 'Google', 'youtube' => 'YouTube', 'direct' => 'Direct', 'referral' => 'Referral / Other', 'unknown' => 'Unknown'];
+    public const SOURCES = ['facebook' => 'Facebook', 'tiktok' => 'TikTok', 'instagram' => 'Instagram', 'whatsapp' => 'WhatsApp', 'google' => 'Google', 'youtube' => 'YouTube', 'direct' => 'Direct', 'referral' => 'Referral / Other', 'other' => 'Other (explicit attribution)', 'unknown' => 'Unknown'];
 
     public const METHODS = ['synthetic_mpesa' => 'M-Pesa (synthetic)', 'synthetic_mixx' => 'Mixx by Yas (synthetic)', 'synthetic_airtel' => 'Airtel Money (synthetic)', 'synthetic_halo' => 'HaloPesa (synthetic)', 'synthetic_bank' => 'Bank payment (synthetic)', 'synthetic_other' => 'Other (synthetic)', 'unknown' => 'Unknown'];
 

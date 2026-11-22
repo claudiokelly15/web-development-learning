@@ -11,6 +11,7 @@ use App\Http\Controllers\MerchantApplicationController;
 use App\Http\Controllers\MerchantDashboardController;
 use App\Http\Controllers\MerchantOnboardingController;
 use App\Http\Controllers\MerchantVerificationController;
+use App\Http\Controllers\P10ReportingController;
 use App\Http\Middleware\AuthenticationResponseHeaders;
 use App\Http\Middleware\EnsureActiveAuthentication;
 use App\Http\Middleware\EnsureAuthenticationReady;
@@ -54,6 +55,7 @@ Route::middleware([AuthenticationResponseHeaders::class, 'auth'])->group(functio
         Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('throttle:auth-verify')->name('verification.send');
         Route::get('/account', [AccountController::class, 'show'])->middleware('verified')->name('account');
         Route::middleware('verified')->prefix('admin')->group(function (): void {
+            Route::get('/reports', [P10ReportingController::class, 'chief'])->name('admin.reports');
             Route::get('/', [AdminWorkspaceController::class, 'index'])->name('admin.index');
             Route::get('/chief', [AdminWorkspaceController::class, 'chief'])->name('admin.chief');
             Route::get('/staff', [AdminWorkspaceController::class, 'staff'])->name('admin.staff');
@@ -63,6 +65,12 @@ Route::middleware([AuthenticationResponseHeaders::class, 'auth'])->group(functio
         });
         Route::get('/merchants/{merchant}/dashboard', [MerchantDashboardController::class, 'show'])
             ->middleware(['verified', ResolveMerchantContext::class])->whereUlid('merchant')->name('merchants.dashboard');
+        Route::middleware(['verified', ResolveMerchantContext::class])->prefix('/merchants/{merchant}')->whereUlid('merchant')->group(function (): void {
+            Route::get('/reports', [P10ReportingController::class, 'reports'])->name('merchants.reports');
+            Route::get('/reports/export/{format}', [P10ReportingController::class, 'export'])->whereIn('format', ['csv','pdf'])->name('merchants.reports.export');
+            Route::get('/notifications', [P10ReportingController::class, 'notifications'])->name('merchants.notifications');
+            Route::get('/notifications/{event}/document', [P10ReportingController::class, 'document'])->whereUuid('event')->name('merchants.notifications.document');
+        });
         Route::middleware(['verified', ResolveMerchantContext::class])->prefix('/merchants/{merchant}/verification')->whereUlid('merchant')->group(function (): void {
             Route::get('/', [MerchantVerificationController::class, 'show'])->name('merchants.verification');
             Route::post('/contact', [MerchantVerificationController::class, 'contact'])->middleware('throttle:10,1')->name('merchants.verification.contact');

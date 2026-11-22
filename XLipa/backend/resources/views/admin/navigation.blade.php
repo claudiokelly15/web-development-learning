@@ -2,7 +2,7 @@
     $isChiefNavigation = \Illuminate\Support\Facades\Gate::allows('viewChiefWorkspace', \App\Models\PlatformRoleAssignment::class);
     $fundsReadDestination = isset($fundsOversightMerchant) && Route::has('isolated.admin.funds') ? 'isolated.admin.funds' : null;
     $adminGroups = $isChiefNavigation ? [
-        'Workspace' => [['Dashboard', 'admin.chief'], ['Roles and permissions', 'admin.access']],
+        'Workspace' => [['Dashboard', 'admin.chief'], ['Roles and permissions', 'admin.access'], ['Reports', 'admin.reports']],
         'Merchants' => [['Merchant Management', null], ['Applications', 'admin.applications'], ['Verification Review', null]],
         'Financial oversight' => [['Transactions', null], ['Withdrawals', $fundsReadDestination], ['Settlements', $fundsReadDestination], ['Reconciliation', $fundsReadDestination], ['Fees and Revenue', null]],
         'Governance' => [['Providers', null], ['Risk and Fraud', null], ['Disputes and Refunds', null], ['Audit Logs', null], ['API Governance', isset($fundsOversightMerchant) && Route::has('isolated.admin.api-governance') ? 'isolated.admin.api-governance' : null], ['Staff', null], ['System Settings', null]],

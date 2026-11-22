@@ -18,7 +18,7 @@ class AdminApplicationController extends Controller
 {
     private const COLUMNS = ['applications.id', 'applications.merchant_id', 'merchants.business_name', 'merchants.verification_status', 'merchants.operational_status', 'merchants.profile_version as current_profile_version', 'applications.attempt_number', 'applications.profile_version', 'applications.status', 'applications.submitted_at', 'applications.reviewed_at'];
 
-    private function scope(Request $request): Builder
+    public function scope(Request $request): Builder
     {
         Gate::authorize('viewApplicationReviewQueue', PlatformRoleAssignment::class);
 

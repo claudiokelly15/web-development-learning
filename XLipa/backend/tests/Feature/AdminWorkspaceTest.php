@@ -276,6 +276,7 @@ class AdminWorkspaceTest extends TestCase
         $allowed = [route('home'), route('account'), route($this->ownRoute($role)), route('admin.access'), route('pages.contact'), '#admin-content'];
         if ($role === 'chief_admin') {
             $allowed[] = route('admin.applications');
+            $allowed[] = route('admin.reports');
             $this->assertSame(1, $document->query('//nav[@aria-label="Administrative navigation"]//a[@href="'.route('admin.applications').'"]')->length);
         } else {
             $this->assertSame(0, $document->query('//a[@href="'.route('admin.applications').'"]')->length);

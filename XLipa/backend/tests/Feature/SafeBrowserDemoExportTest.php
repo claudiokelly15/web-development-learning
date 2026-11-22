@@ -11,6 +11,10 @@ use App\Actions\Payments\MerchantAnalytics;
 use App\Actions\Payments\MerchantDeveloperTools;
 use App\Actions\Payments\MerchantWallet;
 use App\Actions\Payments\MerchantWebhooks;
+use App\Actions\Payments\MerchantNotificationService;
+use App\Actions\Payments\MerchantFinancialReports;
+use App\Actions\Payments\NotificationSchema;
+use App\Actions\Payments\NotificationTransport;
 use App\Actions\Payments\MerchantWithdrawals;
 use App\Actions\Payments\MockPaymentLedger;
 use App\Actions\Payments\PaymentLinkService;
@@ -124,6 +128,18 @@ class SafeBrowserDemoExportTest extends TestCase
         $this->developerTools = new MerchantDeveloperTools($this->payments->engine, $store, $this->checkout->links, fn (): int => $this->paymentAdmission->time);
         $this->merchantWebhooks = new MerchantWebhooks($this->developerTools, $store, fn (string $host): array => ['93.184.216.34'], str_repeat('W', 32), new FictionalWebhookTransport);
         (new MerchantDeveloperHttpHarness($this->developerTools, $this->merchantWebhooks, $store))->register();
+        foreach (NotificationSchema::statements() as $sql) {
+            $this->paymentPdo->exec($sql);
+        }
+        $notificationTransport = new class implements NotificationTransport {
+            public function send(string $channel, string $recipient, string $subject, string $message, string $deliveryId): array
+            {
+                return ['status'=>'delivered','receipt'=>'synthetic_'.$deliveryId];
+            }
+        };
+        app()->instance(MerchantNotificationService::class, new MerchantNotificationService($ledger,$this->funds,fn (): int => max($this->paymentAdmission->time,$this->fundsAdmission->time),str_repeat('N',32),$notificationTransport,fn (string $merchant,int $owner): string => '+255700000001'));
+        app()->instance(MerchantFinancialReports::class,new MerchantFinancialReports($ledger,$this->funds,$this->analytics));
+        app()->instance('p10.clock',fn (): int => max($this->paymentAdmission->time,$this->fundsAdmission->time));
         app('router')->getRoutes()->refreshNameLookups();
 
         return [$owner->fresh(), $merchant->fresh()];
@@ -248,6 +264,26 @@ class SafeBrowserDemoExportTest extends TestCase
         $this->assertCount(4, $delivery);
         $this->assertSame('delivered', $this->merchantWebhooks->deliver($owner, $merchant->id, $delivery[0]['id'])['status']);
         $this->assertSame(24000, $this->analytics->report($owner, $merchant->id, [], $this->paymentAdmission->time)['value_tzs']);
+        $p10 = app(MerchantNotificationService::class);
+        $notificationHistory = $p10->sweep($owner,$merchant->id);
+        $this->assertCount(9,$notificationHistory['events']);
+        $this->assertCount(14,$notificationHistory['deliveries']);
+        $p10->deliver($owner,$merchant->id,$notificationHistory['deliveries'][0]['id']);
+        $downloads = [];
+        foreach (['csv','pdf'] as $format) {
+            $url = $base.'/reports/export/'.$format;
+            $download = $this->get($url)->assertOk();
+            $file = 'p10-report.'.$format;
+            file_put_contents($directory.'/'.$file,$download->getContent());
+            $downloads[] = ['url'=>$url,'file'=>$file];
+        }
+        foreach (['withdrawal.requested'=>'p10-withdrawal-advice.pdf','payout.confirmed'=>'p10-payout-receipt.pdf'] as $kind=>$file) {
+            $event = array_values(array_filter($notificationHistory['events'],fn (array $event): bool => $event['kind'] === $kind))[0];
+            $url = $base.'/notifications/'.$event['id'].'/document';
+            file_put_contents($directory.'/'.$file,$this->get($url)->assertOk()->getContent());
+            $downloads[] = ['url'=>$url,'file'=>$file];
+        }
+        file_put_contents($directory.'/downloads.json',json_encode($downloads,JSON_THROW_ON_ERROR));
         $this->customerPages['qr-associated-checkout'] = ['url' => '/__isolated-checkout/'.$qrLink['public_token'], 'file' => 'qr-associated-checkout.html'];
         auth()->logout();
         session()->invalidate();
@@ -275,6 +311,7 @@ class SafeBrowserDemoExportTest extends TestCase
             file_put_contents($directory.'/'.$name.'.html', $response->getContent());
         };
         foreach (['merchant-dashboard' => $base.'/dashboard', 'business-profile' => $base.'/onboarding',
+            'merchant-reports' => $base.'/reports', 'notification-history'=>$base.'/notifications',
             'verification' => $base.'/verification', 'applications' => $base.'/applications',
             'payment-links' => $base.'/__isolated-links', 'wallet' => $base.'/__isolated-finances/wallet',
             'transactions' => $base.'/__isolated-finances/transactions',
@@ -302,6 +339,7 @@ class SafeBrowserDemoExportTest extends TestCase
         View::share('fundsOversightMerchant', $merchant->id);
         $save('chief-financial-oversight', '/admin/__isolated-funds/'.$merchant->id);
         $save('chief-api-governance', '/admin/__isolated-api-governance/'.$merchant->id);
+        $save('chief-reports', '/admin/reports');
         $reviewScope = [];
         foreach (['Pending applications' => 'pending_review', 'Approved applications' => 'approved', 'Rejected applications' => 'rejected'] as $label => $status) {
             $reviewScope[$label] = $this->get('/admin/applications?status='.$status)->assertOk()->viewData('applications')->total();

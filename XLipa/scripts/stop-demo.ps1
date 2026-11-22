@@ -19,7 +19,7 @@ if (Test-Path -LiteralPath $ownedRoot) {
     if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'Refusing reparse-point cleanup.' }
     $children = @(Get-ChildItem -LiteralPath $ownedRoot -Force)
     foreach ($child in $children) {
-        if ($child.PSIsContainer -or ($child.Attributes -band [IO.FileAttributes]::ReparsePoint) -or $child.Name -notmatch '^([a-z-]+\.html|pages\.json|server(-error)?\.log)$') { throw 'Unexpected export resource; cleanup stopped.' }
+        if ($child.PSIsContainer -or ($child.Attributes -band [IO.FileAttributes]::ReparsePoint) -or $child.Name -notmatch '^([a-z-]+\.html|pages\.json|downloads\.json|p10-report\.(csv|pdf)|p10-withdrawal-advice\.pdf|p10-payout-receipt\.pdf|server(-error)?\.log)$') { throw 'Unexpected export resource; cleanup stopped.' }
     }
     foreach ($child in $children) { Remove-Item -LiteralPath $child.FullName }
     Remove-Item -LiteralPath $ownedRoot
