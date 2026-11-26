@@ -154,3 +154,51 @@ P10 is explicitly authorized, but its official implementation specification and 
 Fresh run results are recorded below when their processes finish. Prior counts in sections M–P remain historical, not fresh results. Evidence logs: `.recovery/resume-current-p0.log`, `.recovery/resume-current-focused.log`, `.recovery/resume-current-export.log`, `.recovery/resume-current-browser.log`.
 
 Only this report is intentionally modified in this continuation. Ignored evidence and disposable demo state/exports may be added; all pre-existing exports are preserved. The initial browser attempt found no listener on port 18761 (`ECONNREFUSED`), so that attempt is not a browser PASS. The absent recorded PID was checked before its state was archived to `.recovery/resume-current-prior-demo-state.json` and the existing isolated demo lifecycle was invoked. No unrelated process was stopped.
+
+## T. Evidence-based resumption — 26 November 2026
+
+This section supersedes section S's current-state claims. Recovery found clean `main` at `da7c94aeeb51cd6e42eea8932d7718c3ddcbe081`. That existing commit adds actual P10 code (21 files), unlike predecessor `623ae7e`. No commit was created in this session. Backend AGENTS.md was read; no additional applicable AGENTS.md or `.ai/rules` was found. The catalog has no testing-best-practices skill.
+
+### Recovered assignment and milestone status
+
+The latest implemented work is a **partial P10 Notifications, Reports & Analytics foundation**, plus demo download support. The last accepted milestone remains P9 and owner-approved Premium UI/UX; P10 has started but is not complete. Section S's unfinished verification bookkeeping also remains historical: its P0 log records PASS (33 functional / 964 assertions, 546 bounded regression / 4,900 assertions), while its focused run records 232/233 passed with one payment journey setup returning 503. Those historical counts are not fresh results.
+
+Repository searches found no official P10 specification or approved requirements reconciliation. Their path/text has been requested again as missing scope, not renewed authorization. The owner's current requirement list is preserved below; omitted details such as digest cutoff, preference-change treatment and reporting acceptance must not be invented as previously approved policy.
+
+| Required capability | Verified source status |
+| --- | --- |
+| Payment email notifications | Event sweep, email-only outbox, encrypted recipients, retry/history and injected transport exist. Individual/daily/weekly/off preferences and digest scheduling are absent. |
+| Withdrawal email and SMS | Request and reconciled fictional payout events, email/SMS outbox and verified-recipient callback exist. Default external transport is denied; no operational worker is activated. |
+| Free merchant notifications | No merchant charging operation appears in this notification service. Explicit free-notification acceptance and preference/digest coverage remain unfinished. |
+| On-demand withdrawal advice PDFs | Ordinary guarded download route and source validation exist; advice explicitly is not payout confirmation. |
+| Confirmed payout receipts | Isolated test proves receipt event appears after reconciliation, not merely a provider callback, and rejects a forged source. This is fictional-provider evidence, not real-provider certification. |
+| Merchant exports | CSV and PDF source/routes/UI exist. XLSX is absent and route validation excludes it. |
+| Analytics | Existing analytics is reused with a P10 input adjustment; no evidence establishes full acceptance against the missing official specification. |
+| Chief reporting and controls | Ordinary Chief application-count/redacted-activity reporting and CSV/PDF routes exist, reusing review authorization and conflict exclusions. This is not complete platform financial/revenue reporting. |
+
+### Work completed and files changed
+
+Restored the offline Safe Browser Demo. Initial localhost probe could not connect and recorded PID 24452 was absent. Archived its state to `.recovery/resume-20261126-prior-demo-state.json`; preserved every existing export. Used the existing isolated exporter and static server. Browser QA exposed report-page overflow (386px at a 360px viewport). Added scoped minimum-width, wrapping and form-control bounds in `backend/resources/views/merchants/p10.blade.php`. Refreshed only the ownership-verified demo process, preserving its first new export and archiving state to `.recovery/resume-20261126-first-demo-state.json`.
+
+Tracked modifications in this session: that P10 Blade view and this report only. Ignored state, export and QA artifacts were generated. No business service, schema, route, dependency, operational setting or protected data was changed.
+
+### Fresh verification results
+
+- P10NotificationsReportsTest: **PASS, 3 tests / 161 assertions**, synthetic bootstrap, in-memory databases and outbound network functions disabled. Covers ordinary route responses with injected services, tenant denial, Staff denial, retry/idempotency, reconciled receipt eligibility, migration constraints and CSV/PDF structural safeguards.
+- Previous exact failing `FunctionalMockPaymentTest::test_money_must_be_exact_positive_bounded_integer_tzs` dataset #5: **PASS, 1 test / 41 assertions**. This does not reclassify the entire historical failed focused run as passed; the intermittent setup failure's cause is not established.
+- Fresh demo export before and after layout correction: **PASS, 1 test / 293 assertions each**.
+- Final Chrome QA: **PASS, 3 P10 pages / 24 viewport checks**, 8 assets and 71 linked destinations. Keyboard preview menu and wallet navigation passed; POST 405 and secret/database URL probes 404. Evidence: `.recovery/ui-ux-evidence-1795723167955/qa.json`. Merchant report 390px screenshot inspected. First pre-fix browser run failed and is not counted as passed.
+- Required dirty Pint: **PASS**. `git diff --check`: **PASS** before this report append.
+- Final ownership health: **PASS, 56 fixture pages**, localhost URL **http://127.0.0.1:18761/**. No full fresh P0 or full regression rerun is claimed. Full official P10 acceptance, preferences/digests and XLSX verification remain incomplete; PDF rendering quality was not certified by structural tests.
+
+### Real application and operational classification
+
+P10 services, migration, controller and views are production-intended Laravel source. Merchant report/history/export/document GET routes are in ordinary `routes/web.php` behind authentication, verified account, active-authentication/readiness and merchant-context checks. Their services have no ordinary provider bindings: approved financial store/outbox/custody provisioning remains required and requests fail closed with 503 when unbound. Isolated tests inject synthetic services and exercise these actual routes successfully. Chief application reporting uses the normal authorization scope and excludes conflicted applications. Successful isolated behavior is not operational activation.
+
+The Safe Browser Demo serves static fictional snapshots and fixed downloads only; forms are disabled and it never boots operational Laravel. It does not test live authentication or real financial/provider messaging. Working SQLite, WAL/SHM, real environment and credentials were not opened or modified. No safeguard was bypassed, external message sent, operational migration applied, commit/push/deployment performed, or R1–R7/XLipa Store work started.
+
+### Remaining work, next authorized assignment and completion estimate
+
+**P10 remains the current authorized assignment**, pending recovery of its official specification/reconciliation and completion of preferences/digests, XLSX and remaining scoped acceptance. The demo restoration and targeted mobile fix are complete. Additional full-suite verification and investigation of the historical intermittent setup failure remain distinct from this bounded pass. R1 is the approved roadmap successor only after P10 completion and owner review; it has not started.
+
+Retain **approximately 55% provisional overall completion: change 0 percentage points**. Verified partial P10 source is newer evidence, but missing required capabilities, incomplete ordinary service integration and absent milestone acceptance prevent a defensible numeric increase. There is no agreed weighted denominator; XLipa Store remains excluded. Stop for owner review of this recovery report and provision of the missing approved P10 documents; do not declare P10 complete.

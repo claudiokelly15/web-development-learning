@@ -67,8 +67,10 @@ Route::middleware([AuthenticationResponseHeaders::class, 'auth'])->group(functio
             ->middleware(['verified', ResolveMerchantContext::class])->whereUlid('merchant')->name('merchants.dashboard');
         Route::middleware(['verified', ResolveMerchantContext::class])->prefix('/merchants/{merchant}')->whereUlid('merchant')->group(function (): void {
             Route::get('/reports', [P10ReportingController::class, 'reports'])->name('merchants.reports');
-            Route::get('/reports/export/{format}', [P10ReportingController::class, 'export'])->whereIn('format', ['csv','pdf'])->name('merchants.reports.export');
+            Route::get('/reports/export/{format}', [P10ReportingController::class, 'export'])->whereIn('format', ['csv', 'pdf', 'xlsx'])->name('merchants.reports.export');
             Route::get('/notifications', [P10ReportingController::class, 'notifications'])->name('merchants.notifications');
+            Route::post('/notifications/preferences', [P10ReportingController::class, 'preferences'])->middleware('throttle:10,1')->name('merchants.notifications.preferences');
+            Route::get('/documents/{kind}/{source}', [P10ReportingController::class, 'evidenceDocument'])->whereIn('kind', ['payment', 'settlement'])->whereUuid('source')->name('merchants.documents');
             Route::get('/notifications/{event}/document', [P10ReportingController::class, 'document'])->whereUuid('event')->name('merchants.notifications.document');
         });
         Route::middleware(['verified', ResolveMerchantContext::class])->prefix('/merchants/{merchant}/verification')->whereUlid('merchant')->group(function (): void {

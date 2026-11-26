@@ -14,6 +14,12 @@ async function main() {
     const response = await fetch(base+url);
     assert.equal(response.status, 200, url);
     const html = await response.text();
+    if (url === '/merchant-reports') assert.ok(html.includes('XLSX export') && html.includes('On-demand evidence PDFs'), 'P10 report exports and private documents');
+    if (url === '/notification-history') {
+      for (const mode of ['individual','daily','weekly','off']) assert.ok(html.includes(`value="${mode}"`), 'P10 preference '+mode);
+      assert.ok(html.includes('All merchant notifications are free: TZS 0'), 'Free notification policy');
+    }
+    if (url === '/chief-reports') assert.ok(html.includes('Scoped notification delivery'), 'Independently admitted Chief notification scope');
     assert.ok(!/xl_test_[a-f0-9-]{36}\.[a-f0-9]{64}/.test(html), 'No credential secrets: '+url);
     const p9Headings = {'/merchant-api':'Merchant API v1','/api-credentials':'API credential management','/qr-payments':'QR checkout associations','/pay-buttons':'Secure Pay Buttons','/merchant-webhooks':'Signed merchant webhooks','/integration-docs':'Merchant API v1','/chief-api-governance':'Chief Admin API governance'};
     if (p9Headings[url]) assert.ok(html.includes(p9Headings[url]), 'P9 content: '+url);
@@ -30,6 +36,10 @@ async function main() {
   assert.equal((await fetch(base+'/wallet', {method:'POST'})).status, 405);
   assert.equal((await fetch(base+'/.env')).status, 404);
   assert.equal((await fetch(base+'/backend/database/database.sqlite')).status, 404);
+  const xlsx = await fetch(base+'/downloads/p10-report.xlsx');
+  assert.equal(xlsx.status, 200);
+  assert.equal(xlsx.headers.get('content-type'), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  assert.equal(Buffer.from(await xlsx.arrayBuffer()).subarray(0,2).toString(), 'PK');
   const chrome = ['C:/Program Files/Google/Chrome/Application/chrome.exe','C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'].find(fs.existsSync);
   assert.ok(chrome, 'Existing Chromium required');
   const owned = fs.mkdtempSync(path.join(os.tmpdir(), 'xlipa-demo-qa-'));
@@ -80,6 +90,10 @@ async function main() {
           assert.ok(disclosure.result.value.count>0&&disclosure.result.value.reference&&disclosure.result.value.create,'Expandable links retain references, actions and creation');
         }
         if(url==='/pay-buttons') {const copy=await command('Runtime.evaluate',{expression:`document.querySelectorAll('.payment-card')[1].querySelector('p').textContent`,returnByValue:true});assert.ok(copy.result.value.includes('Pay Buttons open')&&!copy.result.value.includes('codes'),'Pay Button introduction uses button terminology');}
+        if(url==='/merchant-reports') {
+          const table=await command('Runtime.evaluate',{expression:`(()=>{const t=document.querySelector('.p10-workspace .payment-table');const w=t.parentElement;return {width:t.getBoundingClientRect().width,nowrap:getComputedStyle(t.querySelector('td')).whiteSpace,scroll:getComputedStyle(w).overflowX};})()`,returnByValue:true});
+          assert.ok(table.result.value.width>=760 && table.result.value.nowrap==='nowrap' && table.result.value.scroll==='auto','P10 amounts stay readable in a contained scrolling table');
+        }
         results.push({url,...result.value});
         assert.ok(result.value.banner,url);
         assert.equal(result.value.enabledFields,0,url);
