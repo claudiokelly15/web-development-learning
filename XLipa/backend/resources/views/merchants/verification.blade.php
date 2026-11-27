@@ -29,7 +29,7 @@
 @if(!$verification['identityAvailable'])<p class="verification-notice">Identity entry is unavailable until the NIN syntax, declaration, privacy notice and processing policy are approved.</p>@endif
 <form method="post" action="{{ route('merchants.verification.identity',['merchant'=>$merchant->id]) }}" autocomplete="off">@csrf
 <fieldset @disabled(!$verification['canChange'] || !$verification['identityAvailable'])><legend>Record your declaration</legend><input type="hidden" name="context_version" value="{{ $verification['contextVersion'] }}">
-<label for="nin">NIDA identification number</label><input id="nin" name="nin" type="password" maxlength="256" autocomplete="off" required>
+<label for="nin">{{ app()->bound('staging.context') ? 'Synthetic fictional identity declaration only' : 'NIDA identification number' }}</label><input id="nin" name="nin" type="password" maxlength="256" autocomplete="off" required>
 <label for="subject_claim">Declaration capacity</label><select id="subject_claim" name="subject_claim" required><option value="">Choose your capacity</option><option value="individual_owner">Individual owner</option><option value="authorized_representative">Authorized representative</option></select>
 @if($verification['policyText'])<p>{{ $verification['policyText'] }}</p>@endif
 <label class="verification-check"><input name="declaration" type="checkbox" value="1" required><span>I confirm the approved declaration and privacy notice shown above.</span></label>

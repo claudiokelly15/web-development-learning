@@ -2,6 +2,9 @@
 @section('workspace', 'true')
 @section('title', 'Merchant application history')
 @section('content')
+@if(app()->bound('staging.context') && (app('staging.context')['workflow_profile'] ?? null) === \App\Staging\WorkflowProvisioner::VERSION)
+<p><a href="{{ route('staging.application.form', ['merchant' => $merchant->id]) }}">Open fictional integrated submission and persisted status</a></p>
+@endif
 <p><a href="{{ route('merchants.onboarding', ['merchant' => $merchant->id]) }}">Onboarding status</a></p>
 <h2>Application history</h2>
 <p>{{ $merchant->businessNameLabel() }} · Tanzania · TZS only</p>

@@ -26,6 +26,10 @@
 <p>No application audit events recorded.</p>
 @endforelse
 {{ $history->links() }}
+@if(app()->bound('staging.context') && (app('staging.context')['workflow_profile'] ?? null) === \App\Staging\WorkflowProvisioner::VERSION)
+<h2>Fictional decision integration</h2><p><a href="{{ route('staging.application.review', ['application' => $application->id]) }}">Open separately authorized fictional Chief decision</a></p><p>Real verification, privileged MFA and financial activation remain unavailable.</p>
+@else
 <h2>Review actions unavailable</h2>
 <p>Approval, rejection and requests for information remain blocked pending an approved decision contract and operational admission. Live payments remain disabled.</p>
+@endif
 @endsection

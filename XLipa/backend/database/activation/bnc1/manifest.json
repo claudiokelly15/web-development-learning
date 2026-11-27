@@ -5,16 +5,16 @@
     "mode": "isolated-only",
     "migration": "2026_11_13_210000_add_bnc1_business_name_completion",
     "base_pins": {
-        "app/Actions/Merchants/SubmissionEvidenceSchema.php": "1fde336da8709ea7d052fe4fdb41262e47cea4aad5cd505e32d26c0ee769ee61",
+        "app/Actions/Merchants/SubmissionEvidenceSchema.php": "8d43aae3a98ecdf08ac11e9651567e36d807cae3f7dededa4602f63d6775656d",
         "database/activation/b32c/2026_11_07_200000_activate_b32_security_contract.php": "be27fdee16c972244688bac7a1eac3b46c0e7a11bcb5a9189bc460b59e337e97",
         "database/activation/b32c/security-contract.json": "09d12df3d292445f89b81d9200370a65ae4a74caba05b086367b35dbdb2e44a0",
         "database/activation/b32c/selection-manifest.json": "20fbe5628164853b6a023ff98feaa1ae8a8a0ce9bf9572b64df9e361e34f2873",
         "database/activation/se1/2026_11_08_210000_add_se1_submission_evidence.php": "75cbd497fa5f5b219087d2777c376f3e0234fb6007be10c48da9e0666dd10431",
-        "database/activation/se1/manifest.json": "a44be8d2c4ff2cc228b25a55fd4c22ffb90912aebb393251c14a408cf5be7034"
+        "database/activation/se1/manifest.json": "1c60b74e61def39a46d0674ad89a211d3aaca0aa1796f8020af52f062d489b7a"
     },
     "source_pins": {
         "app/Actions/Merchants/BusinessNameCompletionSchema.php": "0b581d576a818d2e7fb684ea414fb4e9d9cd063c236d8c64e714181ad50d302a",
-        "app/Actions/Merchants/ComposedSubmissionSchema.php": "5320c1d623873d0d8b0da525c2074c56b74e5b563cf0d464690d82f1b91a2b76",
+        "app/Actions/Merchants/ComposedSubmissionSchema.php": "da890c5d79692b41c15b7302f5619b45d2873e211bf54a5d397579ae81f81a4e",
         "database/activation/bnc1/2026_11_13_210000_add_bnc1_business_name_completion.php": "9080c232392f8ae1caf3258361234455f349b97ba8496ba63f925ff1f1aac017"
     },
     "objects": [

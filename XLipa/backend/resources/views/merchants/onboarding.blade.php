@@ -5,6 +5,10 @@
 <link rel="stylesheet" href="{{ asset('assets/xlipa-onboarding.css') }}">
 @endpush
 @section('content')
+@if(app()->bound('staging.context') && (app('staging.context')['workflow_profile'] ?? null) === \App\Staging\WorkflowProvisioner::VERSION)
+    @php($completionPreview = false)
+    <section class="onboarding-status"><h2>Fictional onboarding integration</h2><p>Local staging only. Verification and approval cannot enable real financial services.</p><p><a href="{{ route('staging.onboarding.form', ['merchant' => $merchant->id]) }}">Complete business name</a> · <a href="{{ route('merchants.verification', ['merchant' => $merchant->id]) }}">Fictional verification</a> · <a href="{{ route('staging.application.form', ['merchant' => $merchant->id]) }}">Submit and inspect fictional application</a></p></section>
+@endif
 <div class="onboarding-page">
     <ol class="product-steps" aria-label="Merchant setup steps"><li><strong>01 · ACCOUNT</strong>Email verified</li><li><strong>02 · BUSINESS</strong>Review your business profile</li><li><strong>03 · VERIFICATION</strong>Check private verification status</li><li><strong>04 · APPLICATION</strong>{{ $summary->applicationStatus ?? 'Not submitted' }}</li></ol>
     <nav class="onboarding-navigation" aria-label="Onboarding navigation">

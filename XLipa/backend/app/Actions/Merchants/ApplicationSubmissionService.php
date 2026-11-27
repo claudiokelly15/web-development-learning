@@ -4,6 +4,7 @@ namespace App\Actions\Merchants;
 
 use App\Models\Merchant;
 use App\Models\User;
+use App\Staging\StagingWorkflowAuthority;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
@@ -69,7 +70,7 @@ final class ApplicationSubmissionService
 
     private function operational(User $actor, string $merchant, array $expected): int
     {
-        abort_unless($this->admission->authorized($actor->id, $merchant, $expected) && $this->admission->restoreReady() && $this->custody->authorized() && $this->custody->restoreReady() && $this->verification->authorized() && $this->verification->mode() === 'live' && $this->custody->namespace() === $this->verification->namespace(), 503, 'Submission unavailable.');
+        abort_unless($this->admission->authorized($actor->id, $merchant, $expected) && $this->admission->restoreReady() && $this->custody->authorized() && $this->custody->restoreReady() && $this->verification->authorized() && ($this->verification->mode() === 'live' || StagingWorkflowAuthority::modeAllowed($this->verification->mode())) && $this->custody->namespace() === $this->verification->namespace(), 503, 'Submission unavailable.');
         $now = $this->admission->milliseconds();
         abort_unless($now >= 0 && $now <= 253402300799999 && $this->custody->milliseconds() >= $now && $this->verification->milliseconds() >= $now, 503, 'Submission time unavailable.');
 
@@ -154,7 +155,7 @@ final class ApplicationSubmissionService
 
     private function trust(array $evidence, array $identity, array $proof, array $challenge, array $intent): void
     {
-        abort_unless($proof['provenance'] === 'live' && $proof['channel'] === 'sms' && $proof['policy_version'] === 'application-phone-proof-v1' && $proof['verified_at'] <= $evidence['submitted_at_ms'] && $challenge['transport_mode'] === 'live' && $challenge['state'] === 'consumed' && $challenge['terminal_at'] === $proof['verified_at'] && $intent['transport_mode'] === 'live' && $intent['state'] === 'accepted' && $intent['completed_at'] < $intent['lease_expires_at'] && $intent['completed_at'] <= $proof['verified_at'] && $this->admission->trusted($proof, $challenge, $intent, $identity, $evidence['submitted_at_ms']) && $this->admission->retentionAllowed($evidence['retention_policy_version'], $evidence['submitted_at_ms'], $identity['retention_due_at']), 503, 'Trusted submission evidence unavailable.');
+        abort_unless(($proof['provenance'] === 'live' || StagingWorkflowAuthority::provenance($proof, $challenge, $intent)) && $proof['channel'] === 'sms' && $proof['policy_version'] === 'application-phone-proof-v1' && $proof['verified_at'] <= $evidence['submitted_at_ms'] && ($challenge['transport_mode'] === 'live' || StagingWorkflowAuthority::provenance($proof, $challenge, $intent)) && $challenge['state'] === 'consumed' && $challenge['terminal_at'] === $proof['verified_at'] && ($intent['transport_mode'] === 'live' || StagingWorkflowAuthority::provenance($proof, $challenge, $intent)) && $intent['state'] === 'accepted' && $intent['completed_at'] < $intent['lease_expires_at'] && $intent['completed_at'] <= $proof['verified_at'] && $this->admission->trusted($proof, $challenge, $intent, $identity, $evidence['submitted_at_ms']) && $this->admission->retentionAllowed($evidence['retention_policy_version'], $evidence['submitted_at_ms'], $identity['retention_due_at']), 503, 'Trusted submission evidence unavailable.');
     }
 
     /** Plaintext stays internal and never enters receipts, exceptions or audits. */

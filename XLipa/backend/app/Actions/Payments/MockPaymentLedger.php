@@ -178,7 +178,7 @@ final class MockPaymentLedger
 
     private function run(User $actor, string $merchant, string $operation, Closure $work): array
     {
-        abort_unless(PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing') && $this->admission->authorized($actor->id, $merchant, $operation), 503);
+        abort_unless(((PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing')) || \App\Staging\StagingFinancialAuthority::allows(['r24.ledger.post', 'r24.ledger.reconcile', 'r24.transactions.read'])) && $this->admission->authorized($actor->id, $merchant, $operation), 503);
 
         return $this->payments->accountingTransaction($actor, $merchant, function (PaymentStore $store, array $authority) use ($actor, $merchant, $operation, $work): array {
             abort_unless($this->admission->authorized($actor->id, $merchant, $operation), 503);

@@ -20,7 +20,7 @@
         <p id="amount-title" class="payment-eyebrow">AMOUNT TO PAY</p><p class="payment-amount"><span>TZS</span> {{ number_format($link['amount_tzs'], 0, '.', ',') }}</p>
         <p class="payment-description">{{ $link['description'] }}</p>
         @if($result === null)
-            <form method="post" action="{{ route('isolated.checkout.initiate', ['token' => $link['public_token']]) }}" data-payment-submit>
+            <form method="post" action="{{ route(($paymentRoutePrefix ?? 'isolated').'.checkout.initiate', ['token' => $link['public_token']]) }}" data-payment-submit>
                 @csrf
                 <input type="hidden" name="request_nonce" value="{{ $nonce }}">
                 <button class="btn primary payment-submit" type="submit" data-loading-label="Creating mock payment…">Start mock payment</button>
@@ -39,7 +39,7 @@
             @endphp
             <div class="payment-status" data-state="{{ $result['status'] }}" role="status" aria-live="polite"><h2>{{ $title }}</h2><p>{{ $message }}</p></div>
             @if($result['payment_reference'])<p class="payment-reference">Payment reference <span>{{ $result['payment_reference'] }}</span></p>@endif
-            <a class="btn ghost" href="{{ route('isolated.checkout.status', ['token' => $link['public_token'], 'attempt' => $result['attempt_id']]) }}">Check current status</a>
+            <a class="btn ghost" href="{{ route($checkoutStatusRoute ?? 'isolated.checkout.status', ['token' => $link['public_token'], 'attempt' => $result['attempt_id']]) }}">Check current status</a>
         @endif
     </section>
     <p class="payment-footer">No PIN, NIN, bank details or mobile-money credentials are requested.</p>

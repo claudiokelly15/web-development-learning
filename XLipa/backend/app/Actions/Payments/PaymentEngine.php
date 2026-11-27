@@ -239,7 +239,7 @@ final class PaymentEngine
 
     private function checkoutAllowed(array $context): bool
     {
-        return PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing') && auth()->guest()
+        return ((PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing')) || \App\Staging\StagingFinancialAuthority::allows(['r24.checkout.initiate'])) && auth()->guest()
             && $context['customer_hash'] === hash('sha256', session()->getId()) && $context['admission']->customerAuthorized($context['merchant_id'], 'initiate');
     }
 

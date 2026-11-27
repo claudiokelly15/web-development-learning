@@ -14,9 +14,10 @@ final class FictionalMockProvider implements PaymentProvider
 
     private array $accepted = [];
 
-    public function __construct(#[\SensitiveParameter] private readonly string $key)
+    public function __construct(#[\SensitiveParameter] private readonly string $key, private readonly ?\Closure $registry = null)
     {
-        if (PHP_SAPI !== 'cli' || getenv('XLIPA_SYNTHETIC_ONLY') !== '1' || ! app()->environment('testing') || strlen($key) !== 32) {
+        $isolated = PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing');
+        if ((! $isolated && ! \App\Staging\StagingFinancialAuthority::providerAllowed()) || strlen($key) !== 32) {
             throw new LogicException('Fictional provider requires isolated testing.');
         }
     }
@@ -36,6 +37,9 @@ final class FictionalMockProvider implements PaymentProvider
         $this->creates++;
         $response = ['reference' => $payment['reference'], 'correlation' => 'mock_'.$payment['reference'], 'amount_tzs' => $payment['amount_tzs'], 'currency' => $payment['currency'], 'status' => 'pending'];
         $this->accepted[$payment['reference']] = $response;
+        if ($this->registry !== null) {
+            ($this->registry)('write', $payment['reference'], $response);
+        }
         if ($this->scenario === 'unknown') {
             throw new RuntimeException('Fictional accepted request lost acknowledgement.');
         }
@@ -48,7 +52,7 @@ final class FictionalMockProvider implements PaymentProvider
 
     public function query(array $payment): array
     {
-        return $this->accepted[$payment['reference']] ?? throw new RuntimeException('No authoritative fictional request.');
+        return $this->accepted[$payment['reference']] ?? ($this->registry !== null ? ($this->registry)('read', $payment['reference'], null) : throw new RuntimeException('No authoritative fictional request.'));
     }
 
     public function signature(string $body): string
@@ -58,7 +62,7 @@ final class FictionalMockProvider implements PaymentProvider
 
     public function eventBody(string $reference, string $result, int $sequence, int $time, string $eventId): string
     {
-        $payment = $this->accepted[$reference] ?? throw new RuntimeException('No fictional request.');
+        $payment = $this->accepted[$reference] ?? ($this->registry !== null ? ($this->registry)('read', $reference, null) : throw new RuntimeException('No fictional request.'));
 
         return json_encode(['event_id' => $eventId, 'reference' => $reference, 'correlation' => $payment['correlation'], 'amount_tzs' => $payment['amount_tzs'],
             'currency' => $payment['currency'], 'result' => $result, 'sequence' => $sequence, 'occurred_at' => $time], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);

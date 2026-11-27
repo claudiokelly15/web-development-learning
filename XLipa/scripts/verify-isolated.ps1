@@ -67,9 +67,9 @@ try {
     }
 
     $manifestPins = @{
-        'database/activation/bnc1/manifest.json' = '2a151dd33e7ce5735f38a9b3363d79375684b81bd728366285f05702499049a3'
-        'database/activation/bnc1/integration-manifest.json' = 'f6e4c09840b5943268a21b2b6e33eb38d74a32e56abae0b4a5ef25a7ce97e47a'
-        'database/activation/bnc1/backend-manifest.json' = '423d7ec0c2242aa42eb6e33c02036096c12fc3ff5a3160bf828c612904395990'
+        'database/activation/bnc1/manifest.json' = 'f8c071e83f9e8568c00b79c176a55c59f63ff51abcaa89f098d43d1fb2746747'
+        'database/activation/bnc1/integration-manifest.json' = '69c6d7967ce4bd004e283b5800a5c930a267b9fab5e57b0228e28e6ad6079b40'
+        'database/activation/bnc1/backend-manifest.json' = '688826601d9993427e478cf946cb82f09cbacfb749a201a0f10543f8e7b39a47'
     }
     $frozenPins = @{}
     foreach ($pin in $manifestPins.GetEnumerator()) {

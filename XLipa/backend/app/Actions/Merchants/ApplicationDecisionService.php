@@ -5,6 +5,7 @@ namespace App\Actions\Merchants;
 use App\Actions\Auth\ResolvePlatformRole;
 use App\Enums\PlatformRole;
 use App\Models\User;
+use App\Staging\StagingWorkflowAuthority;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -122,7 +123,7 @@ final class ApplicationDecisionService
     private function evidence(array $record, object $application, int $time): void
     {
         abort_unless($this->issuance->restoreReady() && $this->custody->authorized() && $this->custody->restoreReady()
-            && $this->verification->authorized() && $this->verification->mode() === 'live' && $this->custody->namespace() === $this->verification->namespace()
+            && $this->verification->authorized() && ($this->verification->mode() === 'live' || StagingWorkflowAuthority::modeAllowed($this->verification->mode())) && $this->custody->namespace() === $this->verification->namespace()
             && $this->custody->milliseconds() >= $time && $this->verification->milliseconds() >= $time && $time >= $record['submitted_at_ms'], 503);
         $owner = DB::table('users')->where('id', $record['actor_user_id'])->sole();
         $business = DB::table('merchants')->where('id', $record['merchant_id'])->sole();
@@ -144,9 +145,9 @@ final class ApplicationDecisionService
             && $context->contact_actor_user_id === $owner->id && $context->contact_purpose === $record['purpose'] && $context->updated_at <= $time
             && $identity['state'] === 'current' && $contact['state'] === 'current' && $proof['state'] === 'consumed' && $proof['revoked_at'] === null
             && $proof['consumed_application_id'] === $application->id && $proof['consumed_at'] === $record['submitted_at_ms'] && $proof['verified_at'] <= $record['submitted_at_ms']
-            && $proof['expires_at'] > $record['submitted_at_ms'] && $proof['provenance'] === 'live' && $proof['channel'] === 'sms' && $proof['policy_version'] === 'application-phone-proof-v1'
-            && $challenge['state'] === 'consumed' && $challenge['transport_mode'] === 'live' && $challenge['terminal_at'] === $proof['verified_at']
-            && $intent['state'] === 'accepted' && $intent['transport_mode'] === 'live' && $intent['completed_at'] < $intent['lease_expires_at'] && $intent['completed_at'] <= $proof['verified_at'], 409);
+            && $proof['expires_at'] > $record['submitted_at_ms'] && ($proof['provenance'] === 'live' || StagingWorkflowAuthority::provenance($proof, $challenge, $intent)) && $proof['channel'] === 'sms' && $proof['policy_version'] === 'application-phone-proof-v1'
+            && $challenge['state'] === 'consumed' && ($challenge['transport_mode'] === 'live' || StagingWorkflowAuthority::provenance($proof, $challenge, $intent)) && $challenge['terminal_at'] === $proof['verified_at']
+            && $intent['state'] === 'accepted' && ($intent['transport_mode'] === 'live' || StagingWorkflowAuthority::provenance($proof, $challenge, $intent)) && $intent['completed_at'] < $intent['lease_expires_at'] && $intent['completed_at'] <= $proof['verified_at'], 409);
         abort_if(DB::table('verification_limit_state')->where('merchant_id', $business->id)->where(function ($query) use ($time): void {
             $query->whereNotNull('pending_audit_event_id')->orWhere('last_observed_at', '>', $time);
         })->exists(), 409);

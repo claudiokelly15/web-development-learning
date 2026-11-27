@@ -38,7 +38,7 @@ final class BusinessNameCompletionContext
             $pins[$path] = hash_file('sha256', base_path($path));
         }
 
-        return ['version' => 'BNC-INT-02', 'mode' => 'isolated-only', 'integration_manifest_sha256' => 'f6e4c09840b5943268a21b2b6e33eb38d74a32e56abae0b4a5ef25a7ce97e47a', 'source_pins' => $pins];
+        return ['version' => 'BNC-INT-02', 'mode' => 'isolated-only', 'integration_manifest_sha256' => '69c6d7967ce4bd004e283b5800a5c930a267b9fab5e57b0228e28e6ad6079b40', 'source_pins' => $pins];
     }
 
     public function input(string $merchant, #[\SensitiveParameter] array $expected, #[\SensitiveParameter] mixed $name): string

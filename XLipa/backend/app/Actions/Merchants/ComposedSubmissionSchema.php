@@ -2,6 +2,7 @@
 
 namespace App\Actions\Merchants;
 
+use App\Staging\StagingWorkflowAuthority;
 use Illuminate\Support\Facades\DB;
 use LogicException;
 use Throwable;
@@ -17,12 +18,12 @@ final class ComposedSubmissionSchema
     public static function basePins(): array
     {
         return [
-            'app/Actions/Merchants/SubmissionEvidenceSchema.php' => '1fde336da8709ea7d052fe4fdb41262e47cea4aad5cd505e32d26c0ee769ee61',
+            'app/Actions/Merchants/SubmissionEvidenceSchema.php' => '8d43aae3a98ecdf08ac11e9651567e36d807cae3f7dededa4602f63d6775656d',
             'database/activation/b32c/2026_11_07_200000_activate_b32_security_contract.php' => 'be27fdee16c972244688bac7a1eac3b46c0e7a11bcb5a9189bc460b59e337e97',
             'database/activation/b32c/security-contract.json' => '09d12df3d292445f89b81d9200370a65ae4a74caba05b086367b35dbdb2e44a0',
             'database/activation/b32c/selection-manifest.json' => '20fbe5628164853b6a023ff98feaa1ae8a8a0ce9bf9572b64df9e361e34f2873',
             'database/activation/se1/2026_11_08_210000_add_se1_submission_evidence.php' => '75cbd497fa5f5b219087d2777c376f3e0234fb6007be10c48da9e0666dd10431',
-            'database/activation/se1/manifest.json' => 'a44be8d2c4ff2cc228b25a55fd4c22ffb90912aebb393251c14a408cf5be7034',
+            'database/activation/se1/manifest.json' => '1c60b74e61def39a46d0674ad89a211d3aaca0aa1796f8020af52f062d489b7a',
         ];
     }
 
@@ -91,8 +92,11 @@ final class ComposedSubmissionSchema
         }
     }
 
-    public static function assertReady(): void
+    public static function assertReady(bool $fictional = false): void
     {
+        if ($fictional && ! StagingWorkflowAuthority::schemaAuthorized()) {
+            throw new LogicException('Fictional schema requires independent signed staging custody.');
+        }
         if (DB::getDriverName() !== 'sqlite' || (int) DB::selectOne('PRAGMA foreign_keys')->foreign_keys !== 1 || (int) DB::selectOne('PRAGMA recursive_triggers')->recursive_triggers !== 1 || (int) DB::selectOne('PRAGMA ignore_check_constraints')->ignore_check_constraints !== 0 || (int) DB::selectOne('PRAGMA writable_schema')->writable_schema !== 0) {
             throw new LogicException('BNC1 enforcement unavailable.');
         }
@@ -127,7 +131,7 @@ final class ComposedSubmissionSchema
             $expected[] = $name;
         }
         $contract = json_decode(file_get_contents(database_path('activation/b32c/security-contract.json')), true, 64, JSON_THROW_ON_ERROR);
-        $objects = $contract['create_tables'] + $contract['indexes'] + $contract['triggers'] + ['audit_logs' => $contract['audit']['sql']] + SubmissionEvidenceSchema::objects() + BusinessNameCompletionSchema::objects();
+        $objects = $contract['create_tables'] + $contract['indexes'] + $contract['triggers'] + ['audit_logs' => $contract['audit']['sql']] + SubmissionEvidenceSchema::objects($fictional) + BusinessNameCompletionSchema::objects();
         foreach ($objects as $name => $sql) {
             $row = DB::selectOne('SELECT sql FROM sqlite_master WHERE name=?', [$name]);
             if ($row?->sql !== $sql) {

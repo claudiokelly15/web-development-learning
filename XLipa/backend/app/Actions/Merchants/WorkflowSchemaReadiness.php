@@ -2,6 +2,7 @@
 
 namespace App\Actions\Merchants;
 
+use App\Staging\StagingWorkflowAuthority;
 use Closure;
 use Illuminate\Support\Facades\DB;
 use LogicException;
@@ -18,7 +19,7 @@ final class WorkflowSchemaReadiness
 
     public const BNC = 'b32c+se1+bnc1';
 
-    private const BNC_MANIFEST_HASH = '2a151dd33e7ce5735f38a9b3363d79375684b81bd728366285f05702499049a3';
+    private const BNC_MANIFEST_HASH = 'f8c071e83f9e8568c00b79c176a55c59f63ff51abcaa89f098d43d1fb2746747';
 
     private const SOURCES = [
         'app/Actions/Merchants/WorkflowSchemaReadiness.php',
@@ -138,7 +139,7 @@ final class WorkflowSchemaReadiness
             $this->assertRelease();
             $this->assertConnection($profile);
             if ($profile === self::BNC) {
-                ComposedSubmissionSchema::assertReady();
+                ComposedSubmissionSchema::assertReady(StagingWorkflowAuthority::schemaAuthorized());
             } elseif ($profile === self::SE) {
                 if (! SubmissionEvidenceSchema::ready()) {
                     throw new LogicException('Workflow SE profile denied.');

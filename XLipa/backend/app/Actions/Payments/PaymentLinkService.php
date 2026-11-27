@@ -176,6 +176,6 @@ final class PaymentLinkService
 
     private function isolated(): void
     {
-        abort_unless(PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing'), 503);
+        abort_unless((PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing')) || \App\Staging\StagingFinancialAuthority::allows(\App\Staging\StagingFinancialAuthority::ACTIONS), 503);
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 /** Isolated P9 services. Deliberately not bound in operational providers or routes. */
 final class MerchantDeveloperTools
 {
+    private bool $widgetScope = false;
     public const SCOPES = ['payments:read', 'links:read', 'links:write'];
 
     public function __construct(private readonly PaymentEngine $payments, private readonly PaymentStore $store, private readonly PaymentLinkService $links, private readonly Closure $clock) {}
@@ -25,7 +26,7 @@ final class MerchantDeveloperTools
 
     public function guard(): void
     {
-        abort_unless(PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing'), 503);
+        abort_unless((PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing')) || ($this->widgetScope && \App\Staging\StagingFinancialAuthority::widgetAllowed()), 503);
     }
 
     public function manage(User $actor, string $merchant, Closure $work): mixed
@@ -138,7 +139,7 @@ final class MerchantDeveloperTools
     {
         abort_unless(in_array($kind, ['qr', 'button'], true) && in_array($mode, ['dynamic', 'reusable'], true), 422);
 
-        return $this->manage($actor, $merchant, function (PaymentStore $store) use ($merchant, $linkId, $kind, $mode): array {
+        return $this->widgetCall(fn (): array => $this->manage($actor, $merchant, function (PaymentStore $store) use ($merchant, $linkId, $kind, $mode): array {
             $link = $store->rows('SELECT * FROM payment_links WHERE id=? AND merchant_id=?', [$linkId, $merchant])[0] ?? null;
             abort_unless($link !== null, 404);
             abort_unless($link['state'] === 'active' && ($link['expires_at'] === null || $link['expires_at'] > $this->now()), 410);
@@ -152,10 +153,26 @@ final class MerchantDeveloperTools
             $store->write('INSERT INTO checkout_widgets VALUES(?,?,?,?,?)', [$id, $merchant, $linkId, $kind, $mode]);
 
             return ['id' => $id, 'merchant_id' => $merchant, 'link_id' => $linkId, 'kind' => $kind, 'mode' => $mode];
-        });
+        }));
     }
 
     public function resolveWidget(string $id): array
+    {
+        return $this->widgetCall(fn (): array => $this->resolveScopedWidget($id));
+    }
+
+    private function widgetCall(Closure $work): mixed
+    {
+        $previous = $this->widgetScope;
+        $this->widgetScope = \App\Staging\StagingFinancialAuthority::widgetAllowed();
+        try {
+            return $work();
+        } finally {
+            $this->widgetScope = $previous;
+        }
+    }
+
+    private function resolveScopedWidget(string $id): array
     {
         $this->guard();
         $row = $this->store->rows('SELECT w.*,l.public_token FROM checkout_widgets w JOIN payment_links l ON l.id=w.link_id WHERE w.id=?', [$id])[0] ?? null;
@@ -172,7 +189,9 @@ final class MerchantDeveloperTools
     {
         abort_unless(preg_match('/\A[a-f0-9]{64}\z/D', $token) === 1, 422);
 
-        return 'http://xlipa.test/__isolated-checkout/'.$token;
+        return \App\Staging\StagingFinancialAuthority::widgetAllowed()
+            ? \App\Staging\StagingIdentity::ORIGIN.'/fictional-checkout/'.$token
+            : 'http://xlipa.test/__isolated-checkout/'.$token;
     }
 
     public function button(string $id): string

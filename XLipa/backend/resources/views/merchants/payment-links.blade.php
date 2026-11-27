@@ -10,7 +10,7 @@
 <div class="payment-workspace premium-links-workspace">
     <div class="payment-grid">
         <details class="premium-link-create"><summary>Create a payment link</summary><section class="payment-card" aria-labelledby="create-title"><h2 id="create-title">Create a payment link</h2>
-            <form method="post" action="{{ route('isolated.links.create', ['merchant' => $merchantId]) }}" data-payment-submit>
+            <form method="post" action="{{ route(($paymentRoutePrefix ?? 'isolated').'.links.create', ['merchant' => $merchantId]) }}" data-payment-submit>
                 @csrf
                 <input type="hidden" name="request_key" value="{{ $requestKey }}"><input type="hidden" name="currency" value="TZS">
                 <label for="amount_tzs">Amount in whole TZS</label><input id="amount_tzs" name="amount_tzs" type="number" inputmode="numeric" min="1" max="1000000000000" step="1" required>
@@ -22,10 +22,10 @@
         <section class="payment-card" aria-labelledby="existing-title"><h2 id="existing-title">Your links</h2>
             @forelse($links as $link)
                 <details class="payment-link-row premium-link-item"><summary><span>{{ $link['description'] }}</span><span><strong>TZS {{ number_format($link['amount_tzs'], 0, '.', ',') }}</strong> · {{ ucfirst($link['state']) }}</span></summary><div class="premium-link-body">
-                    <a class="payment-url" href="{{ route('isolated.checkout.open', ['token' => $link['public_token']]) }}">{{ route('isolated.checkout.open', ['token' => $link['public_token']]) }}</a>
+                    <a class="payment-url" href="{{ route(($paymentRoutePrefix ?? 'isolated').'.checkout.open', ['token' => $link['public_token']]) }}">{{ route(($paymentRoutePrefix ?? 'isolated').'.checkout.open', ['token' => $link['public_token']]) }}</a>
                     <p class="payment-help">Open checkout in a separate fictional customer session.</p>
                     <details class="product-link-details"><summary>Link details</summary><dl><dt>Link reference</dt><dd>{{ $link['id'] }}</dd><dt>Created (EAT)</dt><dd>{{ \App\ViewModels\MerchantFinancialPresentation::time($link['created_at']) }}</dd><dt>Expiry (EAT)</dt><dd>{{ $link['expires_at'] === null ? 'No expiry set' : \App\ViewModels\MerchantFinancialPresentation::time($link['expires_at']) }}</dd><dt>Link state</dt><dd>{{ ucfirst($link['state']) }}. Expired or disabled links cannot start a new payment.</dd></dl></details>
-                    @if($link['state'] === 'active')<form method="post" action="{{ route('isolated.links.disable', ['merchant' => $merchantId, 'link' => $link['id']]) }}">@csrf<button class="btn ghost" type="submit">Disable new payments</button></form>@endif
+                    @if($link['state'] === 'active')<form method="post" action="{{ route(($paymentRoutePrefix ?? 'isolated').'.links.disable', ['merchant' => $merchantId, 'link' => $link['id']]) }}">@csrf<button class="btn ghost" type="submit">Disable new payments</button></form>@endif
                 </div></details>
             @empty<p class="payment-help">No payment links yet.</p>@endforelse
         </section>
@@ -35,8 +35,8 @@
             <details class="payment-link-row premium-link-item"><summary><span>{{ ucfirst($attempt['status'] ?? 'unresolved') }}</span><span>{{ $attempt['currency'] ?? 'TZS' }} {{ $attempt['amount_tzs'] === null ? '—' : number_format($attempt['amount_tzs'], 0, '.', ',') }}</span></summary><div class="premium-link-body"><p class="payment-reference">{{ $attempt['payment_reference'] ?? 'Payment creation unresolved' }}</p>
                 @if($attempt['journal_id'])<p class="payment-help">Fictional pending accounting recorded: {{ $attempt['journal_id'] }}</p>
                 @elseif($attempt['status'] === 'confirmed')
-                    <form method="post" action="{{ route('isolated.links.consume', ['merchant' => $merchantId, 'attempt' => $attempt['id']]) }}">@csrf<button class="btn ghost" type="submit">Record confirmed mock payment</button></form>
-                    <form method="post" action="{{ route('isolated.links.reconcile', ['merchant' => $merchantId, 'attempt' => $attempt['id']]) }}">@csrf<button class="btn ghost" type="submit">Reconcile accounting outcome</button></form>
+                    <form method="post" action="{{ route(($paymentRoutePrefix ?? 'isolated').'.links.consume', ['merchant' => $merchantId, 'attempt' => $attempt['id']]) }}">@csrf<button class="btn ghost" type="submit">Record confirmed mock payment</button></form>
+                    <form method="post" action="{{ route(($paymentRoutePrefix ?? 'isolated').'.links.reconcile', ['merchant' => $merchantId, 'attempt' => $attempt['id']]) }}">@csrf<button class="btn ghost" type="submit">Reconcile accounting outcome</button></form>
                 @endif
             </div></details>
         @empty<p class="payment-help">No checkout attempts yet.</p>@endforelse

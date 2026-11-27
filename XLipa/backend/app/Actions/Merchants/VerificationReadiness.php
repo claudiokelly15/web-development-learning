@@ -2,6 +2,7 @@
 
 namespace App\Actions\Merchants;
 
+use App\Staging\StagingWorkflowAuthority;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -16,7 +17,7 @@ final class VerificationReadiness
                 return false;
             }
             if (! $this->environment->authorized() || ! in_array($this->environment->mode(), ['live', 'simulated'], true)
-                || ($this->environment->mode() === 'simulated' && ! app()->environment('testing'))
+                || ($this->environment->mode() === 'simulated' && ! app()->environment('testing') && ! StagingWorkflowAuthority::modeAllowed('simulated'))
                 || DB::getDriverName() !== 'sqlite' || (int) DB::selectOne('PRAGMA foreign_keys')->foreign_keys !== 1) {
                 return false;
             }

@@ -57,7 +57,7 @@ final class SubmissionEvidenceSchema
     }
 
     /** Deterministic amendment-owned definitions. Frozen C definitions are never edited. */
-    public static function objects(): array
+    public static function objects(bool $fictional = false): array
     {
         $table = self::TABLE;
         $objects = [];
@@ -133,6 +133,12 @@ final class SubmissionEvidenceSchema
             }
         }
         $objects['se1_account_lifecycle_hold'] = self::trigger('se1_account_lifecycle_hold', 'BEFORE UPDATE', 'users', 'NEW.account_status IS NOT OLD.account_status OR NEW.password IS NOT OLD.password OR NEW.auth_version IS NOT OLD.auth_version');
+
+        if ($fictional) {
+            foreach (['se1_evidence_insert', 'se1_proof_consume', 'se1_application_update'] as $name) {
+                $objects[$name] = str_replace(["p.provenance='live'", "h.transport_mode='live'", "d.transport_mode='live'"], ["p.provenance='simulated'", "h.transport_mode='simulated'", "d.transport_mode='simulated'"], $objects[$name]);
+            }
+        }
 
         return $objects;
     }
