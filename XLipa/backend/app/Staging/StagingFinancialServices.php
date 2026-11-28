@@ -16,11 +16,17 @@ use PDO;
 final class StagingFinancialServices
 {
     public readonly PaymentStore $store;
+
     public readonly PaymentEngine $payments;
+
     public readonly MockPaymentLedger $ledger;
+
     public readonly PaymentLinkService $links;
+
     public readonly MerchantDeveloperTools $widgets;
+
     public readonly MerchantWallet $wallet;
+
     public readonly FictionalMockProvider $provider;
 
     public function __construct()

@@ -43,10 +43,10 @@ try {
     if ($operation === 'status') {
         Identity::check(! app()->bound(PaymentStore::class));
         $counts = [];
-        foreach (['payment_links', 'checkout_attempts', 'payment_intents', 'payment_events', 'payment_confirmations', 'ledger_journals', 'ledger_postings', 'ledger_seals', 'api_credentials', 'merchant_webhook_deliveries', 'withdrawal_requests'] as $table) {
+        foreach (['payment_links', 'checkout_attempts', 'payment_intents', 'payment_events', 'payment_confirmations', 'ledger_journals', 'ledger_postings', 'ledger_seals', 'api_credentials', 'merchant_webhook_deliveries', 'funds_withdrawals'] as $table) {
             $counts[$table] = (int) $pdo->query('SELECT count(*) FROM '.$table)->fetchColumn();
         }
-        $balance = $pdo->query("SELECT direction,COALESCE(sum(amount_tzs),0) AS amount FROM ledger_postings GROUP BY direction ORDER BY direction")->fetchAll();
+        $balance = $pdo->query('SELECT direction,COALESCE(sum(amount_tzs),0) AS amount FROM ledger_postings GROUP BY direction ORDER BY direction')->fetchAll();
         echo Identity::encode(['program' => Authority::VERSION, 'counts' => $counts, 'balanced_postings' => $balance, 'operational_store_bound' => false, 'withdrawable_tzs' => 0]).PHP_EOL;
         exit;
     }

@@ -3,6 +3,8 @@
 namespace App\Actions\Payments;
 
 use App\Models\User;
+use App\Staging\StagingFinancialAuthority;
+use App\Staging\StagingIdentity;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -11,6 +13,7 @@ use Illuminate\Support\Str;
 final class MerchantDeveloperTools
 {
     private bool $widgetScope = false;
+
     public const SCOPES = ['payments:read', 'links:read', 'links:write'];
 
     public function __construct(private readonly PaymentEngine $payments, private readonly PaymentStore $store, private readonly PaymentLinkService $links, private readonly Closure $clock) {}
@@ -26,7 +29,7 @@ final class MerchantDeveloperTools
 
     public function guard(): void
     {
-        abort_unless((PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing')) || ($this->widgetScope && \App\Staging\StagingFinancialAuthority::widgetAllowed()), 503);
+        abort_unless((PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing')) || ($this->widgetScope && StagingFinancialAuthority::widgetAllowed()), 503);
     }
 
     public function manage(User $actor, string $merchant, Closure $work): mixed
@@ -164,7 +167,7 @@ final class MerchantDeveloperTools
     private function widgetCall(Closure $work): mixed
     {
         $previous = $this->widgetScope;
-        $this->widgetScope = \App\Staging\StagingFinancialAuthority::widgetAllowed();
+        $this->widgetScope = StagingFinancialAuthority::widgetAllowed();
         try {
             return $work();
         } finally {
@@ -189,8 +192,8 @@ final class MerchantDeveloperTools
     {
         abort_unless(preg_match('/\A[a-f0-9]{64}\z/D', $token) === 1, 422);
 
-        return \App\Staging\StagingFinancialAuthority::widgetAllowed()
-            ? \App\Staging\StagingIdentity::ORIGIN.'/fictional-checkout/'.$token
+        return StagingFinancialAuthority::widgetAllowed()
+            ? StagingIdentity::ORIGIN.'/fictional-checkout/'.$token
             : 'http://xlipa.test/__isolated-checkout/'.$token;
     }
 

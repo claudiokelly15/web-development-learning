@@ -2,6 +2,7 @@
 
 namespace App\Actions\Payments;
 
+use App\Staging\StagingFinancialAuthority;
 use LogicException;
 use RuntimeException;
 
@@ -17,7 +18,7 @@ final class FictionalMockProvider implements PaymentProvider
     public function __construct(#[\SensitiveParameter] private readonly string $key, private readonly ?\Closure $registry = null)
     {
         $isolated = PHP_SAPI === 'cli' && getenv('XLIPA_SYNTHETIC_ONLY') === '1' && app()->environment('testing');
-        if ((! $isolated && ! \App\Staging\StagingFinancialAuthority::providerAllowed()) || strlen($key) !== 32) {
+        if ((! $isolated && ! StagingFinancialAuthority::providerAllowed()) || strlen($key) !== 32) {
             throw new LogicException('Fictional provider requires isolated testing.');
         }
     }

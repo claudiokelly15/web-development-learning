@@ -22,7 +22,7 @@ class Browser {
     const result = await new Promise((resolve,reject) => {
       const req=http.request(target,{method:data?'POST':'GET',headers:{Cookie:[...this.cookies].map(([k,v])=>`${k}=${v}`).join('; '),...(data?{'Content-Type':'application/x-www-form-urlencoded','Content-Length':Buffer.byteLength(body),Origin:origin}:{}),Accept:accept}},res=>{
         let text='';res.setEncoding('utf8');res.on('data',c=>text+=c);res.on('end',()=>resolve({status:res.statusCode,text,headers:res.headers}));
-      });req.setTimeout(15000,()=>req.destroy(new Error('Local HTTP timeout')));req.on('error',reject);req.end(body);
+      });req.setTimeout(60000,()=>req.destroy(new Error('Local HTTP timeout')));req.on('error',reject);req.end(body);
     });
     for(const cookie of result.headers['set-cookie']||[]) {const pair=cookie.split(';')[0],i=pair.indexOf('=');this.cookies.set(pair.slice(0,i),pair.slice(i+1));}
     return result;

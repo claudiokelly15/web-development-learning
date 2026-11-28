@@ -49,7 +49,7 @@ final class StagingServiceProvider extends ServiceProvider
         $this->app->make('router')->pushMiddlewareToGroup('web', StagingReadAdmission::class);
         $this->app->booted(function (): void {
             if ((app('staging.context')['financial_program'] ?? null) === StagingFinancialAuthority::VERSION) {
-                Route::middleware(['web', 'auth', EnsureAuthenticationReady::class, EnsureActiveAuthentication::class, 'verified', ResolveMerchantContext::class])
+                Route::middleware(['web', 'auth', EnsureAuthenticationReady::class, EnsureActiveAuthentication::class, 'verified', ResolveMerchantContext::class, 'throttle:60,1'])
                     ->prefix('/merchants/{merchant}/payment-products')->whereUlid('merchant')->group(function (): void {
                         Route::get('/', [StagingFinancialController::class, 'handle'])->name('r24.links.index');
                         Route::post('/links', [StagingFinancialController::class, 'handle'])->name('r24.links.create');
@@ -65,7 +65,7 @@ final class StagingServiceProvider extends ServiceProvider
                         Route::post('/attempts/{attempt}/post', [StagingFinancialController::class, 'handle'])->whereUuid('attempt')->name('r24.links.consume');
                         Route::post('/attempts/{attempt}/reconcile', [StagingFinancialController::class, 'handle'])->whereUuid('attempt')->name('r24.links.reconcile');
                     });
-                Route::middleware(['web', 'guest'])->prefix('/fictional-checkout/{token}')->where(['token' => '[a-f0-9]{64}'])->group(function (): void {
+                Route::middleware(['web', 'guest', 'throttle:20,1'])->prefix('/fictional-checkout/{token}')->where(['token' => '[a-f0-9]{64}'])->group(function (): void {
                     Route::get('/', [StagingFinancialController::class, 'handle'])->name('r24.checkout.open');
                     Route::post('/', [StagingFinancialController::class, 'handle'])->name('r24.checkout.initiate');
                 });
